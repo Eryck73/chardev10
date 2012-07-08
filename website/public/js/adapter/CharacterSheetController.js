@@ -34,13 +34,13 @@ CharacterSheetController.prototype = {
 	 */
 	_characterHandler: function( e ) {
 		if( e.is('class_change') ) {
-			this.updateClass(e.get('class'));
+			this.updateClass();
 		}
 		else if( e.is('race_change') ) {
-			this.updateRace(e.get('race'));
+			this.updateRace();
 		}
 		else if( e.is('level_change') ) {
-			this.updateLevel(e.get('level'));
+			this.updateLevel();
 		}
 		else if( e.is('item_change') ) {
 			this.updateSlot(e.get('slot'));
@@ -238,14 +238,14 @@ CharacterSheetController.prototype = {
 		}
 		else if( e.is('remove_buff') ) {
 			var id = e.get('id');
-			character.removeBuff(id);
+			this.character.removeBuff(id);
 			// hide tooltip if buff is no longer active
-			if( ! character.isBuffActive(id)) {
+			if( ! this.character.isBuffActive(id)) {
 				Tooltip.hide();
 			}
 		}
 		else if( e.is('add_stack') ) {
-			character.addStack(e.get('id'));
+			this.character.addStack(e.get('id'));
 		}
 		else {
 			throw new Error("Unhandled event: "+e.event);
