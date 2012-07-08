@@ -57,7 +57,7 @@ function ListGui( categories ) {
 	
 	this.form = document.createElement("form");
 	this.form.action = "javascript:";
-	this.form.onsubmit = "return false";
+	this.form.onsubmit = function(){ return false; };
 	this.filterCollapsable.content.appendChild( this.form );
 	
 	this.customFilterParent = document.createElement("div");

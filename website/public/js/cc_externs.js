@@ -3,7 +3,10 @@ var g_settings = {
 	language : 'en',
 	profileId : 0,
 	sessionId : '',
-	user : 0,
+	/**
+	 * @type {User}
+	 */
+	user : null,
 	isPlanner : false,
 	debug : false
 };
@@ -24,13 +27,13 @@ var JSON = { stringify : function( obj ){ return "";} };
 Element.prototype.attachEvent = function( str, fun) {return null;};
 
 var console = {
-		log: function( str ) { /**/ },
-		warn: function( str ) { /**/ },
-		info: function( str ) { /**/ },
-		error: function( str ) { /**/ }
+		log: function( str ) { /* do nothing */ },
+		warn: function( str ) { /* do nothing */ },
+		info: function( str ) { /* do nothing */ },
+		error: function( str ) { /* do nothing */ }
 };
 
 /**
- * @return {array}
+ * @return {Array}
  */
 var printStackTrace = function() { return []; };

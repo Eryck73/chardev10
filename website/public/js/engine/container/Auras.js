@@ -154,7 +154,7 @@ Auras.prototype = {
 	
 	/**
 	 * @param {boolean} noBuffs
-	 * @returns {array}
+	 * @returns {Array}
 	 */
 	getEffects : function( noBuffs )
 	{

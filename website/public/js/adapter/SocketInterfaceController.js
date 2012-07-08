@@ -102,7 +102,7 @@ SocketInterfaceController.prototype = {
 				this.adapter.character.removeGemPreview();
 			}
 			else if( e.is('click') ) {
-				if( cc && this.adapter.slot != -1 && cc.getEquippedItem(this.adapter.slot) != null ) {
+				if( cc && this.adapter.slot != -1 && cc.getEquippedItem(this.adapter.slot, 0) != null ) {
 					try {
 						cc.addGem( this.adapter.slot, this.socket, e.get('entity').clone() );
 					}
@@ -134,7 +134,7 @@ SocketInterfaceController.prototype = {
 			}
 			
 			this.socketInterface.update( 
-				itm == null ? null : new EquippedItem( cc, itm, this.slot),
+				itm == null ? null : new EquippedItem( cc, itm, this.adapter.slot),
 				this._getUsedGems()
 			);
 		},

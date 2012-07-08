@@ -1,6 +1,6 @@
 /** 
  * @constructor
- * @param {EnchantInterfaceController} enchantInterface
+ * @param {EnchantInterface} enchantInterface
  * @param {CharacterGuiAdapter} adapter
  */
 function EnchantInterfaceController( enchantInterface, adapter ) {
@@ -54,7 +54,7 @@ EnchantInterfaceController.prototype = {
 				cc.removeEnchantPreview();
 			}
 			else if( e.is('click') ) {
-				if( cc && this.adapter.slot != -1 && cc.getEquippedItem(this.adapter.slot) != null ) {
+				if( cc && this.adapter.slot != -1 && cc.getEquippedItem(this.adapter.slot, 0) != null ) {
 					cc.addEnchant( this.adapter.slot, e.get('entity').effects[0].secondaryEffect );
 				}
 			}

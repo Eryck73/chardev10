@@ -5,7 +5,7 @@ var Overlay = {};
 	
 	Overlay.init = function( node ) {
 		parent = node;
-	}
+	};
 	
 	
 })();

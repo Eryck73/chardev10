@@ -13,7 +13,7 @@ GlyphInterface.prototype = {
 	eventMgr: null,
 	/**
 	 * @param gs
-	 * @param {Character} character
+	 * @param {CharacterFacade} character
 	 */
 	update: function( gs, character ) {
 		var i, t;
