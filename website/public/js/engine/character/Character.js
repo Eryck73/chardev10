@@ -1009,7 +1009,7 @@ Character.prototype = {
 		this.inventory.setEnchantPreview(enchantSpell, slot);
 		this.calculatePreviewStats();
 	},
-	removeEnchantPreview: function( slot, enchantSpell ) {
+	removeEnchantPreview: function() {
 		this.inventory.removePreview();
 		this.calculatePreviewStats();
 	},
