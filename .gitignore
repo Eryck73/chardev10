@@ -6,3 +6,5 @@ META-INF
 website/public/images/icons/*
 BNET_KEYS.inc
 tools/cjt/bin/*
+website/build/.tmp
+nbproject
