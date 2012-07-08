@@ -76,7 +76,10 @@ CharacterPlanner.prototype = {
 		 * @param {number} index
 		 */
 		selectCharacter: function( index ) {
-			this._characterManager.select(index);
+			this._characterManager.selectIndex(index);
+		},
+		selectCharacterByRef: function( character ) {
+			this._characterManager.select(character);
 		},
 		/**
 		 * @param {number} index
@@ -110,5 +113,11 @@ CharacterPlanner.prototype = {
 		 */
 		getCurrentCharacterIndex: function() {
 			return this._characterManager.cursor;
+		},
+		/**
+		 * @returns {Character}
+		 */
+		getCurrentCharacter: function() {
+			return this._characterManager.getCurrent();
 		}
 };
