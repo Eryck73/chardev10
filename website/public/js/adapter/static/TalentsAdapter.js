@@ -18,27 +18,27 @@ function TalentsAdapter( talents, talentsInterface, character ) {
 	talentsInterface.setDistribution( talents.id, talents.getDistribution());
 	
 	talents.addObserver(new GenericObserver(["select","deselect","set_distribution","reset"], new Handler(function(e){
-		switch( e.event ) {
-		case "select":
+		if( e.is("select")) {
 			talentsInterface.select(e.get("row"), e.get("col"));
-			break;
-		case "deselect":
+			talentsInterface.setDistribution( talents.id, talents.getDistribution());
+		}
+		else if( e.is("deselect")) {
 			talentsInterface.deselect(e.get("row"), e.get("col"));
-			break;
-		case "set_distribution":
-			break;
-		case "reset":
+			talentsInterface.setDistribution( talents.id, talents.getDistribution());
+		}
+		else if( e.is("reset")) {
 			talentsInterface.reset();
-			break;
+			talentsInterface.setDistribution( talents.id, talents.getDistribution());
+		}
+		else if( e.is("set_distribution")) {
+			/* do nothing, just accept the event, behaviour follows below */
 		}
 		talentsInterface.setDistribution( talents.id, talents.getDistribution());
 	}, this)));
 	
 	talentsInterface.addObserver(new GenericObserver(["click"], new Handler(function(e){
-		switch( e.event ) {
-		case "click":
+		if( e.is("click")) {
 			talents.toggle(e.get("row"), e.get("col"));
-			break;
 		}
 	}, this)));
 }
