@@ -80,12 +80,11 @@ function Gui() {
 
 	this.folder.setOnChangeHandler(new Handler(function( newTab, oldTab) {
 		this.eventMgr.fire('tab_change',{'newTab':newTab,'oldTab':oldTab});
-	}, this
-	));
+	}, this));
+	
 	this.csFolder.setOnChangeHandler(new Handler(function( newTab, oldTab) {
 		this.eventMgr.fire('csfolder_tab_change',{'newTab':newTab,'oldTab':oldTab});
-	}, this
-	));
+	}, this));
 }
 
 Gui.TAB_ITEMS = 0;
@@ -96,7 +95,9 @@ Gui.TAB_SETS = 4;
 Gui.TAB_BUFFS = 5;
 
 Gui.TAB_CHARACTER_SHEET = 0;
+Gui.TAB_TALENTS = 1;
 Gui.TAB_OVERVIEW = 2;
+Gui.TAB_IMPORT = 3;
 Gui.TAB_SAVE = 4;
 
 Gui.prototype = {
@@ -116,9 +117,11 @@ Gui.prototype = {
 	/**
 	 * @param {ItemListGui} itemListGui
 	 */
-	initLists: function( itemListGui, profileListGui, setList ) {
+	initLists: function( itemListGui, setList ) {
 		Dom.set(this.itemsParent, itemListGui.node);
-		Dom.set(this.profilesParent, profileListGui.node);
 		Dom.set(this.setsParent, setList.node);
+	},
+	setProfileListGui: function( profileListGui ) {
+		Dom.set(this.profilesParent, profileListGui.node);
 	}
 };
