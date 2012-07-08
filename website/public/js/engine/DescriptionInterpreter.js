@@ -6,7 +6,7 @@ var DescriptionInterpreter = {};
 	/**
 	 * @param {string} jsonAst
 	 * @param {Character} character
-	 * @return {string}
+	 * @return {string|boolean|number}
 	 */
 	DescriptionInterpreter.interpret = function ( jsonAst, character ) {
 		return evaluate(eval('(' + jsonAst + ')'), character, null);
@@ -21,7 +21,7 @@ var DescriptionInterpreter = {};
 	 * @param node
 	 * @param {Character} character
 	 * @param last
-	 * @return {string}
+	 * @return {string|number|boolean}
 	 */
 	function evaluate( node, character, last ) {
 		switch(node["type"]) { 
