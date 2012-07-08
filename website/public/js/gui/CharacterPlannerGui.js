@@ -18,7 +18,14 @@ CharacterPlannerGui.prototype = {
 	 * @param {Gui} gui
 	 */
 	setGui: function( gui ) {
-		Dom.set("mtf_p", gui.folder.menu);
-		Dom.set(this.guiParent, gui.node);
+		
+		if(gui) {
+			Dom.set("mtf_p", gui.folder.menu);
+			Dom.set(this.guiParent, gui.node);
+		}
+		else {
+			Dom.truncate("mtf_p");
+			Dom.truncate(this.guiParent);
+		}
 	}
 };

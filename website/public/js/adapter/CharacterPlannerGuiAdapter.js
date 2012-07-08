@@ -141,13 +141,21 @@ CharacterPlannerGuiAdapter.prototype = {
 	 */
 	_handlePlanner: function( e ) {
 		if( e.is("character_change") ) {
+			var character = e.get("character");
 			//
-			// get the current adapter
-			this.currentAdapter = this._getAdapter(e.get("character"));
-			this.currentAdapter.gui.setProfileListGui(this.profileList.gui);
-			//
-			// set it's gui to be visible
-			this.plannerGui.setGui(this.currentAdapter.gui);
+			// remove the gui if no character is selected
+			if( ! character) {
+				this.plannerGui.setGui(null);
+			}
+			else {
+				//
+				// get the current adapter
+				this.currentAdapter = this._getAdapter(character);
+				this.currentAdapter.gui.setProfileListGui(this.profileList.gui);
+				//
+				// set it's gui to be visible
+				this.plannerGui.setGui(this.currentAdapter.gui);
+			}
 			//
 			// update the character interface
 			this._updateCharacterInterface();
