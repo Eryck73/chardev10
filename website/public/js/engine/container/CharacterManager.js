@@ -18,8 +18,6 @@ CharacterManager.prototype = {
 	cursor: -1,
 	/**
 	 * Adds, selects and returns a new character
-	 * 
-	 * @param {Character} character
 	 */
 	add: function() {
 		var character = new Character();
@@ -37,13 +35,22 @@ CharacterManager.prototype = {
 	 * 
 	 * @param {number} index
 	 */
-	select: function( index ) {
+	selectIndex: function( index ) {
 		if( index >= this.characters.length || index < 0 ) {
 			throw new Error("Invalid index: " + index);
 		}
 		
 		this.cursor = index;
 		this.eventMgr.fire( 'change', {'character': this.getCurrent()} );
+	},
+	select: function( character ) {
+		for( var k=0; k<this.characters.length; k++ ) {
+			if( this.characters[k] == character ) {
+				this.selectIndex(k);
+				return;
+			}
+		}
+		throw new Error("Unable to select character!");
 	},
 	/**
 	 * Removes the character at given index
@@ -63,7 +70,7 @@ CharacterManager.prototype = {
 	 */
 	remove: function( character ) {
 		if( character == null ) {
-			throw new Exception("Character may not be null!");
+			throw new Error("Character may not be null!");
 		}
 		
 		for( var k in this.characters ) {
@@ -122,11 +129,5 @@ CharacterManager.prototype = {
 	 */
 	addObserver: function( observer ) {
 		this.eventMgr.addObserver(observer);
-	},
-	/**
-	 * @param {GenericSubject} propagator
-	 */
-	addPropagator: function(propagator) {
-		this.eventMgr.addPropagator(propagator);
 	}
 };
