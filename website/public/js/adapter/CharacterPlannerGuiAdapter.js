@@ -102,9 +102,6 @@ CharacterPlannerGuiAdapter.prototype = {
 			//
 			// switch back to the orinally active character
 			if( orgChar ) {
-				//
-				// remove left over previews
-				orgChar.setPreviewStats(null);
 				// reselect the character
 				this.planner.selectCharacterByRef(orgChar);
 			}
@@ -148,6 +145,7 @@ CharacterPlannerGuiAdapter.prototype = {
 				this.plannerGui.setGui(null);
 			}
 			else {
+				character.setPreviewStats(null);
 				//
 				// get the current adapter
 				this.currentAdapter = this._getAdapter(character);
