@@ -30,7 +30,6 @@ try {
 	else if( isset($_GET['id'])) {
 		$id = $_GET['id'] ? json_decode($_GET['id']) : null;
 		echo json_encode(UserDatabase::getInstance()->getProfile($id));
-		break;
 	}
 }
 catch( chardev\backend\DuplicateProfileException $dpe ) {
