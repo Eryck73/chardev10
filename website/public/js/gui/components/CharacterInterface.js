@@ -64,7 +64,6 @@ CharacterInterface.prototype = {
 		
 		if( selected ) {
 			Dom.addClass(a, "ci_item_selected");
-			g = "";
 		}
 		
 		if( raceId > 0 ) {
@@ -77,7 +76,10 @@ CharacterInterface.prototype = {
 		
 		this._renderIcons(raceId, raceIcon, classId, classIcon, ! selected);
 		
+		a.oncontextmenu = function() { return false; }
+		
 		Dom.listen(a, "click", this.eventMgr.fire, this.eventMgr, ["select", {"index": index}]);
+		Dom.listen(a, "contextmenu", this.eventMgr.fire, this.eventMgr, ["remove", {"index": index}]);
 		Dom.listen(a, "mouseover", this._hover, this, [raceId, raceIcon, classId, classIcon, selected, true, index]);
 		Dom.listen(a, "mouseout", this._hover, this, [raceId, raceIcon, classId, classIcon, selected, false , index]);
 		
