@@ -7,7 +7,7 @@ function ProfilesAdapter() {
 	//
 	var plHandler = new Handler(function( e ){
 		if( e.is('update')) {
-			new ListBackEndProxy("api/profiles.php").update(this.profileList);
+			new ListBackEndProxy("/api/profiles.php").update(this.profileList);
 		}
 		else if( e.is('delete') ) {
 			
@@ -24,6 +24,10 @@ function ProfilesAdapter() {
 				}
 			}, this);
 		}
+		else if( e.is("click")) {
+			var entity = e.get("entity");
+			window.location.href = entity[8];
+		}
 	}, this);
 	//
 	var plObserver = new GenericObserver([
@@ -33,8 +37,14 @@ function ProfilesAdapter() {
 	this.profileList.addObserver(plObserver);
 }
 ProfilesAdapter.prototype = {
-	profileList: null,
-	getNode: function() {
-		return this.profileList.gui.node;
-	}
+		/**
+		 * @type {ProfileList}
+		 */
+		profileList: null,
+		/**
+		 * @returns {HTMLElement}
+		 */
+		getNode: function() {
+			return this.profileList.gui.node;
+		}
 };
