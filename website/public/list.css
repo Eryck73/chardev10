@@ -106,9 +106,7 @@
 	background-color: #484444;
 }
 
-.pl_inline_header {
-	border-top: 1px solid #343030;
-}
+.pl_inline_header { border-top: 1px solid #343030; height: 20xp; line-height: 20px; }
 
 .pl_delete_link {float: right;}
 
