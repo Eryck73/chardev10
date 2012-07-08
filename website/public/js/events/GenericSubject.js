@@ -25,7 +25,11 @@ GenericSubject.prototype = {
 				throw new Error("The argument "+args[k]+" on index "+k+" is not of the type string!");
 			}
 		}
-		this.__events[event] = { "args": args, "observers": [], "propagators": []};
+		this.__events[event] = { 
+				args: args, 
+				observers: [], 
+				propagators: []
+		};
 	},
 	/**
 	 * @param {string} event
@@ -36,7 +40,7 @@ GenericSubject.prototype = {
 		var defArgs, observers, propagators; 
 		var k = 0;
 		
-		defArgs = e["args"];
+		defArgs = e.args;
 		
 		for( k in args ) {
 			if( defArgs.hasOwnProperty(k)) {
@@ -50,13 +54,13 @@ GenericSubject.prototype = {
 			}
 		}
 		
-		observers = e["observers"];
+		observers = e.observers;
 		
 		for( k in observers ) {
 			observers[k].notify(new GenericEvent( event, args, this, observers[k]));
 		}
 		
-		propagators = e["propagators"];
+		propagators = e.propagators;
 		
 		for( k in propagators ) {
 			propagators[k].fire( event, args );
@@ -84,7 +88,7 @@ GenericSubject.prototype = {
 		var defArgs, observers, propagators; 
 		var k = 0;
 		
-		defArgs = e["args"];
+		defArgs = e.args;
 		
 		for( k in event.__kvps ) {
 			if( defArgs.hasOwnProperty(k)) {
@@ -98,13 +102,13 @@ GenericSubject.prototype = {
 			}
 		}
 		
-		observers = e["observers"];
+		observers = e.observers;
 		
 		for( k in observers ) {
 			observers[k].notify(new GenericEvent(name, event.__kvps, this, observers[k]));
 		}
 		
-		propagators = e["propagators"];
+		propagators = e.propagators;
 		
 		for( k in propagators ) {
 			propagators[k].fire( name, event.__kvps );
@@ -127,7 +131,7 @@ GenericSubject.prototype = {
 			var event = observer.events[ek];
 			var e = this.getRegisteredEvent(event);
 			
-			e["observers"].push(observer);
+			e.observers.push(observer);
 			
 		}
 	},
@@ -139,7 +143,7 @@ GenericSubject.prototype = {
 			var event = observer.events[ek];
 			var e = this.getRegisteredEvent(event);
 			
-			var observers = e["observers"];
+			var observers = e.observers;
 			
 			for( var k in observers ) {
 				if( observer == observers[k] ) {
@@ -157,7 +161,7 @@ GenericSubject.prototype = {
 	addPropagator: function( event, propagator ) {
 		var e = this.getRegisteredEvent(event);
 		
-		e["propagators"].push(propagator);
+		e.propagators.push(propagator);
 	},
 	removePropagator: function( event, propagator ) {
 		var e = this.__events[event];
@@ -166,9 +170,9 @@ GenericSubject.prototype = {
 			throw new Error("The event "+event+" is not registered!");
 		}
 		
-		var propagators = e["propagators"]; 
+		var propagators = e.propagators; 
 		
-		for( var k in e["propagators"] ) {
+		for( var k in e.propagators ) {
 			if( propagator == propagators[k] ) {
 				propagators.splice( k, 1 );
 				return;
