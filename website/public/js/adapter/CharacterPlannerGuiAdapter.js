@@ -26,12 +26,45 @@ function CharacterPlannerGuiAdapter( planner, plannerGui ) {
 	if( planner.user ) {
 		this._setUser( planner.user );
 	}
+	//
+	//	Profile list 
+	//
+	var profileAdapter = new ProfilesAdapter();
+	this.profileList = profileAdapter.profileList;
+	this.profileList.set("ismine.eq.1;", null, null, 1);
+	this.profileList.setPlanner(true);
+	//
+	var importProfileHandler = new Handler(
+		/**
+		 * @param {Array} profile
+		 * @param error 
+		 */
+		function( profile, error ) {
+			Tooltip.enable();
+			this.planner.load(profile, error);
+		}, this);
+	//
+	var profileListObserver = new GenericObserver(["click"], new Handler(
+		/**
+		 * @param {GenericEvent} e
+		 */
+		function( e ) {
+			if( e.is("click")) {
+				Tooltip.showLoading();
+				var entity = e.get("entity");
+				CharacterIO.readFromDatabase( entity[0], importProfileHandler );
+			}
+		},this));
+	//
+	this.profileList.addObserver(profileListObserver);
 }
 
 CharacterPlannerGuiAdapter.prototype = {
 	planner: null,
 	plannerGui: null,
 	adapters: null,
+	profileListObserver: null,
+	importProfileHandler: null,
 	/**
 	 * @type {CharacterGuiAdapter}
 	 */
@@ -49,8 +82,32 @@ CharacterPlannerGuiAdapter.prototype = {
 		else if( e.is("add") ) {
 			this.planner.newCharacter();
 		}
-		else if( e.is("remove") ) { 
-			this.planner.removeCharacter(e.get("index"));
+		else if( e.is("remove") ) {
+			
+			var rmIndex = e.get("index");
+			var orgChar = null;
+			//
+			// switch to the to be removed character, store the orginially 
+			// active character
+			if( rmIndex != this.planner.getCurrentCharacterIndex()) {
+				orgChar = this.planner.getCurrentCharacter();
+				this.planner.selectCharacter(rmIndex);
+			}
+			//
+			// request confirmation and remove the character
+			// also remove left over previews
+			if( confirm("Are you sure that you want to delete this character from the Planner?\nAll unsaved changes will be lost!")) {
+				this.planner.removeCharacter(rmIndex);
+			}
+			//
+			// switch back to the orinally active character
+			if( orgChar ) {
+				//
+				// remove left over previews
+				orgChar.setPreviewStats(null);
+				// reselect the character
+				this.planner.selectCharacterByRef(orgChar);
+			}
 		}
 		else if( e.is("mouseover")) {
 			if( ! this.planner.isCharacterSelected(e.get("index"))) {
@@ -87,6 +144,7 @@ CharacterPlannerGuiAdapter.prototype = {
 			//
 			// get the current adapter
 			this.currentAdapter = this._getAdapter(e.get("character"));
+			this.currentAdapter.gui.setProfileListGui(this.profileList.gui);
 			//
 			// set it's gui to be visible
 			this.plannerGui.setGui(this.currentAdapter.gui);
@@ -169,7 +227,8 @@ CharacterPlannerGuiAdapter.prototype = {
 	 * @returns {CharacterGuiAdapter}
 	 */
 	_removeAdapter: function( character ) {
-		return this.adapters.splice( this._getAdapterIndex(character), 1);
+		var adapters = this.adapters.splice( this._getAdapterIndex(character), 1);
+		return adapters[0];
 	},
 	/**
 	 * Returns the index of the adapter associated with given character
