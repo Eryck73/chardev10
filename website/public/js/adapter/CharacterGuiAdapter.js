@@ -31,14 +31,10 @@ function CharacterGuiAdapter( character, gui ) {
 	//	Character handler - Class change: List filter update, Gui update 
 	//
 	this.character.addObserver(new GenericObserver([
-        "class_change"
+        "class_change", "item_change", "gem_change", "enchant_change", 
+        "reforge_change", "random_enchant_change", "glyph_added", 
+        "glyph_removed"
     ], new Handler( this.characterHandler, this)));
-	//
-	//	Profile list 
-	//
-	var profileAdapter = new ProfilesAdapter();
-	this.profileList = profileAdapter.profileList;
-	this.profileList.set("ismine.eq.1;", null, null, 1);
 	//
 	//	Gui - Tabs
 	//
@@ -50,7 +46,6 @@ function CharacterGuiAdapter( character, gui ) {
 	//
 	gui.initLists( 
 			this.itemTabController.getListGui(), 
-			this.profileList.gui, 
 			this.setTabController.getListGui() 
 	);
 	//
@@ -62,7 +57,6 @@ function CharacterGuiAdapter( character, gui ) {
 CharacterGuiAdapter.prototype = {
 	character: null,
 	gui: null,
-	profileList: null,
 	slot: -1,
 	socket: -1,
 	adapter: null,
@@ -146,8 +140,28 @@ CharacterGuiAdapter.prototype = {
 	 * @param {GenericEvent} e
 	 */
 	characterHandler: function( e ) {
-		if( e.is("class_change") ) {
+		if( e.is("class_change")) {
 			this.updateClass( this.character.chrClass );
+		}
+		else if( e.is("item_change")) {
+			switch( this.csTab ) {
+			case Gui.TAB_ITEMS: this.itemTabController.update(); break;
+			case Gui.TAB_GEMS: this.socketInterfaceController.update(); break;
+			case Gui.TAB_ENCHANTS: this.enchantInterfaceController.update(); break;
+			case Gui.TAB_REFORGE: this.reforgeInterfaceController.update(); break;
+			}
+		}
+		else if( e.is("gem_change") && this.csTab == Gui.TAB_GEMS) {
+				this.socketInterfaceController.update();
+		}
+		else if( e.is("reforge_change") && this.csTab == Gui.TAB_REFORGE) {
+				this.reforgeInterfaceController.update();
+		}
+		else if( (e.is("enchant_change") || e.is("random_enchant_change")) && this.csTab == Gui.TAB_ENCHANTS ) {
+			this.reforgeInterfaceController.update();
+		}
+		else if( (e.is('glyph_added') || e.is('glyph_removed')) && this.guiTab == Gui.TAB_TALENTS ) {
+			this.glyphInterfaceController.update();
 		}
 	},
 	/**
