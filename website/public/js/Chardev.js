@@ -288,6 +288,9 @@ var Chardev = {
 //
 //
 (function(){
+	/**
+	 * @type {Object}
+	 */
 	var requestedTooltip = null;
 	var eventMgr = new GenericSubject();
 	
@@ -309,7 +312,7 @@ var Chardev = {
 	 */
 	function spellHandler( spell ) {
 		if( spell != null ) {
-			if( requestedTooltip != null && requestedTooltip.spell == spell.id ) {
+			if( requestedTooltip != null) if( requestedTooltip.spell == spell.id ) {
 				Tooltip.showMovable( SpellTooltip.getHtml( spell , null));
 				requestedTooltip = null;
 			}
@@ -419,6 +422,12 @@ var Chardev = {
 		Ajax2.post( "/api/user.php", {
 				'Logout': true
 		}, logoutHandler, Chardev );
+	};
+	
+	Chardev.validateLogin = function() {
+		//
+		//TODO Validate login info 
+		return true;
 	};
 })();
 
