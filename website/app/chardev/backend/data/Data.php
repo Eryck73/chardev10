@@ -16,7 +16,6 @@ use chardev\backend\cache\Cache;
  */
 abstract class Data
 {
-	protected $database = null;
 	protected $language = null;
 	
 	/**
