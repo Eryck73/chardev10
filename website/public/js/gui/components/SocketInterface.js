@@ -121,6 +121,7 @@ SocketInterface.prototype = {
 		
 		if( itm == null ) {
 			this.setShow(false);
+			this.setShowList(false);
 			return;
 		}
 		this.setShow(true);
