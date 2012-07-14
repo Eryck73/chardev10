@@ -16,6 +16,7 @@ function CharacterGuiAdapter( character, gui ) {
 	this.importInterfaceController = new ImportInterfaceController( this.gui.importInterface, this);
 	this.glyphInterfaceController = new GlyphInterfaceController( this.gui.glyphInterface, this);
 	this.talentsInterfaceController = new TalentsInterfaceController( this.gui.talentsGui, this);
+	this.specialisationInterfaceController = new SpecialisationInterfaceController( this.gui.specInterface, this);
 	
 	this.itemTabController = new ItemTabController(this);
 	this.setTabController = new SetTabController(this);
@@ -71,6 +72,7 @@ CharacterGuiAdapter.prototype = {
 	saveInterfaceController: null,
 	glyphInterfaceController: null,
 	talentsInterfaceController: null,
+	specialisationInterfaceController: null,
 	itemTabController: null,
 	setTabController: null,
 	sheetController: null,
@@ -145,7 +147,6 @@ CharacterGuiAdapter.prototype = {
 		}
 		else if( e.is("item_change")) {
 			switch( this.csTab ) {
-			case Gui.TAB_ITEMS: this.itemTabController.update(); break;
 			case Gui.TAB_GEMS: this.socketInterfaceController.update(); break;
 			case Gui.TAB_ENCHANTS: this.enchantInterfaceController.update(); break;
 			case Gui.TAB_REFORGE: this.reforgeInterfaceController.update(); break;

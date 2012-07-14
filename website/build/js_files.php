@@ -66,6 +66,7 @@
 		
 		"js/engine/character/CharacterRace.js",
 		"js/engine/character/CharacterClass.js",
+		"js/engine/character/CharacterSpecialisation.js",
 		"js/engine/character/Stats.js",
 		
 		"js/engine/cache/ItemCache.js",
@@ -84,6 +85,7 @@
 		"js/adapter/TalentsInterfaceController.js",
 		"js/adapter/ItemTabController.js",
 		"js/adapter/SetTabController.js",
+		"js/adapter/SpecialisationInterfaceController.js",
 			
 		"js/adapter/static/TalentsAdapter.js",
 		"js/adapter/static/ProfilesAdapter.js",
@@ -100,6 +102,7 @@
 		"js/adapter/facades/AvailablePresence.js",
 		"js/adapter/facades/ActiveBuff.js",
 		"js/adapter/facades/SkilledPrimaryProfession.js",
+		"js/adapter/facades/SpecialisationFacade.js",
 		
 		"js/gui/Dom.js",
 		"js/gui/ChardevHtml.js",
@@ -156,6 +159,7 @@
 		"js/gui/components/BuffInterface.js",
 		"js/gui/components/Overview.js",
 		"js/gui/components/TalentsInterface.js",
+		"js/gui/components/SpecialisationInterface.js",
 		
 		"js/gui/list/filter/AbstractFilter.js",
 		"js/gui/list/filter/FilterData.js",

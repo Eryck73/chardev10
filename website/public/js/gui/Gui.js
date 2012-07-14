@@ -28,6 +28,7 @@ function Gui() {
 	this.socketInterface = new SocketInterface();
 	this.importInterface = new ImportInterface();
 	this.saveInterface = new SaveInterface();
+	this.specInterface = new SpecialisationInterface();
 	this.sheetParent.appendChild( this.characterSheet.node );
 	
 	
@@ -55,9 +56,15 @@ function Gui() {
 //	
 //	talents
 //	
+	var talentGrid = new StaticGrid(1,2);
+	talentGrid.node.style.margin = "0 auto";
+	talentGrid.setVerticalAlign(StaticGrid.VALIGN_TOP);
+	talentGrid.cells[0][0].appendChild(this.specInterface.node);
+	talentGrid.cells[0][1].appendChild(this.talentsGui.node);
+	
 	tsFolder = new TabFolder(
-		[this.talentsGui.node, this.glyphInterface.node],
-		["Talents","Glyphs"],
+		[talentGrid.node, this.glyphInterface.node],
+		["Specialisation","Glyphs"],
 		"tsf"
 	);
 
@@ -70,7 +77,7 @@ function Gui() {
 	
 	this.folder = new TabFolder(
 		[sheetGrid.node,talentTab,this.overview.node,this.importInterface.node,this.saveInterface.node,this.profilesParent],
-		["Character Sheet","Talents","Overview","Import","Save","Browse"],
+		["Character Sheet","Spec","Overview","Import","Save","Browse"],
 		"cp_mm"
 	);
 	
@@ -114,6 +121,7 @@ Gui.prototype = {
 	glyphInterface: null,
 	buffInterface: null,
 	overview: null,
+	specInterface: null,
 	/**
 	 * @param {ItemListGui} itemListGui
 	 */

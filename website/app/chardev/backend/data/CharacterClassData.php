@@ -148,7 +148,22 @@ class CharacterClassData extends Data
 		$classials = SkillLineAbilityData::getInstance()->fromSkillLineId(self::$classIdToSkillLineId[$id]);
 		$talents = TalentsData::getInstance()->fromId($id);
 		
-		return array ( (int)$record["ID"],
+		$specRecords = DatabaseHelper::fetchMany($db, "SELECT * FROM `chrspecialization` WHERE `ChrClassID` = ? ORDER BY `ID` ASC", array($id));
+		$spec = array();
+		
+		foreach( $specRecords as $specRecord ) {
+			$spec[$specRecord['Position']] = array(
+					(int)$specRecord['ID'],
+					$specRecord['Icon'],
+					SpellData::getInstance()->fromId((int)$specRecord['SpellID']),
+					$specRecord['Name'],
+					$specRecord['Description'],
+					SpellData::getIcon($specRecord['SpellIconID'])
+			);
+		}
+		
+		return array ( 
+			(int)$record["ID"],
 			$record["Name"],
 			$talents,
 			$baseStats,
@@ -156,7 +171,8 @@ class CharacterClassData extends Data
 			$glyphs,
 			$shapeforms,
 			$presences,
-			$conditionals
+			$conditionals,
+			$spec
 		);
     }
 }

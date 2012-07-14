@@ -8,6 +8,7 @@ function CharacterClass( serialized ) {
 	this.eventMgr.registerEvent('presence_change', ['new_presence','old_presence']);
 	this.eventMgr.registerEvent('glyph_added', ['glyph']);
 	this.eventMgr.registerEvent('glyph_removed', ['glyph']);
+	this.eventMgr.registerEvent("specialisation_change", ["index"]);
 	//
 	var i,j=0;
 	this.serialized = serialized;
@@ -47,14 +48,12 @@ function CharacterClass( serialized ) {
 		}
 	}
 	
-	if( serialized[9] ) {
-		this.presences = [];
-		for( i=0;i<serialized[9].length; i++ ) {
-			SpellCache.set(new Spell(serialized[9][i]));
-		}
-	}
-	
 	this.conditionalBuffs = serialized[8];
+	
+	this.specs = [];
+	for( i=0; i<serialized[9].length; i++ ) {
+		this.specs.push(new CharacterSpecialisation(serialized[9][i]));
+	}
 }
 CharacterClass.prototype = {
 	/** @type{GenericSubject} **/
@@ -82,6 +81,8 @@ CharacterClass.prototype = {
 	classSpells: null,
 	baseStats: null,
 	selectedSpec: -1,
+	/** @type {Array} */
+	specs: null,
 	//
 	//#########################################################################
 	//
@@ -326,5 +327,19 @@ CharacterClass.prototype = {
 	removeGlyph: function( type, index ) {
 		this.glyphs[type][index] = null;
 		this.eventMgr.fire( 'glyph_removed', null );
+	},
+	//
+	//
+	//	SPECIALISATION
+	//
+	//
+	setSpecialisation: function( index ) {
+		if( this.specs[index] ) {
+			this.selectedSpec = index;
+			this.eventMgr.fire("specialisation_change", {"index": index});
+		}
+		else {
+			throw new Error("Unable to set specialisation: no specialisation for index "+index+" found!");
+		}
 	}
 };

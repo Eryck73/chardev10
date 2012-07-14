@@ -31,6 +31,8 @@ function Character() {
 	this.eventMgr.registerEvent('glyph_added', ['glyph']);
 	this.eventMgr.registerEvent('glyph_removed', ['glyph']);
 	
+	this.eventMgr.registerEvent("specialisation_change", ["index"]);
+	
 	this.primaryProfessions = [null, null];
 	this.stats = new Stats(this);
 	this.previewStats = new Stats(this);
@@ -66,7 +68,9 @@ function Character() {
 		this.eventMgr.fire('buffs_change', {});
 	},this)));
 	
-	this.classObserver = new GenericObserver(['shapeform_change','presence_change','glyph_added','glyph_removed'], new Handler(function(e) {
+	this.classObserver = new GenericObserver([
+        'shapeform_change','presence_change','glyph_added','glyph_removed','specialisation_change'
+    ], new Handler(function(e) {
 		if( e.is('shapeform_change')) {
 			var oldShape = e.get('old_shape');
 			var newShape = e.get('new_shape');
@@ -105,6 +109,10 @@ function Character() {
 			this.eventMgr.refire(e);
 		}
 		else if( e.is('glyph_removed')) {
+			this.calculateStats();
+			this.eventMgr.refire(e);
+		}
+		else if( e.is('specialisation_change')) {
 			this.calculateStats();
 			this.eventMgr.refire(e);
 		}
@@ -619,8 +627,8 @@ Character.prototype = {
 		this.chrClass.setPresence(presence);
 		
 		if( this.chrClass ) {
-			if( profile[4] === 2 || profile[4] === 1 || profile[4] === 0 ) {
-				this.chrClass.talents.selectTree(profile[4]);
+			if( profile[4] && profile[4] >= 0 ) {
+				this.chrClass.setSpecialisation(profile[4]);
 			}
 			if( profile[2] ) {
 				this.chrClass.talents.setDistribution(profile[2],true);
@@ -1179,7 +1187,12 @@ Character.prototype = {
 			this.chrClass.setPresence(presenceId);
 			this.calculateStats();
 		}
-	} 
+	},
+	setSpecialisation: function( index ) {
+		if( this.chrClass != null ) {
+			this.chrClass.setSpecialisation( index );
+		}
+	}
 };
 /**
  * @constructor
