@@ -48,7 +48,7 @@ class SpellData extends Data
 		$spell[0] = (int)$record['ID'];
 		$spell[1] = $record['Name'];
 		$spell[2] = $record['Description'];
-		$spell[3] = $this->getIcon($record['SpellIconID']);
+		$spell[3] = self::getIcon($record['SpellIconID']);
 		//
 		// SpellDuration
 		//
@@ -287,7 +287,7 @@ class SpellData extends Data
 		return $spell;
 	} 
 	
-	public function getIcon( $spellIconId ) {
+	public static function getIcon( $spellIconId ) {
 		$spellIconId = (int) $spellIconId;
 		if( $spellIconId < 1 ) {
 			return null;
