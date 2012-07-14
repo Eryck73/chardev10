@@ -45,10 +45,10 @@ class SpellListData extends ListData {
 					$this->parseNumericArgument($where,$values,$operator,$match[3],"sr.MaximumHostile");
 					break;
 				case "name":
-					parse_string_argument($where,$values,$operator,$match[3],"s.Name");
+					$this->parseStringArgument($where,$values,$operator,$match[3],"s.Name");
 					break;
 				case "description":
-					parse_string_argument($where,$values,$operator,$match[3],"s.Description");
+					$this->parseStringArgument($where,$values,$operator,$match[3],"s.Description");
 					break;
 				case "slot":
 					$joinEquippedItems = true;
