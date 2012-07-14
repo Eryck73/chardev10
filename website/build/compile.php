@@ -20,7 +20,7 @@ if( file_exists($tmp_file)) {
 	}
 }
 
-shell_exec( 
+exec( 
 	"java -jar closure_compiler/compiler.jar "
 	.$joined
 	." --js ../public/js/build.js "
