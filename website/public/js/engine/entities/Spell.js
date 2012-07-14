@@ -107,7 +107,7 @@ Spell.prototype = {
 		runecost : 0,
 		getDescription : function( character ){
 			
-			var desc = DescriptionInterpreter.interpret(this.bustedDesc, character);
+			var desc = this.bustedDesc ? DescriptionInterpreter.interpret(this.bustedDesc, character) : this.desc;
 			
 			var opening = 0, closing = 0;
 			var repl = desc;
