@@ -40,7 +40,7 @@ function CharacterGuiAdapter( character, gui ) {
 	//	Gui - Tabs
 	//
 	this.gui.eventMgr.addObserver( new GenericObserver( [
-        "tab_change", "csfolder_tab_change"
+        "tab_change", "csfolder_tab_change", "spec_tab_change"
     ], new Handler( this.guiHandler, this )));
 	//
 	// Gui - Lists
@@ -63,6 +63,7 @@ CharacterGuiAdapter.prototype = {
 	adapter: null,
 	guiTab: 0,
 	csTab: 0,
+	specTab: 0,
 	characterObserver: null,
 	enchantInterfaceController: null,
 	socketInterfaceController: null,
@@ -118,6 +119,12 @@ CharacterGuiAdapter.prototype = {
 			this.csTab = e.get("newTab");
 			this.updateCharacterSheetTab();
 		}
+		else if( e.is("spec_tab_change") ) {
+			this.specTab = e.get("newTab");
+			if( e.get("newTab") == Gui.TAB_GLYPHS ) {
+				this.glyphInterfaceController.update();
+			}
+		}
 	},
 	/**
 	 * @param {GenericEvent} e
@@ -161,7 +168,7 @@ CharacterGuiAdapter.prototype = {
 		else if( (e.is("enchant_change") || e.is("random_enchant_change")) && this.csTab == Gui.TAB_ENCHANTS ) {
 			this.reforgeInterfaceController.update();
 		}
-		else if( (e.is('glyph_added') || e.is('glyph_removed')) && this.guiTab == Gui.TAB_TALENTS ) {
+		else if( (e.is('glyph_added') || e.is('glyph_removed')) && this.guiTab == Gui.TAB_TALENTS && this.specTab == Gui.TAB_GLYPHS ) {
 			this.glyphInterfaceController.update();
 		}
 	},

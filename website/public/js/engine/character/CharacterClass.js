@@ -325,8 +325,9 @@ CharacterClass.prototype = {
 	 * @param {number} index
 	 */
 	removeGlyph: function( type, index ) {
+		var glyph = this.glyphs[type][index];
 		this.glyphs[type][index] = null;
-		this.eventMgr.fire( 'glyph_removed', null );
+		this.eventMgr.fire( 'glyph_removed', { 'glyph': glyph } );
 	},
 	//
 	//

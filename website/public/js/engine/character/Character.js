@@ -627,7 +627,7 @@ Character.prototype = {
 		this.chrClass.setPresence(presence);
 		
 		if( this.chrClass ) {
-			if( profile[4] && profile[4] >= 0 ) {
+			if( profile[4] !== undefined && profile[4] >= 0 ) {
 				this.chrClass.setSpecialisation(profile[4]);
 			}
 			if( profile[2] ) {

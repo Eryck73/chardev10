@@ -7,6 +7,7 @@ function Gui() {
 	this.eventMgr = new GenericSubject();
 	this.eventMgr.registerEvent("tab_change", ["newTab", "oldTab"]);
 	this.eventMgr.registerEvent("csfolder_tab_change", ["newTab", "oldTab"]);
+	this.eventMgr.registerEvent("spec_tab_change", ["newTab", "oldTab"]);
 	
 	var tsFolder, d1,d2;
 	var sheetGrid = new StaticGrid(1,2); sheetGrid.setVerticalAlign(StaticGrid.VALIGN_TOP);
@@ -67,6 +68,10 @@ function Gui() {
 		["Specialisation","Glyphs"],
 		"tsf"
 	);
+	
+	tsFolder.setOnChangeHandler(new Handler(function( newTab, oldTab) {
+		this.eventMgr.fire('spec_tab_change',{'newTab':newTab,'oldTab':oldTab});
+	}, this));
 
 	talentTab.appendChild(tsFolder.menu);
 	talentTab.appendChild(tsFolder.node);
@@ -106,6 +111,9 @@ Gui.TAB_TALENTS = 1;
 Gui.TAB_OVERVIEW = 2;
 Gui.TAB_IMPORT = 3;
 Gui.TAB_SAVE = 4;
+
+Gui.TAB_SPEC = 0;
+Gui.TAB_GLYPHS = 1;
 
 Gui.prototype = {
 	characterSheet: null,
