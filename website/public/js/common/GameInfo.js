@@ -150,6 +150,7 @@ var GameInfo = {
 	 * @returns {number}
 	 */
 	getMaximumProfessionTier : function( skillLineId, level ) {
+		if(level>=80){return 7;}
 		if(level>=75){return 6;}
 		if( skillLineId == 165 || skillLineId == 182 || skillLineId == 186 )
 		{		
