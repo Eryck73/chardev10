@@ -1,5 +1,5 @@
 <?php 
-	mysql_connect("localhost","root", "");
+// 	mysql_connect("localhost","root", "");
 	
 // 	$stmt = mysql_query(
 // 		"SELECT * FROM `gtCombatRatings`"
@@ -27,20 +27,55 @@
 	
 // 	echo "var BASE_REGEN = ".json_encode($arr).";<br />";
 	
-	$stmt = mysql_query(
-		"SELECT * FROM chardev_mop.`scalingstatvalues`"
-	);
+// 	$stmt = mysql_query(
+// 		"SELECT * FROM chardev_mop.`scalingstatvalues`"
+// 	);
 	
-	$arr = array();
-	while( $record = mysql_fetch_assoc($stmt)) {
-		$arr[(int)$record['level']] = array();
-		for($i=0;$i<45;$i++){
-			$arr[(int)$record['level']][] = (int)$record['dist'.$i];
-		} 
-	}
+// 	$arr = array();
+// 	while( $record = mysql_fetch_assoc($stmt)) {
+// 		$arr[(int)$record['level']] = array();
+// 		for($i=0;$i<45;$i++){
+// 			$arr[(int)$record['level']][] = (int)$record['dist'.$i];
+// 		} 
+// 	}
 	
-	echo "var SCALING_STAT_VALUE = ".json_encode($arr).";<br />";
+// 	echo "var SCALING_STAT_VALUE = ".json_encode($arr).";<br />";
 // 	echo "var SPELL_SCALING=".json_encode(get_gt_spell_scaling()).";<br />";
 // 	echo "var ITEM_CLASSES = ".json_encode(get_item_classes()).";<br />";
 // 	echo "var SERIALIZED_PROFESSIONS = ".json_encode(get_professions()).";<br />";
+
+	
+	use chardev\backend\data\SkillLineAbilityData;
+
+use chardev\backend\data\SkillLineData;
+
+use chardev\backend\Database;
+
+	use chardev\backend\DatabaseHelper;
+	
+	require_once '/../Autoloader.php';
+
+	$records = DatabaseHelper::fetchMany(Database::getConnection(), "SELECT * FROM `skillline` where `Category` = '11'");
+	
+	$spellIds = array(
+			182 => array(81708,55428,55480,55500,55501,55502,55503,74497,121279), // Lifebloom
+			186 => array(53120,53121,53122,53123,53124,53040,74496,102163),
+			393 => array(53125,53662,53663,53664,53665,53666,74495,102219)
+	);
+	
+	$professions = array();
+	foreach( $records as $record ) {
+		$r[0] = SkillLineData::getInstance()->fromId($record["ID"]);
+		$r[1] = array();
+		
+		if( isset($spellIds[$record["ID"]])) {
+			foreach ( $spellIds[$record["ID"]] as $spellId ) {
+				$r[1][] = SkillLineAbilityData::getInstance()->fromSpellId($spellId);
+			}
+		}
+		
+		$professions[$record["ID"]] = $r;
+	}
+	
+	echo json_encode($professions);
 ?>

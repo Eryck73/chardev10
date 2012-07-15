@@ -45,6 +45,9 @@ class SkillLineAbilityData
 		return $skills;
 	} 
 	
+	public function fromSpellId($id) {
+		return $this->fromRecord(DatabaseHelper::fetchOne(Database::getConnection(), "SELECT * FROM `skilllineability` WHERE `SpellID` = ?", array($id)));
+	}
 }
 
 ?>

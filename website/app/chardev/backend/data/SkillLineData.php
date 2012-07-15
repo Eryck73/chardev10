@@ -10,6 +10,9 @@ use chardev\backend\DatabaseHelper;
 class SkillLineData extends Data
 {
 	protected static $instance = null;
+	/**
+	 * @return SkillLineData
+	 */
 	public static function getInstance() 
 	{
 		if( self::$instance == null ) {
@@ -28,7 +31,8 @@ class SkillLineData extends Data
 			return array(
 				$record['ID'],
 				$record['Name'],
-				$record['Category']
+				$record['Category'],
+				$record['Description'],
 			);
 		}
 		else {
