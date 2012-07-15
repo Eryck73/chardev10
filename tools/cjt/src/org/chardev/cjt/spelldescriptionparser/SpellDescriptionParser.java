@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import org.chardev.cjt.entity.Spell;
 import org.chardev.cjt.spelldescriptionparser.ParserStream.ParserException;
@@ -14,14 +15,14 @@ import org.chardev.cjt.util.Database;
 public class SpellDescriptionParser {
 	
 	protected Connection db;
-	protected PreparedStatement updateStmt;
+	protected PreparedStatement stmt;
 	
 	public SpellDescriptionParser( Connection db ) {
 		Locale.setDefault(Locale.ENGLISH);
 		this.db = db;
 		
 		try {
-			this.updateStmt = db.prepareStatement("UPDATE chardev_mop_static.`chardev_spellinfo` SET `DescriptionEN` = ? WHERE SpellID = ? ");
+			this.stmt = db.prepareStatement("REPLACE INTO chardev_mop_static.`chardev_spellinfo` ( SpellID, DescriptionEN, Scalable, ElixirMask ) VALUES (?,?,?,?) ");
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -31,25 +32,32 @@ public class SpellDescriptionParser {
 		try {
 			
 			Spell s = new Spell(db, spellId);
+			String descStr = s.getDescription();
+			String bustedDesc = "";
+			boolean scalable = false;
+			int elixirMask = 0;
+			
+			if( descStr != null ) {
+				Expression desc = new DescriptionParser(s.getDescription()).parse().evaluate(new Environment(db,s));
 				
-			if( s.getDescription() == null ) {
-				return;
+				bustedDesc = new JsonPrinter().print(desc);
+				
+				if( Pattern.compile("Counts as both a Battle and Guardian elixir", Pattern.CASE_INSENSITIVE).matcher(descStr).find()) {
+					elixirMask = 3;
+				}
+				else if( Pattern.compile("Guardian Elixir", Pattern.CASE_INSENSITIVE).matcher(descStr).find()) {
+					elixirMask = 2;
+				}
+				else if( Pattern.compile("Battle Elixir", Pattern.CASE_INSENSITIVE).matcher(descStr).find()) {
+					elixirMask = 1;
+				}
 			}
-			
-			Expression desc = new DescriptionParser(s.getDescription()).parse().evaluate(new Environment(db,s));
-			
-//			System.out.println(spellId + " >> " + new JsonPrinter().print(desc));
-//			
-//			if( desc instanceof Desc ) {
-//				
-//				for( Expression e : ((Desc)desc).getExps() ) {
-//					System.err.println(e);
-//				}
-//			}
-			
-			updateStmt.setString(1, new JsonPrinter().print(desc));
-			updateStmt.setInt(2, spellId);
-			updateStmt.execute();
+
+			stmt.setInt(1, spellId);
+			stmt.setString(2, bustedDesc );
+			stmt.setBoolean(3, scalable);
+			stmt.setInt(4, elixirMask);
+			stmt.execute();
 		}
 		catch (Exception e) {
 			System.out.println(">> " + spellId + ":" + e);

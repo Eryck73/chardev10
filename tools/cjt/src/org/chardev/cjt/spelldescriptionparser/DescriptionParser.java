@@ -1,9 +1,7 @@
 package org.chardev.cjt.spelldescriptionparser;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import org.chardev.cjt.spelldescriptionparser.ast.Condition;
 import org.chardev.cjt.spelldescriptionparser.ast.Expression;
@@ -19,6 +17,8 @@ import org.chardev.cjt.spelldescriptionparser.ast.node.BinaryComplexOp;
 import org.chardev.cjt.spelldescriptionparser.ast.node.BinaryComplexOp.BinaryComplexOperator;
 import org.chardev.cjt.spelldescriptionparser.ast.node.BinaryCondOp;
 import org.chardev.cjt.spelldescriptionparser.ast.node.BinaryCondOp.BinaryCondOperator;
+import org.chardev.cjt.spelldescriptionparser.ast.node.ComplexCond;
+import org.chardev.cjt.spelldescriptionparser.ast.node.ComplexCond.Comparator;
 import org.chardev.cjt.spelldescriptionparser.ast.node.Desc;
 import org.chardev.cjt.spelldescriptionparser.ast.node.ExpVar;
 import org.chardev.cjt.spelldescriptionparser.ast.node.FunVar;
@@ -30,16 +30,6 @@ import org.chardev.cjt.spelldescriptionparser.ast.node.UnaryCondOp;
 import org.chardev.cjt.spelldescriptionparser.ast.node.UnaryCondOp.UnaryCondOperator;
 
 public class DescriptionParser extends ParserStream {
-	
-	private static Set<Integer> complexDelimiters;
-	private static Set<Integer> funVarDelimiters;
-	static {
-		complexDelimiters = new HashSet<Integer>();
-		complexDelimiters.add((int)'}');
-		funVarDelimiters = new HashSet<Integer>();
-		funVarDelimiters.add((int)')');
-		funVarDelimiters.add((int)',');
-	}
 	
 	public DescriptionParser( String desc ) {
 		super(desc);
@@ -76,7 +66,7 @@ public class DescriptionParser extends ParserStream {
 				case '{':
 					Expression e;
 					take('{'); 
-					e = parseComplexExp(0, complexDelimiters); 
+					e = parseComplexExp(0); 
 					take('}');
 					if(!eof()&&!eof(1)&&compare('.')&&isDigit(1)) {
 						take('.');
@@ -111,46 +101,38 @@ public class DescriptionParser extends ParserStream {
 	}
 
 	//TODO Impl ComplexExp
-	protected Expression parseComplexExp( int depth, Set<Integer> delimiters ) throws ParserException {
+	protected Expression parseComplexExp( int depth ) throws ParserException {
 		Expression l,r;
-		l = parseComplexOperand(depth, delimiters);
+		l = parseComplexOperand(depth);
 		
 		while(!eof()) {
 			do {
 				if(compare('*')||compare('/')) {
 					int sign = get();
-					l = new BinaryComplexOp(l,BinaryComplexOperator.fromSign(sign),parseComplexOperand(depth, delimiters));
+					l = new BinaryComplexOp(l,BinaryComplexOperator.fromSign(sign),parseComplexOperand(depth));
 				}
 				else if(compare('+')||compare('-')) {
 						
 						int lpSign = get();
-						r = parseComplexOperand(depth, delimiters);
+						r = parseComplexOperand(depth);
 						
 						while(!eof()&&(compare('*')||compare('/'))) {
 							int hpSign = get();
-							r = new BinaryComplexOp(r,BinaryComplexOperator.fromSign(hpSign),parseComplexOperand(depth, delimiters));
+							r = new BinaryComplexOp(r,BinaryComplexOperator.fromSign(hpSign),parseComplexOperand(depth));
 						}
 						
 						l = new BinaryComplexOp(l,BinaryComplexOperator.fromSign(lpSign),r);
 				}
-				else if(delimiters.contains(peek())) {
+				else if(compare(')')) {
+					return l;
+				}
+				else {
 					if(depth==0) {
 						return l;
 					}
 					else {
 						throw new ParserException("Unexpected end of complex expression");
 					}
-				}
-				else if(compare(')')) {
-					if(depth==0) {
-						throw new ParserException("Unexpected end of parenthesed expression");
-					}
-					else {
-						return l;
-					}
-				}
-				else {
-					throw new ParserException("Unexpected token: " + str());
 				}
 			}
 			while(!eof());
@@ -159,10 +141,10 @@ public class DescriptionParser extends ParserStream {
 		return l;
 	}
 	
-	protected Expression parseComplexOperand( int depth, Set<Integer> delimiters ) throws ParserException {
+	protected Expression parseComplexOperand( int depth ) throws ParserException {
 		if(compare('-')) {
 			take('-');
-			return new BinaryComplexOp(new Decimal(-1), BinaryComplexOperator.TIMES, parseComplexOperand(depth, delimiters));
+			return new BinaryComplexOp(new Decimal(-1), BinaryComplexOperator.TIMES, parseComplexOperand(depth));
 		}
 		switch(peek()) {
 		case '$':
@@ -175,7 +157,7 @@ public class DescriptionParser extends ParserStream {
 		case '(':
 			Expression o;
 			take('(');
-			o = parseComplexExp(depth + 1, delimiters);
+			o = parseComplexExp(depth + 1);
 			take(')');
 			return o;
 		default: 
@@ -252,11 +234,19 @@ public class DescriptionParser extends ParserStream {
 				take('!');
 				return new UnaryCondOp(UnaryCondOperator.NOT, parseCondRef(depth));
 			}
-			else {
+			else if(compare('$')) {
+				take('$');
+				
+				Variable v = parseVariable(null);
+				Comparator c = parseComparator();
+				Decimal d = new Decimal(parseDecimal());
+				
+				return new ComplexCond(v,c,d);
+			}
+			else if(isLetter()){
 				String refName;
 				Integer refId;
 				
-				expectLetter();
 				refName = getStr();
 				
 				expectDigit();
@@ -264,6 +254,45 @@ public class DescriptionParser extends ParserStream {
 				
 				return new CondRef(refName, refId);
 			}
+			else {
+				Expression l = parseComplexExp(depth);
+				Comparator c = parseComparator();
+				Expression r = parseComplexExp(depth);
+				
+				return new ComplexCond(l, c, r);
+			}
+		}
+	}
+	
+	protected Comparator parseComparator() throws ParserException {
+		switch(peek()) {
+		case '!':
+			take('!');
+			take('=');
+			return Comparator.NE;
+		case '>':
+			take('>');
+			if(peek(1) == '=') {
+				take('=');
+				return Comparator.GE;
+			}
+			else {
+				return Comparator.GT;
+			}
+		case '<':
+			take('<');
+			if(peek(1) == '=') {
+				take('=');
+				return Comparator.LE;
+			}
+			else {
+				return Comparator.LT;
+			}
+		case '=':
+			take('=');
+			return Comparator.EQ;
+		default:
+			throw new ParserException("Unexpected token: " + str());
 		}
 	}
 	
@@ -414,7 +443,30 @@ public class DescriptionParser extends ParserStream {
 			return new TextRef( refName, refId);
 		}
 	}
-	
+	/**
+	 * Parses and returns Variables (ExpVar, SpellVar, FunVar and StatVar)
+	 *
+	 * 	<pre>
+	 *  ExpVar:
+	 *  	OpeningTag ExpVarRef ClosingTag
+	 *  
+	 *  ExpVarName: \w(\d|\w)*
+	 *  OpeningTag: '<'
+	 *  ClosingTag: '>'
+	 *  
+	 * 	SpellVar: 
+	 * 		[SpellId] ValueRef [Index]
+	 * 
+	 *	SpellId	: \d+
+	 *	ValueRef: \w
+	 *	Index	: \d
+	 *  </pre>
+	 *	
+	 * 
+	 * @param parsedSpellId
+	 * @return Parsed variable
+	 * @throws ParserException
+	 */
 	protected Variable parseVariable( Integer parsedSpellId) throws ParserException {
 		if( !eof() && compare('<')) {
 			ExpVar v = new ExpVar(parseParenthesed());
@@ -441,7 +493,7 @@ public class DescriptionParser extends ParserStream {
 					
 					take('(');
 					while(!eof()) {
-						args.add(parseComplexExp(0, funVarDelimiters));
+						args.add(parseComplexExp(0));
 						if(compare(')')) {
 							break;
 						}

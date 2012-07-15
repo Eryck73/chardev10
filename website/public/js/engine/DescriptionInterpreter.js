@@ -9,7 +9,7 @@ var DescriptionInterpreter = {};
 	 * @return {string|boolean|number}
 	 */
 	DescriptionInterpreter.interpret = function ( jsonAst, character ) {
-		return evaluate(eval('(' + jsonAst + ')'), character, null);
+		return evaluate( jsonAst, character, null);
 	};
 	/**
 	 * @param {boolean} b
@@ -85,6 +85,19 @@ var DescriptionInterpreter = {};
 			else {
 				var matches = node["ref"].match(/^\w(\d+)$/);
 				return character.auras.isActive(matches[1]);
+			}
+		case 'complexcond':
+			var l = evaluate(node["left"], character, last);
+			var r = evaluate(node["right"], character, last);
+			
+			switch(node["comparator"]) {
+			case '==': return l == r;
+			case '>': return l > r;
+			case '<': return l < r;
+			case '>=': return l >= r;
+			case '<=': return l <= r;
+			case '!=': return l != r;
+			default: throw Error("Unhandled comparator: "+node["comparator"]);
 			}
 		case 'uncondop':
 			var cond = evaluate(node["cond"], character, last); 

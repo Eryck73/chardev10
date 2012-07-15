@@ -92,7 +92,7 @@ class SpellData extends Data
 		//
 		// EnergyType
 		//
-// 		$spell[7] = (int)$record['EnergyType'];
+		$spell[7] = -1;
 		//
 		// SpellCastTimes
 		//
@@ -189,7 +189,13 @@ class SpellData extends Data
 		//
 		$chardev_spellinfo = DatabaseHelper::fetchOne($db, "SELECT * FROM chardev_mop_static.`chardev_spellinfo` WHERE `SpellID` = ?", array($record['ID']));
 		
-		$spell[12] = $chardev_spellinfo['Description'.Language::getInstance()->toColumnSuffix()];
+		$json = $chardev_spellinfo['Description'.Language::getInstance()->toColumnSuffix()];
+		$obj = null;
+		if( $json ) {
+			$obj = json_decode($json);
+		}
+		
+		$spell[12] = $obj;
 		$spell[13] = (int)$chardev_spellinfo['Scalable'] ? true : false;
 		//
 		// SpellShapeShift

@@ -82,6 +82,10 @@ public class ParserStream {
 		return Character.isLetter(peek());
 	}
 	
+	public boolean isLetter(int offset) {
+		return Character.isLetter(peek(offset));
+	}
+	
 	public boolean isWhitespace() {
 		return Character.isWhitespace(peek());
 	}
@@ -112,8 +116,33 @@ public class ParserStream {
 			super(msg);
 		}
 		
+		private String getPeek() {
+			String peek = "";
+			
+			if (eof()) {
+				return "";
+			}
+			
+			for( int i=1; i<5 && cursor - i > 0; i++ ) {
+				peek = codePointToString(base.codePointAt(cursor - i)) + peek;
+			}
+			
+			peek += ">" + codePointToString(base.codePointAt(cursor)) + "<";
+		
+			for( int i=1; i<5 && cursor + i < length; i++ ) {
+				peek += codePointToString(base.codePointAt(cursor + i));
+			}
+			
+			return peek;
+		}
+		
 		public ParserException( Exception e) {
-			super("In: " + ParserStream.this.base + ", cursor: " + ParserStream.this.cursor, e);
+			super("", e);
+		}
+		
+		@Override
+		public String getMessage() {
+			return super.getMessage() + ", In: " + base + ", cursor: " + cursor + "( " + getPeek() + " )";
 		}
 	}
 }
