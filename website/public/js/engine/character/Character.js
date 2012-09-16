@@ -118,7 +118,7 @@ function Character() {
 		}
 	}, this));
 	
-	this.setLevel(Character.MAX_LEVEL);
+	this.setLevel(Character.DEFAULT_LEVEL);
 	this.name = "";
 	this.description = "";
 	//
@@ -127,6 +127,7 @@ function Character() {
 }
 
 Character.MAX_LEVEL = 90;
+Character.DEFAULT_LEVEL = 85;
 
 Character.prototype = {
 	/** @type{GenericSubject} **/
