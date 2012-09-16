@@ -233,6 +233,10 @@ CharacterClass.prototype = {
 			}
 		}
 		
+		if( this.selectedSpec >= 0 ) {
+			this.specs[this.selectedSpec].getActiveSpells(auras);
+		}
+		
 		for( i=0;i<this.classSpells.length;i++){
 			cr = this.classSpells[i];
 			if( cr.spell == null ) {

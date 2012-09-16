@@ -52,9 +52,6 @@ var StatTooltip = {
 				if( index == 2 ) {
 					tmp_html += ( tmp_html ? "<br />" : "" ) + TextIO.sprintf1(locale['TT_StatText']['IncreasesHealth'],Math.floor(stats.healthFromSta));
 				}
-				else if( index == 3 ) {
-					tmp_html += ( tmp_html ? "<br />" : "" ) + TextIO.sprintf1(locale['TT_StatText']['IncreasesMana'],Math.floor(stats.manaFromInt));
-				}
 				else if( index == 4 ) {
 					tmp_html += ( tmp_html ? "<br />" : "" ) + TextIO.sprintf1(locale['TT_StatText']['IncreasesManaRegen'],Math.floor(stats.manaRegenFromSpi));
 				}

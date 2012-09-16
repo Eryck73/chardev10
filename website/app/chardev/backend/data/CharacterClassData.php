@@ -152,13 +152,26 @@ class CharacterClassData extends Data
 		$spec = array();
 		
 		foreach( $specRecords as $specRecord ) {
+			$specSpellRecords = DatabaseHelper::fetchMany($db, "SELECT * FROM `specializationspells` WHERE `ChrSpecializationID` = ?", array((int)$specRecord['ID']));
+			
+			$specSpells = array();
+			foreach( $specSpellRecords as $specSpellRecord ) {
+				for( $i = 1; $i <= 3; $i++ ) {
+					$spell = $sd->fromId($specSpellRecord["SpellID" . $i]);
+					if( $spell ) {
+						$specSpells[] = $spell;
+					}
+				}
+			}
+			
 			$spec[$specRecord['Position']] = array(
 					(int)$specRecord['ID'],
 					$specRecord['Icon'],
 					SpellData::getInstance()->fromId((int)$specRecord['SpellID']),
 					$specRecord['Name'],
 					$specRecord['Description'],
-					SpellData::getIcon($specRecord['SpellIconID'])
+					SpellData::getIcon($specRecord['SpellIconID']),
+					$specSpells
 			);
 		}
 		
