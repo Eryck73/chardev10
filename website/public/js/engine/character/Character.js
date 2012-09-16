@@ -61,6 +61,12 @@ function Character() {
 				}
 			}
 		}
+		else if( e.is('change') ) {
+			// do nothing, but take event from stack
+		}
+		else if( e.is('remove_stack') ) {
+			// do nothing, but take event from stack
+		}
 		
 		if( ! e.get('silent') ) {
 			this.calculateStats();
