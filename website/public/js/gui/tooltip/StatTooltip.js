@@ -404,12 +404,15 @@ var StatTooltip = {
 				break;
 			}
 			break;
+		//
+		// DEFENSE
+		//
 		case 5:
 			html += Tools.addTr1(
 				"<span class='tt_stat_title'>"+
 				TextIO.sprintf1(
 						locale['TT_StatTitle_Defense'][index],
-						( index == 4 || index == 0 ? stats.defense[index] : TextIO.formatFloat2(stats.defense[index])) 
+						( index == 0 ? stats.defense[index] : TextIO.formatFloat2(stats.defense[index])) 
 				) +
 				"</span>"
 			);
@@ -446,10 +449,28 @@ var StatTooltip = {
 			case 4:
 				html += Tools.addTr1( 
 							TextIO.sprintf1( locale['TT_StatText']['Resilience'],
-								TextIO.formatFloat2(stats.resilienceDamageReduction * 100)
+								TextIO.formatFloat2(stats.defense[4])
 							));
+
+				html += Tools.addTr1(
+							TextIO.sprintf( locale['TT_StatText']['ResilienceRating'], [
+                            	Math.floor(stats.resilienceRating),
+                            	TextIO.formatFloat2(stats.defense[4])
+                            ]));
 				break;
 			case 5:
+				html += Tools.addTr1( 
+							TextIO.sprintf1( locale['TT_StatText']['PvpPower'],
+								TextIO.formatFloat2(stats.defense[5])
+							));
+
+				html += Tools.addTr1(
+							TextIO.sprintf( locale['TT_StatText']['PvpPowerRating'], [
+                            	Math.floor(stats.pvpPowerRating),
+                            	TextIO.formatFloat2(stats.defense[5])
+                            ]));
+				break;
+			case 6:
 				html += Tools.addTr1( 
 							TextIO.sprintf( locale['TT_StatText']['Avoidance'], [
 								TextIO.formatFloat2(stats.meleeMiss),
