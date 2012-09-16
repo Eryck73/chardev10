@@ -24,7 +24,7 @@ class Chardev {
 	}
 	
 	public function hideGoogle() {
-		return true;
+		return false;
 	}
 	
 	public function getBuild() {
