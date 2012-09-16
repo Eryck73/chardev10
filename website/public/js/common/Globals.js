@@ -32,7 +32,7 @@
 /** @const */ var SHAMAN 			= 7;
 /** @const */ var MAGE 				= 8;
 /** @const */ var WARLOCK 			= 9;
-///** @const */ var ???				= 10;
+/** @const */ var MONK				= 10;
 /** @const */ var DRUID 			= 11;
 // Shape forms
 /** @const */ var CASTER 			= 0;
@@ -229,7 +229,7 @@ var g_spells = null;
 // epic: 8040C0 B090E0
 /** @const */ var g_color = new Array("#bbbbbb","#FFFFFF","#00DD00","#40A0FF","#DD80FF","#FF8000","#E5CC80","#E5CC80");
 
-/** @const */ var CALC_RATINGS = 40;
+/** @const */ var CALC_RATINGS = 47;
 /** @const */ var MH = 0;
 /** @const */ var OH = 1;
 /** @const */ var RG = 2;

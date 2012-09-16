@@ -84,7 +84,7 @@ Auras.prototype = {
 		//mod heal %-of index -> 29
 		arr[175] = new Array(5);
 		//ratings
-		arr[189] = new Array(38);
+		arr[189] = new Array(47);
 		//mod spellhit by school
 		arr[199] = new Array(7);
 		//mod flat ranged ap %-of 

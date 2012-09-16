@@ -98,6 +98,8 @@ Stats.prototype.hitTillMeleeCap = 0;
 Stats.prototype.expTillDodgeCap = 0;
 Stats.prototype.expTillParryCap = 0;
 
+Stats.prototype.pvpPowerRating = 0;
+
 Stats.prototype.__started = false;
 
 /**
@@ -120,7 +122,7 @@ Stats.prototype.reset = function() {
 	this.melee = [0,0,0,0,0,0,0,0,0,0];
 	this.ranged = [[0,0],0,0,0,0,0,0,0];
 	this.spell = [0,0,0,0,0,0,0,0];
-	this.defense = [0,0,0,0,0,0,0];
+	this.defense = [0,0,0,0,0,0,0,0];
 	this.resistance = [0,0,0,0,0];
 	
 	this.health = 0;
@@ -194,6 +196,8 @@ Stats.prototype.reset = function() {
 	this.raMaxDmg = 0;
 	this.raSpeed = 0;
 	this.raDps = 0;
+	
+	this.pvpPowerRating = 0;
 	
 	this.hitTillMeleeCap = 0;
 	
@@ -868,10 +872,13 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 		this.ratings[15] + baseEffects[189][15],
 		this.ratings[16] + baseEffects[189][16]
 	);
-	this.resilienceDamageReduction = (1 - Math.pow( 0.99 , ( this.resilienceRating / COMBAT_RATINGS[15][level-1] )));
+	this.resilienceDamageReduction = (1 - Math.pow( 0.99 , ( this.resilienceRating / COMBAT_RATINGS[15][level-1] ))) * 100;
 	//
 	//	Miss
 	this.meleeMiss = 5 - effects[0][184] - effects[1][184] - effects[2][184] - effects[3][184];
+	//
+	// PvP Power
+	this.pvpPowerRating = this.ratings[46]; 
 	//
 	//#########################################################################
 	//
@@ -937,9 +944,10 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 	this.defense[2] = this.parry;
 	
 	this.defense[3] = this.block;
-	this.defense[4] = this.resilienceRating; //resilience
-	this.defense[5] = this.meleeMiss + this.dodge + this.parry;
-	this.defense[6] = this.meleeMiss + this.dodge + this.block + this.parry;
+	this.defense[4] = this.resilienceDamageReduction; //resilience
+	this.defense[5] = this.pvpPowerRating / 265;
+	this.defense[6] = this.meleeMiss + this.dodge + this.parry;
+	this.defense[7] = this.meleeMiss + this.dodge + this.block + this.parry;
 	
 	this.resistance[0] = this.resisSchool[6];
 	this.resistance[1] = this.resisSchool[2];
@@ -963,7 +971,7 @@ Stats.prototype.getItemStats = function( itm ) {
 			continue;
 		}
 		
-		if( itm.stats[i][0] >=	 50 ) {	
+		if( itm.stats[i][0] >= 50 && itm.stats[i][0] <= 56 ) {	
 			switch( itm.stats[i][0] ) {
 			case 50: this.resisSchool[0] += itm.stats[i][1]; break;
 			case 51: this.resisSchool[2] += itm.stats[i][1]; break;
