@@ -28,7 +28,7 @@
 		'Increases your critical strike rating by $.',		// 21 / -  :
 		'Hit Avoidance Rating',								// 22 / -  : 
 		'Critical Avoidance Rating',						// 23 / -  :
-		'Increases your resilience rating by $.',			// 24 / -  :
+		'Increases your pvp resilience by $.',			    // 24 / -  :
 		'Increases your haste rating by $.',				// 25 / -  :
 		'Increases your expertise rating by $.',			// 26 / 23 :
 		'Increases attack power by $.',						// 27 / -  :
@@ -42,7 +42,8 @@
 		'Restores $ health per 5 sec',						// 35 / -  :
 		'Increases spell penetration by $.',				// 36 / -  :
 		'Increases the block value of your shield by $.',	// 37 / -  :
-		'Increases your mastery rating by $.'				// 38 / 25 :
+		'Increases your mastery rating by $.',				// 38 / 25 :
+		'Increases your pvp power by by $.'				    // 46 / -  :
 	);
 	
 	$locale['a_socketColor']= array('','Meta','Red','Yellow','Blue');
@@ -310,7 +311,7 @@
 		array("Damage","DPS","Attack Power","Speed","Haste","Hit Chance","Crit Chance","Expertise","Mastery"),
 		array("Damage","DPS","Attack Power","Speed","Haste","Hit Chance","Crit Chance","Mastery"),
 		array("Spell Power","Haste","Hit Chance","Penetration","Mana Regen","Combat Regen","Crit Chance","Mastery"),
-		array("Armor","Dodge","Parry","Block","Resilience","Avoidance", "CTC"),
+		array("Armor","Dodge","Parry","Block","PvP Resilience","PvP Power","Avoidance", "CTC"),
 		array("Arcane","Fire","Nature","Frost","Shadow")
 	);
 	$locale['CS_Energy'] = array(
@@ -396,8 +397,10 @@
 		"ExpertiseRating" => "Expertise rating $ (+$ expertise)",
 		"IncreasesRangedDamage" => "Increases damage with ranged weapons by $ damage per second",
 		"MasteryRating" => "Mastery rating $ (+$ mastery)",
-		"Avoidance" => "$% Miss + $% Dodge + $% Parry"
-		//"" => ""
+		"Avoidance" => "$% Miss + $% Dodge + $% Parry",
+		"PvpPower" => "Increases damage done to players and their pets or minions, and increases healing done in PvP zones",
+		"PvpPowerRating" => "Power $ (+$% Power)",
+		"ResilienceRating" => "Resilience $ (+$% Resilience)"
 	);
 	
 	$locale['TT_StatTitle'] = array(
@@ -461,7 +464,7 @@
 		31=>"Hit Rating",
 		32=>"Critical Strike Rating",
 		
-		35=>"Resilience Rating",
+		35=>"PvP Resilience",
 		36=>"Haste Rating",
 		37=>"Expertise Rating",
 		38=>"Attack Power",
@@ -476,10 +479,12 @@
 		
 		50=>"Armor",
 		51=>"Fire Resistance",
-		52=>"Nature Resistance",
-		53=>"Frost Resistance",
+		52=>"Frost Resistance",
+		53=>"Holy Resistance",
 		54=>"Shadow Resistance",
-		55=>"Arcane Resistance"
+		55=>"Nature Resistance",
+		56=>"Arcane Resistance",
+		57=>"PvP Power"
 	);
 	
 	$locale['ItemStatNamesShort'] = array(
@@ -522,10 +527,12 @@
 		
 		50=>"Armor",
 		51=>"Fire Resi",
-		52=>"Nature Resi",
-		53=>"Frost Resi",
+		52=>"Frost Resi",
+		53=>"Holy Resi",
 		54=>"Shadow Resi",
-		55=>"Arcane Resi"
+		55=>"Nature Resi",
+		56=>"Arcane Resi",
+		57=>"PvP Power"
 	);
 	
 	$locale['TT_TargetLevel'] = "Target Level";
@@ -550,7 +557,8 @@
 		"Dodge Chance $%",
 		"Parry Chance $%",
 		"Block Chance $%",
-		"Resilience $",
+		"PvP Resilience $%",
+		"PvP Power $%",
 		"Chance to avoid attacks $%",
 		"Combat table coverage $%");
 	
