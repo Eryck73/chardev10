@@ -47,7 +47,7 @@ try {
 	else if( preg_match('/^\/(?:\?.*|$)/',$uri,$matches)) {
 		$th->setTemplate('Planner');
 	}
-	else if( preg_match('/^\/(Planner|Talents|BaseStats|Items|Spells)\.html(?:\?.*|$)/',$uri,$matches)) {
+	else if( preg_match('/^\/(\w+)\.html(?:\?.*|$)/',$uri,$matches)) {
 		if( $matches[1] == 'Login' && $loggedInUser ) {
 			header("Location: " . TemplateHelper::getBasePath() . '/Logout.html');
 			die;
@@ -156,85 +156,85 @@ try {
 	//
 	//	USER
 	//
-// 	else if( preg_match('/^\/user\/([^\/]+)(?:\/(Index|Profiles|Delete|Password))?\.html(?:\?.*|$)/',$uri,$matches)) {
-// 		$parsed = FormatHelper::parseVerboseUrl($matches[1]);
+	else if( preg_match('/^\/user\/([^\/]+)(?:\/(Index|Profiles|Delete|Password))?\.html(?:\?.*|$)/',$uri,$matches)) {
+		$parsed = FormatHelper::parseVerboseUrl($matches[1]);
 		
-// 		try {
-// 			$user = new \chardev\backend\entities\User($parsed["ID"]);
+		try {
+			$user = new \chardev\backend\entities\User($parsed["ID"]);
 				
-// 			if( $parsed["Name"] != FormatHelper::escapeForUrl($user->getName()) ) {
+			if( $parsed["Name"] != FormatHelper::escapeForUrl($user->getName()) ) {
 				
-// 				header("Location: " . ChardevHelper::getUserUrl($user));
-// 				die;
-// 			}
+				header("Location: " . ChardevHelper::getUserUrl($user));
+				die;
+			}
 			
-// 			$th->setTemplate("User", array(
-// 				"user_category" => isset($matches[2]) ? $matches[2] : "Index", 
-// 				"validated_args" => array(
-// 					"ID" => $parsed["ID"],
-// 					"Name" => $parsed["Name"],
-// 					"User" => $user
-// 				)
-// 			));
-// 		}
-// 		catch( DoesNotExistException $e ) {
-// 			$th->setTemplate("Error404");
-// 		}
-// 	}
+			$th->setTemplate("User", array(
+				"user_category" => isset($matches[2]) ? $matches[2] : "Index", 
+				"validated_args" => array(
+					"ID" => $parsed["ID"],
+					"Name" => $parsed["Name"],
+					"User" => $user
+				)
+			));
+		}
+		catch( DoesNotExistException $e ) {
+			$th->setTemplate("Error404");
+		}
+	}
 	//
 	//	THREAD HOOK
 	//
-// 	else if( preg_match('/^\/forum\/([^\/]+)\.html(?:\?.*|$)/',$uri,$matches)) {	
-// 		$db = new chardev\forum\ThreadDatabase( "mysql:dbname=chardev_user;host=127.0.0.1", "root", "");
-// 		try {
-// 			$th->setTemplate("Hook", array(
-// 					"forum" => $matches[1], 
-// 					"db" => $db, 
-// 					"validated_args" => \chardev\forum\ForumHelper::validateArgs( $db, $matches[1] ))
-// 			);
-// 		}
-// 		catch( \chardev\forum\HookDoesNotExistException $e ) {
-// 			$th->setTemplate("Error404");
-// 		}
-// 	}
+	else if( preg_match('/^\/forum\/([^\/]+)\.html(?:\?.*|$)/',$uri,$matches)) {	
+		$db = new chardev\forum\ThreadDatabase( "mysql:dbname=chardev_user;host=127.0.0.1", "root", "");
+		try {
+			$th->setTemplate("Hook", array(
+					"forum" => $matches[1], 
+					"db" => $db, 
+					"validated_args" => \chardev\forum\ForumHelper::validateArgs( $db, $matches[1] ))
+			);
+		}
+		catch( \chardev\forum\HookDoesNotExistException $e ) {
+			$th->setTemplate("Error404");
+		}
+	}
 	//
 	//	NEW THREAD
 	//
-// 	else if( preg_match('/^\/forum\/([^\/]+)\/NewThread\.html(?:\?.*|$)/',$uri,$matches)) {
-// 		$db = new chardev\forum\ThreadDatabase( "mysql:dbname=chardev_user;host=127.0.0.1", "root", "");
-// 		try {
-// 			$th->setTemplate("NewThread", array(
-// 					"forum" => $matches[1],
-// 					"db" => $db,
-// 					"validated_args" => \chardev\forum\ForumHelper::validateArgs( $db, $matches[1] ))
-// 			);
-// 		}
-// 		catch( \chardev\forum\HookDoesNotExistException $e ) {
-// 			$th->setTemplate("Error404");
-// 		}
-// 	}
+	else if( preg_match('/^\/forum\/([^\/]+)\/NewThread\.html(?:\?.*|$)/',$uri,$matches)) {
+		$db = new chardev\forum\ThreadDatabase( "mysql:dbname=chardev_user;host=127.0.0.1", "root", "");
+		try {
+			$th->setTemplate("NewThread", array(
+					"forum" => $matches[1],
+					"db" => $db,
+					"validated_args" => \chardev\forum\ForumHelper::validateArgs( $db, $matches[1] ))
+			);
+		}
+		catch( \chardev\forum\HookDoesNotExistException $e ) {
+			$th->setTemplate("Error404");
+		}
+	}
 	//
 	//	THREAD
 	//
-// 	else if( preg_match('/^\/forum\/([^\/]+)\/([^\/]+)(\/Reply|\/Edit)?\.html(?:\?.*|$)/',$uri,$matches)) {
-// 		$db = new chardev\forum\ThreadDatabase( "mysql:dbname=chardev_user;host=127.0.0.1", "root", "");
-// 		try {
-// 			$th->setTemplate("Thread", array(
-// 					"forum" => $matches[1], 
-// 					"thread" => $matches[2], 
-// 					"reply" => isset($matches[3]) && $matches[3] == '/Reply',
-// 					"edit" => isset($matches[3]) && $matches[3] == '/Edit',
-// 					"db" => $db, 
-// 					"validated_args" => \chardev\forum\ForumHelper::validateArgs( $db, $matches[1], $matches[2] ))
-// 			);
-// 		}
-// 		catch( \chardev\forum\HookDoesNotExistException $e ) {
-// 			$th->setTemplate("Error404");
-// 		}
-// 		catch( \chardev\forum\ThreadDoesNotExistException $e ) {
-// 			$th->setTemplate("Error404");
-// 		}
-// 	}
+	else if( preg_match('/^\/forum\/([^\/]+)\/([^\/]+)(\/Reply|\/Edit)?\.html(?:\?.*|$)/',$uri,$matches)) {
+		$db = new chardev\forum\ThreadDatabase( "mysql:dbname=chardev_user;host=127.0.0.1", "root", "");
+		try {
+			$th->setTemplate("Thread", array(
+					"forum" => $matches[1], 
+					"thread" => $matches[2], 
+					"reply" => isset($matches[3]) && $matches[3] == '/Reply',
+					"edit" => isset($matches[3]) && $matches[3] == '/Edit',
+					"db" => $db, 
+					"validated_args" => \chardev\forum\ForumHelper::validateArgs( $db, $matches[1], $matches[2] ))
+			);
+		}
+		catch( \chardev\forum\HookDoesNotExistException $e ) {
+			$th->setTemplate("Error404");
+		}
+		catch( \chardev\forum\ThreadDoesNotExistException $e ) {
+			$th->setTemplate("Error404");
+		}
+	}
 	else {
 		$th->setTemplate("Error404");
 	}
