@@ -182,7 +182,7 @@ Ajax.getResponseObject = function( response )  {
 			var obj = eval( '(' + response.responseText + ')' );
 			
 			if( response.getResponseHeader("auto_redirect")) {
-				window.location.href = obj.toString();
+				window.location.href = Tools.getBasePath() + obj.toString();
 			}
 			
 			return obj;

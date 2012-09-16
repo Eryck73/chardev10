@@ -112,7 +112,11 @@ use chardev\forum\ForumHelper;
 						throw new Exception("Invalid thread type: {$_POST['type']}!");
 				}
 				
-				Ajax::autoRedirect( "forum/{$hook}/{$threadId}.html" );
+				$thread = $db->getThread($threadId);
+				$hook = $db->getHook($thread["ThreadHookID"]);
+				$threadFacade = new ThreadFacade($hook, $thread);
+				
+				Ajax::autoRedirect( ForumHelper::getThreadUrl($threadFacade,1));
 				
 				break;
 			case 'delete_thread':
