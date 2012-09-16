@@ -49,7 +49,7 @@ public class UpdateCachedItemSetTables {
 			while (result.next()) {
 				int minItemLevel = Integer.MAX_VALUE;
 				int maxItemLevel = 0; 
-				int minReqLevel = 85; 
+				int minReqLevel = 90; 
 				int maxReqLevel = 0; 
 				int items = 0; 
 				int minQuality = Integer.MAX_VALUE;

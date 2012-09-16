@@ -43,7 +43,7 @@ public class DevelChardevDB {
 	public static void main(String[] args) {
 		connectToDatabase(dbs[0]);
 		DBCParser p;
-		p = new DBCParser(databaseConnection, "y:\\chardev\\mop\\dbfilesclient\\spelltargetrestrictions.dbc", "spelltargetrestrictions");
+		p = new DBCParser(databaseConnection, "y:\\chardev\\mop\\dbfilesclient\\chrspecialization.dbc", "chrspecialization");
 		p.parse();
 	}
 }

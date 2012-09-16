@@ -8,7 +8,7 @@ import org.chardev.cjt.DBCParser;
 
 public class UpdateChardevDB {
 	
-	private static final int ITEM_SPARSE_SKIP = 0x7d5b6 - 32;
+	private static final int ITEM_SPARSE_SKIP = 0x85500 - 32;
 	
 	private static final String dbs[] = new String[]{
 		"jdbc:mysql://localhost:3306/chardev_mop?",
@@ -66,6 +66,7 @@ public class UpdateChardevDB {
 				break;
 			}
 		}
+		if(true) return;
 		//
 		//	CACHE
 		//
@@ -208,6 +209,7 @@ public class UpdateChardevDB {
 		String[] files = new String[]{
 			"chrclasses",
 			"chrraces",
+			"chrspecialization",
 			"faction",
 			"itemsubclass",
 			"itemclass",
@@ -225,7 +227,7 @@ public class UpdateChardevDB {
 		//	DBC FILES
 		//	
 		for( int i=0; i<files.length; i++ ) {
-			//updateTable(files[i], basePath);
+			updateTable(files[i], basePath);
 		}
 		//
 		//	ITEM SPARSE
