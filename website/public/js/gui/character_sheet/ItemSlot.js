@@ -157,7 +157,12 @@ ItemSlot.prototype = {
 				}
 				else {
 					this.icons[i].src = "/images/charsheet/slots/slot_"+this.slot+".jpg";
-					this.itemParent.layers[0].style.backgroundImage = "url(/images/site/item_border.png)";
+					if( this.selected ) {
+						this.itemParent.layers[0].style.backgroundImage = "url(/images/site/item_border_hover.png)";
+					}
+					else {
+						this.itemParent.layers[0].style.backgroundImage = "url(/images/site/item_border.png)";
+					}
 				}
 			}
 			else {
