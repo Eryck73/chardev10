@@ -83,6 +83,26 @@ function Item( serialized ) {
 	this.chrRaceMask = serialized[49];
 }
 
+Item.SUB_CLASS_AXE_1H = 1<<0;
+Item.SUB_CLASS_AXE_2H = 1<<1;
+Item.SUB_CLASS_BOW = 1<<2;
+Item.SUB_CLASS_GUN = 1<<3;
+Item.SUB_CLASS_MACE_1H = 1<<4;
+Item.SUB_CLASS_MACE_2H = 1<<5;
+Item.SUB_CLASS_POLEARM = 1<<6;
+Item.SUB_CLASS_SWORD_1H = 1<<7;
+Item.SUB_CLASS_SWORD_2H = 1<<8;
+Item.SUB_CLASS_STAFF = 1<<10;
+Item.SUB_CLASS_EXOTIC_1H = 1<<11;
+Item.SUB_CLASS_EXOTIC_2H = 1<<12;
+Item.SUB_CLASS_FIST = 1<<13;
+Item.SUB_CLASS_MISCELLANEOUS = 1<<14;
+Item.SUB_CLASS_DAGGER = 1<<15;
+Item.SUB_CLASS_CROSSBOW = 1<<18;
+Item.SUB_CLASS_WAND = 1<<19;
+Item.SUB_CLASS_FISHING_POLE = 1<<20;
+	
+
 Item.prototype = {
 	//
 	//#########################################################################

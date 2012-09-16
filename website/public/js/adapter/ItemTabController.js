@@ -98,13 +98,14 @@ ItemTabController.prototype = {
 			this.itemList.filterMgr.hideFilter('gemreqitemlvl', true);
 			this.itemList.setWeaponSlot( cc.isWeaponSlot( slot ) );
 			
-			if( slot!=16 && slot!=17 && slot!=18 ) {
-				this.itemList.filterMgr.hideFilter('slot', true);
-			}
-			else {
+			if( slot==17 ) {
 				this.itemList.filterMgr.hideFilter('slot', false);
 			}
-			if( slot==1 || slot == 12 || slot == 13 || slot == 14 || slot == 15 || slot == 6 || slot == 5) {
+			else {
+				this.itemList.filterMgr.hideFilter('slot', true);
+			}
+
+			if( slot==1 || slot == 12 || slot == 13 || slot == 14 || slot == 6 || slot == 5) {
 				this.itemList.filterMgr.hideFilter('subclass', true);
 			}
 			else {
@@ -114,6 +115,7 @@ ItemTabController.prototype = {
 			args = args.replace(/\bclass\.\w+\.[^;]*;/,"") + (icl[0] >= 0 ? "class.eq."+icl[0]+";" : "");
 			args = args.replace(/\bslot\.\w+\.[^;]*;/,"") + (sl > 0 ? "slot.ba."+sl+";" : "");
 			args = args.replace(/\bsubclass\.\w+\.[^;]*;/,"") + (icl[1] > 0 ? "subclass.ba."+icl[1]+";" : "");
+			args = args.replace(/\bcanbeusedwithlvl\.\w+\.[^;]*;/,"") +"canbeusedwithlvl.eq."+cc.level+";";
 			
 			//
 			//TODO store filters
