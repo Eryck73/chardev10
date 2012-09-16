@@ -801,16 +801,14 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 		for( i = 0; i < 5; i++ ) {
 			this.mp5 += baseEffects[219][i] / 100 * this.attributes[i];
 		}
+
+		this.sp5 += this.baseMana * 0.02  * ( 1 + baseEffects[379] / 100.0 );
+		this.mp5 += this.baseMana * 0.02  * ( 1 + baseEffects[379] / 100.0 );
 	}
 	else{
 		this.mp5 = 0;
 		this.sp5 = 0;
 	}
-	//
-
-	this.sp5 += this.baseMana * 0.02  * ( 1 + baseEffects[379] / 100.0 );
-	this.mp5 += this.baseMana * 0.02  * ( 1 + baseEffects[379] / 100.0 );
-
 	//
 	//#########################################################################
 	//
