@@ -42,7 +42,6 @@ Stats.prototype.spellCritRating = 0;
 Stats.prototype.spellCrit = 0;
 Stats.prototype.spellPenetrations = [];
 
-Stats.prototype.manaFromInt = 0;
 Stats.prototype.healthFromSta = 0;
 Stats.prototype.manaRegenFromSpi = 0;
 
@@ -141,7 +140,6 @@ Stats.prototype.reset = function() {
 	this.spellCritRating = 0;
 	this.spellCrit = 0;
 	
-	this.manaFromInt = 0;
 	this.healthFromSta = 0;
 	this.manaRegenFromSpi = 0;
 	
@@ -320,8 +318,13 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 		baseStatsLevel = [0,0,0,0,0,0,0,0,0,0,0];
 	}
 
-	this.baseHealth = baseStatsLevel[5];
-	this.baseMana = baseStatsLevel[6];
+	this.baseHealth = 0;
+	this.baseMana = 0;
+	
+	if( hasClass ) {
+		this.baseHealth = BASE_HP[classId-1][level - 1];
+		this.baseMana = BASE_MP[classId-1][level - 1];
+	}
 	
 	for( i = 0; i < 5; i++ ) {	
 		baseAttributesUnmodified[i] = ( RACE_ATTRIBUTES[raceId][i] + ( hasClass ? baseStatsLevel[i] : 0 ));
@@ -455,8 +458,10 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 		}
 	}
 
-	this.critFromAttributes[1] 		+= BASE_MELEE_CRIT[classId] * 100 + this.attributes[1] * baseStatsLevel[7];
-	this.spellCritFromAttributes[3] 	+= BASE_SPELL_CRIT[classId] * 100 + this.attributes[3] * baseStatsLevel[8];
+	if( hasClass ) {
+		this.critFromAttributes[1] += BASE_MELEE_CRIT[classId-1] * 100 + this.attributes[1] / AGI_TO_MELEE_CRIT_CONVERSION[classId-1][level-1];
+		this.spellCritFromAttributes[3] += BASE_SPELL_CRIT[classId-1] * 100 + this.attributes[3] / INT_TO_MELEE_CRIT_CONVERSION[classId-1][level-1];
+	}
 	//
 	//	Expertise
 	//
@@ -473,7 +478,7 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 		}
 	}
 	//
-	//		till cap
+	// till cap
 	//
 	this.expTillDodgeCap = Math.ceil(( ENEMY_DODGE[3] - this.expertise[1] * EXPERTISE_TO_CHANCE ) * COMBAT_RATINGS[23][level-1] / EXPERTISE_TO_CHANCE );
 	this.expTillParryCap = Math.ceil(( ENEMY_PARRY[3] - this.expertise[1] * EXPERTISE_TO_CHANCE ) * COMBAT_RATINGS[23][level-1] / EXPERTISE_TO_CHANCE );
@@ -503,8 +508,7 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 	this.health = this.healthFromSta + this.baseHealth * ( 1 + baseEffects[282] / 100 ) + baseEffects[34] + baseEffects[230] ;
 	this.health*= 1 + baseEffects[133]/100;
 	//
-	this.manaFromInt = 15 * Math.max( 0, this.attributes[3] - 20 ) + ( this.attributes[3] >= 20 ? 20 : this.attributes[3] );
-	this.mana = this.manaFromInt + this.baseMana + baseEffects[35][0];
+	this.mana = this.baseMana;
 	this.mana*= 1 + baseEffects[132]/100;
 	//
 	//#########################################################################
@@ -787,7 +791,10 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 	//
 	//	Mana regeneration
 	if( this.character.hasMana() ) {
-		this.manaRegenFromSpi = 5 * (0.001 + Math.sqrt(this.attributes[3]) * this.attributes[4] * BASE_REGEN[level-1]);
+		this.manaRegenFromSpi = 0;
+		if( hasClass ) {
+			this.manaRegenFromSpi = 5 * MP5_PER_SPIRIT[classId-1] * this.attributes[4];
+		}
 		this.sp5 = this.manaRegenFromSpi;
 		
 		this.mp5 = baseEffects[85] + this.ratings[32] + this.sp5 * (baseEffects[134] / 100);
@@ -801,8 +808,8 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 	}
 	//
 
-	this.sp5 += baseStatsLevel[10];
-	this.mp5 += baseStatsLevel[10];
+	this.sp5 += this.baseMana * 0.02  * ( 1 + baseEffects[379] / 100.0 );
+	this.mp5 += this.baseMana * 0.02  * ( 1 + baseEffects[379] / 100.0 );
 
 	//
 	//#########################################################################

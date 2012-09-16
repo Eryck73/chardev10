@@ -121,6 +121,8 @@ public class UpdateChardevDB {
 			//"gtRegenHPPerSpt",
 			"gtCombatRatings",
 			"gtspellscaling",
+			"gtOCTBaseHPByClass",
+			"gtOCTBaseMPByClass",
 			"itemarmorquality",
 			"itemarmorshield",
 			"itemarmortotal",

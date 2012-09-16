@@ -1,32 +1,90 @@
 <?php 
-// 	mysql_connect("localhost","root", "");
+	mysql_connect("localhost","root", "");
 	
-// 	$stmt = mysql_query(
-// 		"SELECT * FROM `gtCombatRatings`"
-// 	);
-// 	$arr = array();
-// 	while( $record = mysql_fetch_assoc($stmt)) {
-// 		$i = (int)$record['ID'];
-// 		$c = floor($i/100);
-// 		if( $i % 100 == $i / 100 ) {
-// 			$arr[$c] = array();
-// 		}
-// 		$arr[$c][$i-$c*100] = (float)$record['Value'];
-// 	}
-// 	echo "var COMBAT_RATINGS = ".json_encode($arr).";<br />";
-	
-// 	$stmt = mysql_query(
-// 		"SELECT * FROM `gtregenmpperspt` where `ID` >= 100 AND  `ID` < 200"
-// 	);
-	
-// 	$arr = array();
-// 	while( $record = mysql_fetch_assoc($stmt)) {
-// 		$i = (int)$record['ID'] - 100;
-// 		$arr[$i] = (float)$record['Value'];
-// 	}
-	
-// 	echo "var BASE_REGEN = ".json_encode($arr).";<br />";
-	
+	$stmt = mysql_query(
+		"SELECT * FROM chardev_mop.`gtCombatRatings`"
+	);
+	$arr = array();
+	while( $record = mysql_fetch_assoc($stmt)) {
+		$i = (int)$record['ID'];
+		$c = floor($i/100);
+		if( $i % 100 == $i / 100 ) {
+			$arr[$c] = array();
+		}
+		$arr[$c][$i-$c*100] = (float)$record['Value'];
+	}
+	echo "var COMBAT_RATINGS = ".json_encode($arr).";\n";
+	//
+	// BASE MP
+	//
+	$stmt = mysql_query("SELECT * FROM chardev_mop.`gtoctbasempbyclass`");
+	$arr = array();
+	while( $record = mysql_fetch_assoc($stmt)) {
+		$i = (int)$record['ID'];
+		$c = floor($i/100);
+		if( $i % 100 == $i / 100 ) {
+			$arr[$c] = array();
+		}
+		$arr[$c][$i-$c*100] = (float)$record['BaseMp'];
+	}
+	echo "var BASE_MP = ".json_encode($arr).";\n";
+	//
+	// BASE HP
+	//
+	$stmt = mysql_query("SELECT * FROM chardev_mop.`gtoctbasehpbyclass`");
+	$arr = array();
+	while( $record = mysql_fetch_assoc($stmt)) {
+		$i = (int)$record['ID'];
+		$c = floor($i/100);
+		if( $i % 100 == $i / 100 ) {
+			$arr[$c] = array();
+		}
+		$arr[$c][$i-$c*100] = (float)$record['BaseHp'];
+	}
+	echo "var BASE_HP = ".json_encode($arr).";\n";
+	//
+	// MELEE CRIT
+	//
+	$stmt = mysql_query("SELECT * FROM chardev_mop.`gtchancetomeleecrit`");
+	$arr = array();
+	while( $record = mysql_fetch_assoc($stmt)) {
+		$i = (int)$record['ID'];
+		$c = floor($i/100);
+		if( $i % 100 == $i / 100 ) {
+			$arr[$c] = array();
+		}
+		$arr[$c][$i-$c*100] = (float)$record['Chance'];
+	}
+	echo "var AGI_TO_MELEE_CRIT_CONVERSION = ".json_encode($arr).";\n";
+	//
+	// Spell CRIT
+	//
+	$stmt = mysql_query("SELECT * FROM chardev_mop.`gtchancetospellcrit`");
+	$arr = array();
+	while( $record = mysql_fetch_assoc($stmt)) {
+		$i = (int)$record['ID'];
+		$c = floor($i/100);
+		if( $i % 100 == $i / 100 ) {
+			$arr[$c] = array();
+		}
+		$arr[$c][$i-$c*100] = (float)$record['Chance'];
+	}
+	echo "var INT_TO_MELEE_CRIT_CONVERSION = ".json_encode($arr).";\n";
+	//
+	// Base Regeneration
+	// 
+	$stmt = mysql_query(
+		"SELECT * FROM chardev_mop.`gtregenmpperspt` where `ID` >= 100 AND  `ID` < 200"
+	);
+	$arr = array();
+	while( $record = mysql_fetch_assoc($stmt)) {
+		$i = (int)$record['ID'] - 100;
+		$arr[$i] = (float)$record['Value'];
+	}
+	echo "var BASE_REGEN = ".json_encode($arr).";\n";
+	//
+	//
+	//
 // 	$stmt = mysql_query(
 // 		"SELECT * FROM chardev_mop.`scalingstatvalues`"
 // 	);
@@ -39,9 +97,9 @@
 // 		} 
 // 	}
 	
-// 	echo "var SCALING_STAT_VALUE = ".json_encode($arr).";<br />";
-// 	echo "var SPELL_SCALING=".json_encode(get_gt_spell_scaling()).";<br />";
-// 	echo "var ITEM_CLASSES = ".json_encode(get_item_classes()).";<br />";
+// 	echo "var SCALING_STAT_VALUE = ".json_encode($arr).";\n";
+// 	echo "var SPELL_SCALING=".json_encode(get_gt_spell_scaling()).";\n";
+// 	echo "var ITEM_CLASSES = ".json_encode(get_item_classes()).";\n";
 // 	echo "var SERIALIZED_PROFESSIONS = ".json_encode(get_professions()).";<br />";
 
 	
@@ -77,5 +135,4 @@ use chardev\backend\Database;
 		$professions[$record["ID"]] = $r;
 	}
 	
-	echo json_encode($professions);
-?>
+	echo "var SERIALIZED_PROFESSIONS=" . json_encode($professions) . ";\n";
