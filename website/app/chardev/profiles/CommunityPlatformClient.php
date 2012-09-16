@@ -428,9 +428,9 @@ class CommunityPlatformClient
 	/**
 	 * Requests 
 	 * 
-	 * @param unknown_type $host
-	 * @param unknown_type $url
-	 * @param unknown_type $query
+	 * @param string $host
+	 * @param string $url
+	 * @param string $query
 	 */
 	private function request($host, $url, $query)
 	{

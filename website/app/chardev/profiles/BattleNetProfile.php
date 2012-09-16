@@ -110,19 +110,24 @@ class BattleNetProfile
     	
     	$active_talents = isset($this->data->talents[0]->selected) && $this->data->talents[0]->selected ? $this->data->talents[0] : $this->data->talents[1];
     	
-    	$char[2] = $active_talents->build;
-    	$char[3] = array();
+    	$char[2] = "000000";
     	
-    	$prime_glyphs = $active_talents->glyphs->prime;
+    	foreach( $active_talents->talents as $talent ) {
+    		$char[2][$talent->tier] = $talent->column + 1; 
+    	}
+    	
+    	$char[3] = array();
+    	$char[4] = $active_talents->spec->order;
+    	
+//     	$prime_glyphs = $active_talents->glyphs->prime;
     	$major_glyphs = $active_talents->glyphs->major;
     	$minor_glyphs = $active_talents->glyphs->minor;
     	
     	$gd = \chardev\backend\data\GlyphData::getInstance();
     	
-    	for( $i = 0; $i < count($prime_glyphs); $i++ ) {
-    		// TODO: GlyphData
-    		$char[3][] = $gd->fromId((int)$prime_glyphs[$i]->glyph);
-    	}
+//     	for( $i = 0; $i < count($prime_glyphs); $i++ ) {
+//     		$char[3][] = $gd->fromId((int)$prime_glyphs[$i]->glyph);
+//     	}
     	for( $i = 0; $i < count($major_glyphs); $i++ ) {
     		$char[3][] = $gd->fromId((int)$major_glyphs[$i]->glyph);
     	}
