@@ -16,7 +16,7 @@ function CharacterPlannerGuiAdapter( planner, plannerGui ) {
 	this.adapters = [];
 	
 	this._characterObserver = new GenericObserver([
-        "race_change","class_change"
+        "race_change","class_change","level_change"
     ], new Handler( this._handleCharacter, this));
 	
 	this.plannerGui.characterInterface.addObserver(new GenericObserver([
@@ -128,6 +128,9 @@ CharacterPlannerGuiAdapter.prototype = {
 			this._updateCharacterInterface();
 		}
 		else if( e.is("race_change")) {
+			this._updateCharacterInterface();
+		}
+		else if( e.is("level_change")) {
 			this._updateCharacterInterface();
 		}
 	},

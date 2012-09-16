@@ -34,7 +34,7 @@ function CharacterGuiAdapter( character, gui ) {
 	this.character.addObserver(new GenericObserver([
         "class_change", "item_change", "gem_change", "enchant_change", 
         "reforge_change", "random_enchant_change", "glyph_added", 
-        "glyph_removed"
+        "glyph_removed", "level_change"
     ], new Handler( this.characterHandler, this)));
 	//
 	//	Gui - Tabs
@@ -152,6 +152,9 @@ CharacterGuiAdapter.prototype = {
 		if( e.is("class_change")) {
 			this.updateClass( this.character.chrClass );
 		}
+		else if( e.is("level_change")) {
+			this.updateLevel( this.character.level);
+		}
 		else if( e.is("item_change")) {
 			switch( this.csTab ) {
 			case Gui.TAB_GEMS: this.socketInterfaceController.update(); break;
@@ -183,6 +186,16 @@ CharacterGuiAdapter.prototype = {
 		
 		this.buffInterfaceController.initialised = false;
 
+		this.glyphInterfaceController.update();
+		
+		this.updateCharacterSheetTab();
+	},
+	updateLevel: function( level ) {
+		var newArg = "canbeusedwithlvl.eq."+level+";";
+		
+		this.itemTabController.replaceArgument("canbeusedwithlvl", newArg);
+		this.setTabController.replaceArgument("canbeusedwithlvl", newArg);
+		
 		this.glyphInterfaceController.update();
 		
 		this.updateCharacterSheetTab();
