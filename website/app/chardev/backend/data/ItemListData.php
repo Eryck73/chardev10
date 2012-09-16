@@ -139,6 +139,8 @@ class ItemListData extends ListData
 						$cl_id = (int)$match[3];
 						$cl_c = 's.`ChrClassMask`';
 						//TODO add a more substantial item filtering per class, see old php/js interface
+						//
+						// Weapons
 						switch($cl_id) {
 							case 2:
 								$q = " AND ( i.`ItemClass`!=2 OR i.`ItemSubClass` NOT IN (13,15,10) )";
@@ -160,6 +162,8 @@ class ItemListData extends ListData
 							default:
 								$q = "";
 						}
+						//
+						// Armor
 						switch($cl_id) {
 							case 4:
 							case 64:
@@ -267,13 +271,9 @@ class ItemListData extends ListData
 				" WHERE ".$where.
 				($orderClause ? " ORDER BY ".$orderClause : "").
 				" LIMIT ".Constants::ITEMS_PER_PAGE *($page-1).",".(Constants::ITEMS_PER_PAGE + 1);
-		
-		header( 'prof-time0: '. (microtime(true) - $start));
 	
 		$records = \chardev\backend\DatabaseHelper::fetchMany(Database::getConnection(),$query,$values);
 		$found = \chardev\backend\DatabaseHelper::fetchOne(Database::getConnection(), "SELECT FOUND_ROWS() AS rows");
-		
-		header( 'prof-time1: '. (microtime(true) - $start));
 	
 		$items[0] = array( count($records), Constants::ITEMS_PER_PAGE);
 		$id = ItemData::getInstance();
@@ -286,8 +286,6 @@ class ItemListData extends ListData
 		for( $i=0; $i<$n; $i++ ) {
 			$items[$i+1] = array($datas[$i],$records[$i]['WeightedScore']);
 		}
-		
-		header( 'prof-time2: '. (microtime(true) - $start));
 		
 		return $items;
 	}
