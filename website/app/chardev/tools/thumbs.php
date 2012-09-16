@@ -72,7 +72,7 @@
 
 	set_time_limit(0);
 	
-	$sz_dir = __DIR__ . "/../../../public/images/site/race_class/";
+	$sz_dir = __DIR__ . "/../../../public/images/icons/";
 	//$sz_dir = "C:/_projekte/chardev master/website 8.2/images/talents/bg/";
 	if(!is_dir($sz_dir)) die("asdasd");
 	$dir = opendir($sz_dir);

@@ -1,1 +1,1 @@
-window["CHARDEV_CORE_BUILD"]=73;
+window["CHARDEV_CORE_BUILD"]=74;

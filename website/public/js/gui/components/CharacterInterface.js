@@ -76,7 +76,7 @@ CharacterInterface.prototype = {
 		
 		this._renderIcons(raceId, raceIcon, classId, classIcon, ! selected);
 		
-		a.oncontextmenu = function() { return false; }
+		a.oncontextmenu = function() { return false; };
 		
 		Dom.listen(a, "click", this.eventMgr.fire, this.eventMgr, ["select", {"index": index}]);
 		Dom.listen(a, "contextmenu", this.eventMgr.fire, this.eventMgr, ["remove", {"index": index}]);

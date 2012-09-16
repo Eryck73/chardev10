@@ -17,7 +17,7 @@ class DatabaseHelper {
 	    return $record;
 	}
 	
-	public static function fetchMany( \PDO $db, $sql, $args = null ) {
+	public static function fetchMany( \PDO $db, $sql, $args = null ) {	
 	    $stmt = self::query($db, $sql, $args);
 	    $records = $stmt->fetchAll();
 	    $stmt->closeCursor();
