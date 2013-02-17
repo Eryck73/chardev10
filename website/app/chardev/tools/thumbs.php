@@ -73,8 +73,24 @@
 	set_time_limit(0);
 	
 	$sz_dir = __DIR__ . "/../../../public/images/icons/";
-	//$sz_dir = "C:/_projekte/chardev master/website 8.2/images/talents/bg/";
-	if(!is_dir($sz_dir)) die("asdasd");
+//    mkdir(__DIR__ . "/../../../public/images/icons");
+//    mkdir(__DIR__ . "/../../../public/images/icons/small");
+//    mkdir(__DIR__ . "/../../../public/images/icons/large");
+//    mkdir(__DIR__ . "/../../../public/images/icons/medium");
+//    mkdir(__DIR__ . "/../../../public/images/icons/half");
+//    mkdir(__DIR__ . "/../../../public/images/icons/gem");
+//    mkdir(__DIR__ . "/../../../public/images/icons/g");
+//    mkdir(__DIR__ . "/../../../public/images/icons/g/small");
+//    mkdir(__DIR__ . "/../../../public/images/icons/g/large");
+//    mkdir(__DIR__ . "/../../../public/images/icons/g/medium");
+//    mkdir(__DIR__ . "/../../../public/images/icons/g/half");
+//    mkdir(__DIR__ . "/../../../public/images/icons/g/gem");
+//    mkdir(__DIR__ . "/../../../public/images/icons/r");
+//    mkdir(__DIR__ . "/../../../public/images/icons/r/small");
+//    mkdir(__DIR__ . "/../../../public/images/icons/r/large");
+//    mkdir(__DIR__ . "/../../../public/images/icons/r/medium");
+//    mkdir(__DIR__ . "/../../../public/images/icons/r/half");
+//    mkdir(__DIR__ . "/../../../public/images/icons/r/gem");
 	$dir = opendir($sz_dir);
 	$n = 0;
 	$im;
@@ -188,4 +204,3 @@
 		//imagetobrighter($res, false);
 		//imagejpeg($res,$sz_dir."bg_".strtolower($file),25);
 	}
-?>
