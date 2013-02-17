@@ -1,63 +1,84 @@
 var ItemTooltip = {
-	__showRating: function( characterScope, lvl, id, value ) {
-		var c =0, br = "", rating = id - 11, v;
-		
-		switch( rating  ) {
-		case 20:
-			var v1 = Math.floor( value/COMBAT_RATINGS[5][lvl-1] * 100 ) / 100;
-			var v2 = Math.floor( value/COMBAT_RATINGS[7][lvl-1] * 100 ) / 100;
-			br = (v1 > 0 ? "m:" + TextIO.formatFloat2(v1) + "%" : "" ) + ( v2 > 0 ? ( v1 > 0 ? ", " : "" ) + "s:" + TextIO.formatFloat2(v2) + "%" : "" );
-		break;
-		// Attack Power: Per cent modifier, DpS
-		case 27:
-			if( characterScope ) {
-				c = characterScope.stats.apPerCentModifer;
-				v = value * ( 1 + c / 100);
-				br = ( c > 0 ? Math.floor( v ) + ", " : "") + TextIO.formatFloat1(v / 14) + " " + locale['dps2'];
-			}
-			break;
-		default:
-			if( rating <= 10 ) {
-				c = COMBAT_RATINGS[rating][lvl-1];
-			}
-			else {
-				switch( rating  ) {
-				case 21:
-					c = COMBAT_RATINGS[8][lvl-1];
-					break;
-				case 24:
-					c = COMBAT_RATINGS[15][lvl-1];
-					break;
-				case 25:
-					c = COMBAT_RATINGS[17][lvl-1];
-					break;
-				case 26:
-					c = COMBAT_RATINGS[23][lvl-1];
-					break;
-				case 38:
-					c = COMBAT_RATINGS[25][lvl-1];
-					break;
-				default:
-					br = "";
-				}
-			}
-			v = c > 0 ? Math.floor( value/c * 100 ) / 100 : 0;
-			br = v > 0 ? TextIO.formatFloat2(v) + "%" : "";
-			break;
-		}
-		return "<span class='green'>" + locale['equip'] + ": " + TextIO.sprintf1( locale['imprStats'][rating], value) + ( br ? "<span class='tt_rating_percent'>(" + br + ")<\span>" : "" ) + "</span>";
+    /**
+     * @private
+     * @param {number} id
+     * @param {number} value
+     * @returns {string}
+     */
+	_getStatStr: function( id, value ) {
+		return "+"+value+" "+locale["ItemStatNames"][id];
 	},
-	__showStat: function( characterScope, id, value ) {
-		if( characterScope ) {
-			var mod = characterScope.stats.statPerCentModifier[id];
-			if( mod ) {
-				return "+" + value + " " + locale["ItemStatNames"][id] 
-						+ "<span class='tt_stat_with_mods'>(" + Math.floor( value * ( 1 + mod / 100) ) + ")</span>";
-			}
-		}
-		
-		return "+"+value+" "+locale["ItemStatNames"][id]/* + tmp*/;
-	},	
+    /**
+     * @private
+     * @param {Character} characterScope
+     * @param {number} lvl
+     * @param {number} statId
+     * @param {number} statValue
+     * @returns {string}
+     */
+    _getExtendedValue: function( characterScope, lvl, statId, statValue ) {
+        if( statId <= 11 || statId >= 50 ) {
+            if( characterScope && typeof characterScope.stats.statPerCentModifier[statId] !== "undefined" ) {
+                return "<span class='tt_stat_with_mods'>(" + Math.floor( statValue * ( 1 + characterScope.stats.statPerCentModifier[statId] / 100) ) + ")</span>";
+            }
+        }
+        else {
+            var c =0, br = "", rating = statId - 11, v;
+            switch( rating  ) {
+                case 20:
+                    var v1 = Math.floor( statValue/COMBAT_RATINGS[5][lvl-1] * 100 ) / 100;
+                    var v2 = Math.floor( statValue/COMBAT_RATINGS[7][lvl-1] * 100 ) / 100;
+                    if( v1 != v2 ) {
+                        br = (v1 > 0 ? "m:" + TextIO.formatFloat2(v1) + "%" : "" ) + ( v2 > 0 ? ( v1 > 0 ? ", " : "" ) + "s:" + TextIO.formatFloat2(v2) + "%" : "" );
+                    }
+                    else {
+                        br = TextIO.formatFloat2(v1) + "%";
+                    }
+                    break;
+                // Attack Power: Per cent modifier, DpS
+                case 27:
+                    if( characterScope ) {
+                        c = characterScope.stats.apPerCentModifer;
+                        v = statValue * ( 1 + c / 100);
+                        br = ( c > 0 ? Math.floor( v ) + ", " : "") + TextIO.formatFloat1(v / 14) + " " + locale['dps2'];
+                    }
+                    break;
+                default:
+                    if( rating <= 10 ) {
+                        c = COMBAT_RATINGS[rating][lvl-1];
+                    }
+                    else {
+                        switch( rating  ) {
+                            case 21:
+                                c = COMBAT_RATINGS[8][lvl-1];
+                                break;
+                            case 24:
+                                c = COMBAT_RATINGS[15][lvl-1];
+                                break;
+                            case 25:
+                                c = COMBAT_RATINGS[17][lvl-1];
+                                break;
+                            case 26:
+                                c = COMBAT_RATINGS[23][lvl-1];
+                                break;
+                            case 38:
+                                c = COMBAT_RATINGS[25][lvl-1];
+                                break;
+                            default:
+                                br = "";
+                        }
+                    }
+                    v = c > 0 ? Math.floor( statValue/c * 100 ) / 100 : 0;
+                    br = v > 0 ? TextIO.formatFloat2(v) + "%" : "";
+                    break;
+            }
+
+            if( br ) {
+                return "<span class='tt_rating_percent'>(" + br + ")</span>";
+            }
+        }
+        return "";
+    },
 	getHtml : function( itm, character ) {
 		return ItemTooltip.__getHtml( itm, character, 0);
 	},
@@ -74,9 +95,9 @@ var ItemTooltip = {
 		var tmp = "";
 		var i;
 		var html;
-		var stats = "", ratings = "";
+		var stats = [];
 		var chrLevel;
-		var statEnchants = "", useEnchants = "";
+		var statEnchants = [], useEnchants = [];
 		character = character ? character : itm.characterScope;
 		//
 		//
@@ -91,31 +112,42 @@ var ItemTooltip = {
 			if( !itm.stats[i] || itm.stats[i][1] == 0 ) {
 				continue;
 			}
-			if( itm.stats[i] && itm.stats[i][0] > 11 && itm.stats[i][0] < 50 ) {
-				ratings += Tools.addTr1(ItemTooltip.__showRating( character,  chrLevel, itm.stats[i][0], itm.stats[i][1] ));
-			}
-			else {
-				stats += Tools.addTr1(ItemTooltip.__showStat( character, itm.stats[i][0], itm.stats[i][1]));
-			}
+            var statId = itm.stats[i][0];
+            var extended = ItemTooltip._getExtendedValue(character, chrLevel, statId, itm.stats[i][1]);
+
+            if( typeof stats[statId] === "undefined" ) {
+                stats[statId] = [];
+            }
+            stats[statId].push(Tools.addTr1(
+                "<div " + ( statId > 11 && statId < 50 ? " class=\"green\"" : "" ) + ">"
+                    + ItemTooltip._getStatStr( statId, itm.stats[i][1])
+                    + (extended ? extended : "")
+                    + "</div>"));
 		}
 		
 		if( itm.addedStat > -1 ) {
-			if( itm.addedStat <= 11 ) {
-				stats += Tools.addTr1("<div class='green'>"+ItemTooltip.__showStat( character, itm.addedStat, itm.addedStatValue)+"</div>");
-			}
-			else {
-				ratings += Tools.addTr1("<div class='green'>"+ItemTooltip.__showRating( character, chrLevel, itm.addedStat, itm.addedStatValue)+"</div>");
-			}
-		}
+            var extended = ItemTooltip._getExtendedValue(character, chrLevel, itm.addedStat, itm.addedStatValue);
+
+            if( typeof stats[itm.addedStat] === "undefined" ) {
+                stats[itm.addedStat] = [];
+            }
+            stats[itm.addedStat].push(Tools.addTr1(
+                "<div class=\"green\">"
+                    + ItemTooltip._getStatStr( itm.addedStat, itm.addedStatValue)
+                    + " "
+                    + "<span class=\"tt_item_ref_from\">" + TextIO.sprintf1(locale["ReforgedFrom"], locale["ItemStatNames"][itm.reducedStat]) + "</span>"
+                    + (extended ? extended : "")
+                    + "</div>"));
+        }
 		for ( i=0; i<itm.enchants.length; i++ ) {
 			var e = itm.enchants[i];
 			
-			tmp = Tools.addTr1( SpellItemEnchantmentTooltip.getHtml(e, character));
+			tmp = SpellItemEnchantmentTooltip.getArr(e, character);
 			if( e.types[0] == 7 && e.spells[0] ) {
-				useEnchants += tmp;
+				useEnchants[useEnchants.length] = tmp;
 			}
 			else {
-				statEnchants += tmp;
+				statEnchants[statEnchants.length] = tmp;
 			}
 		}
 		//
@@ -129,6 +161,14 @@ var ItemTooltip = {
 		{
 			html += Tools.addTr1("<span class='green'>"+locale['Heroic']+"</span>");
 		}
+
+        //TODO add raid finder flag
+
+        if(itm.level && ( itm.itemClass == 2 || itm.itemClass == 4 ) ){
+            html += Tools.addTr1( "<span class='tt_item_gold'>" + TextIO.sprintf1(locale['itemLevel'],itm.level) + "</span>");
+        }
+
+        //TODO add upgrade level
 		
 		if( itm.typeMask & (1<<27) ) {
 			html += Tools.addTr1(locale['boa']);
@@ -158,13 +198,11 @@ var ItemTooltip = {
 			html += Tools.addTr1( TextIO.sprintf1(locale['RequiresItemLevel'],itm.gemProperties.reqItemLevel));
 		}
 		
-		if( itm.typeMask & (1<<19))
-		{
+		if( itm.typeMask & (1<<19)) {
 			html += Tools.addTr1(locale['UniqueEquipped']);
 		}
 		
-		if(itm.questId)
-		{
+		if(itm.questId) {
 			html += Tools.addTr1(locale['This_Item_Begins_a_Quest']);
 		}
 		
@@ -200,15 +238,6 @@ var ItemTooltip = {
 			}
 		}
 		
-		if( itm.reducedStat != -1 ) {
-			html += Tools.addTr1("<span class='green'>"+locale['Reforged']+
-					"</span><span class='tooltip_reforge_info'>: "+
-					itm.addedStatValue+" "+locale["ItemStatNames"][itm.reducedStat]+
-					" ⇨ "+
-					itm.addedStatValue+" "+locale["ItemStatNames"][itm.addedStat]+
-					"</span>");
-		}
-		
 		if(itm.inventorySlot == 24){
 			html += Tools.addTr1(TextIO.sprintf1(locale['Adds'],TextIO.getDPSFormatted(itm)));
 		}
@@ -225,9 +254,10 @@ var ItemTooltip = {
 		if ( itm.armor > 0 ) {
 			html += Tools.addTr1(TextIO.sprintf1(locale['armor'], itm.armor ));
 		}
-		
-		html += stats;
-		
+
+        for( var statId in stats ) {
+            html += stats[statId].join();
+        }
 		
 		if( itm.randomEnchants ) {
 			if( itm.selectedRandomEnchantment != null ) {
@@ -243,17 +273,24 @@ var ItemTooltip = {
 				html += Tools.addTr1("<span class='green'>&lt;"+locale['RandomEnchantment']+"&gt;</span>");
 			}
 		}
+        var enchantSection = "";
 		
 		//
 		//	Enchant
 		//
-		html += statEnchants;
+        for( var k in statEnchants ) {
+
+            enchantSection += Tools.addTr1("<div class=\"green\">"+TextIO.sprintf1(locale["Enchanted"],statEnchants[k][0])+"</div>");
+            for( var i=1; i<statEnchants[k].length; i++ ) {
+                enchantSection += Tools.addTr1(TextIO.sprintf1(locale["Enchanted"],statEnchants[k][0]));
+            }
+        }
 		//
 		//	Gems
 		//
 		for ( i = 0; i < 3; i++) {
 			if (itm.gems[i] != null) {
-				html += Tools.addTr1(
+                enchantSection += Tools.addTr1(
 					"<div class='tooltip_gem' style='background-image:url(/images/icons/gem/" + itm.gems[i].icon + ".png);'>" + 
 					SpellItemEnchantmentTooltip.getHtml( itm.gems[i].gemProperties.enchant, character ) +
 					"</div>"
@@ -262,18 +299,22 @@ var ItemTooltip = {
 			else {
 				if (itm.socketColors[i]) {
 					if( itm.socketColors[i] == 14 ) {
-						html += Tools.addTr1(
+                        enchantSection += Tools.addTr1(
 								"<div class='tooltip_socket_empty' style='background-image:url(/images/socket_prismatic.png);'>" +
 								locale['PrismaticSocket'] + "</div>");
 					}
 					else {
-						html += Tools.addTr1(
+                        enchantSection += Tools.addTr1(
 								"<div class='tooltip_socket_empty' style='background-image:url(/images/socket_" + Math.log(itm.socketColors[i])/Math.log(2) + ".png);'>" +
 								locale['a_socket'][Math.log(itm.socketColors[i])/Math.log(2)] + "</div>");
 					}
 				}
 			}
 		}
+        if( enchantSection ) {
+            html += Tools.addTr1("<div class='tt_item_spacing'></div>")
+                + enchantSection;
+        }
 		//
 		//	Socketbonus
 		//
@@ -284,66 +325,7 @@ var ItemTooltip = {
 		
 		if (itm.gemProperties) {
 			html += Tools.addTr1(SpellItemEnchantmentTooltip.getDescription(itm.gemProperties.enchant));
-		}					
-		
-		if(itm.durability){
-			html += Tools.addTr1(locale['Durability']+": "+itm.durability+"/"+itm.durability);	
 		}
-		
-		if ( itm.chrClassMask != 0 && (itm.chrClassMask&2047)!=2047 && itm.chrClassMask > 0) {
-			var sz_classes = "", sz_coloredClasses = "";
-			for ( i = 0; i < 11; i++) {
-				if ( (itm.chrClassMask & (1<<i)) != 0) {
-					sz_classes += (sz_classes ? ", " : "") + locale['a_class'][i];
-					sz_coloredClasses += (sz_coloredClasses ? ", " : "") + "<span class='character_class_"+(i+1)+"'>" + locale['a_class'][i] + "</span>";
-				}
-			}
-			if (sz_classes) {
-				if( character != null && ! character.fitsItemClassRequirements(itm) ) {
-					html += Tools.addTr1("<span class='red'>"+locale['Classes'] + ": " + sz_classes + "</span>");
-				}
-				else {
-					html += Tools.addTr1(locale['Classes'] + ": " + sz_coloredClasses);
-				}
-			}
-		}
-
-		if( itm.requiredCharacterLevel || itm.quality == 7 ){
-			if( itm.scalingStatDistribution ) {
-				html += Tools.addTr1(
-					TextIO.sprintf(
-						locale['RequiredLevelScaling'],
-						[ 
-						  Math.max( 1, itm.scalingStatDistribution[20]),
-						  itm.scalingStatDistribution[21],
-						  Math.min( itm.scalingStatDistribution[21], chrLevel)
-						]
-					)
-				);
-			}
-			else {
-				html += Tools.addTr1(
-					"<span class='"+
-					(chrLevel>=itm.requiredCharacterLevel?"":"red")+
-					"'>"+TextIO.sprintf1(locale['reqLevel'],itm.requiredCharacterLevel)+
-					"</span>"
-				);
-			}
-		}
-		if(itm.requiredSkillId){	
-			html += Tools.addTr1("<span class='red'>"+locale['req']+" "+itm.requiredSkill+" ("+itm.requiredSkillLevel+")</span>");
-		}
-		if(itm.requiredSpellId){	
-			html += Tools.addTr1("<span class='red'>"+locale['req']+" "+itm.requiredSpell+"</span>");
-		}
-		if(itm.requiredFactionId){ 
-			html += Tools.addTr1("<span class='red' style='white-space:nowrap'>"+locale['req']+" "+itm.requiredFactionName+" - "+locale['a_reputation'][itm.requiredFactionReputation]+"</span>");
-		}
-		if(itm.level && ( itm.itemClass == 2 || itm.itemClass == 4 ) ){
-			html += Tools.addTr1(TextIO.sprintf1(locale['itemLevel'],itm.level));
-		}
-		
-		html += ratings;
 		
 		for ( i = 0; i < 5; i++) {
 			if ( itm.spells[i] != null ) {
@@ -353,7 +335,7 @@ var ItemTooltip = {
 				if ( spellDesc ) {
 					switch(itm.spellTriggers[i])
 					{
-						case 0:	
+						case 0:
 							trigger=locale['use'];
 							if( itm.spellCooldowns[i] > 0 )
 							{
@@ -368,11 +350,11 @@ var ItemTooltip = {
 							break;
 					}
 					html += Tools.addTr1(
-						"<span class='green'>" + trigger + ": " + 
+						"<span class='green'>" + trigger + ": " +
 						( g_settings.isPlanner ? "" : "<a class='tooltip_spell_desc_link' href='?spell="+itm.spells[i].id+"'>" )+
 						spellDesc.join("<br/>") + " " +
-						( g_settings.isPlanner ? "" : "</a>" ) + 
-						cd + "</span>"  
+						( g_settings.isPlanner ? "" : "</a>" ) +
+						cd + "</span>"
 					);
 				}
 			}
@@ -456,15 +438,12 @@ var ItemTooltip = {
 			}
 		}
 
-		if(itm.description){
-			html += Tools.addTr1("<span style='color:#DDDD00'>\""+itm.description+"\"</span>");	
-		}
 		if(  (flags&ITEM_TT_SHORT) != ITEM_TT_SHORT ) {
 			if( itm.itemSet != null )
 			{
 				var count = itm.itemSet.itemCount;
 				var equipped = 0;
-				var display = new Array();
+				var display = [];
 				
 				if ( character != null ) 
 				{
@@ -494,7 +473,7 @@ var ItemTooltip = {
 						"</span>");	
 				}
 				//FIXME bonus order
-				html += Tools.addTr1("<div class='tooltip_set_bonus_spacing'></div>");
+				html += Tools.addTr1("<div class='tt_item_spacing'></div>");
 				for ( i = 0; i < 8; i++) 
 				{
 					var req = itm.itemSet.requiredPieces[i];
@@ -510,7 +489,68 @@ var ItemTooltip = {
 					}
 				}
 				
-			} 
+			}
+
+            html += Tools.addTr1("<div class='tt_item_spacing'></div>");
+
+            if(itm.durability){
+                html += Tools.addTr1(locale['Durability']+": "+itm.durability+"/"+itm.durability);
+            }
+
+            if ( itm.chrClassMask != 0 && (itm.chrClassMask&2047)!=2047 && itm.chrClassMask > 0) {
+                var sz_classes = "", sz_coloredClasses = "";
+                for ( i = 0; i < 11; i++) {
+                    if ( (itm.chrClassMask & (1<<i)) != 0) {
+                        sz_classes += (sz_classes ? ", " : "") + locale['a_class'][i];
+                        sz_coloredClasses += (sz_coloredClasses ? ", " : "") + "<span class='character_class_"+(i+1)+"'>" + locale['a_class'][i] + "</span>";
+                    }
+                }
+                if (sz_classes) {
+                    if( character != null && ! character.fitsItemClassRequirements(itm) ) {
+                        html += Tools.addTr1("<span class='red'>"+locale['Classes'] + ": " + sz_classes + "</span>");
+                    }
+                    else {
+                        html += Tools.addTr1(locale['Classes'] + ": " + sz_coloredClasses);
+                    }
+                }
+            }
+
+            if( itm.requiredCharacterLevel && itm.requiredCharacterLevel > 1 || itm.quality == 7 ){
+                if( itm.scalingStatDistribution ) {
+                    html += Tools.addTr1(
+                        TextIO.sprintf(
+                            locale['RequiredLevelScaling'],
+                            [
+                                Math.max( 1, itm.scalingStatDistribution[20]),
+                                itm.scalingStatDistribution[21],
+                                Math.min( itm.scalingStatDistribution[21], chrLevel)
+                            ]
+                        )
+                    );
+                }
+                else {
+                    html += Tools.addTr1(
+                        "<span class='"+
+                            (chrLevel>=itm.requiredCharacterLevel?"":"red")+
+                            "'>"+TextIO.sprintf1(locale['reqLevel'],itm.requiredCharacterLevel)+
+                            "</span>"
+                    );
+                }
+            }
+
+            if(itm.requiredSkillId){
+                html += Tools.addTr1("<span class='red'>"+locale['req']+" "+itm.requiredSkill+" ("+itm.requiredSkillLevel+")</span>");
+            }
+            if(itm.requiredSpellId){
+                html += Tools.addTr1("<span class='red'>"+locale['req']+" "+itm.requiredSpell+"</span>");
+            }
+            if(itm.requiredFactionId){
+                html += Tools.addTr1("<span class='red' style='white-space:nowrap'>"+locale['req']+" "+itm.requiredFactionName+" - "+locale['a_reputation'][itm.requiredFactionReputation]+"</span>");
+            }
+
+            if(itm.description){
+                html += Tools.addTr1("<span style='color:#DDDD00'>\""+itm.description+"\"</span>");
+            }
 			
 			if( itm.sellPrice > 0 ) 
 			{

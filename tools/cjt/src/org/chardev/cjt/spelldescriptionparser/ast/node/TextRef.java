@@ -48,6 +48,18 @@ public class TextRef implements Expression {
 				throw new RuntimeException(ex);
 			}
 		}
+		else if( this.refName.compareToIgnoreCase("spelltooltip") == 0 ) {
+			Spell context = e.getSpellContext();
+			if( refId == context.getId() ) {
+				return new Plain("{circular reference}");
+			}
+			Spell ref = e.getSpell(refId);
+			try {
+				return new DescriptionParser(ref.getSpellTooltip()).parse().evaluate(e.switchContext(ref)).evaluate(e);
+			} catch (ParserException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
 		else {
 			System.err.println("Unhandled ref: "+refName+", ignoring it");
 			return new Plain("@"+refName+refName);

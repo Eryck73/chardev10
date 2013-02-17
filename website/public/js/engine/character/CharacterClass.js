@@ -19,7 +19,7 @@ function CharacterClass( serialized ) {
 	this.id = serialized[0];
 	this.name = serialized[1];
 	this.talents = new Talents(serialized[2]);
-	this.baseStats = serialized[3]; // str, agi, ... , hp, mp, melee crit per agi
+	this.baseStats = serialized[3]; // str, agi, ... , dodge_per_agi
 	this.shapesRef = {};
 	
 	this.classSpells = [];

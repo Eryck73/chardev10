@@ -32,18 +32,11 @@ public class DevelChardevDB {
 		"jdbc:mysql://localhost:3306/chardev_mop_es?",
 		"jdbc:mysql://localhost:3306/chardev_mop_ru?"
 	};
-	private static final String basePaths[] = new String[]{
-		"Y:/chardev/mop/DBFilesClient/",
-		"Y:/chardev/mop/fr/DBFilesClient/",
-		"Y:/chardev/mop/de/DBFilesClient/",
-		"Y:/chardev/mop/es/DBFilesClient/",
-		"Y:/chardev/mop/ru/DBFilesClient/"
-	};
 
 	public static void main(String[] args) {
 		connectToDatabase(dbs[0]);
 		DBCParser p;
-		p = new DBCParser(databaseConnection, "y:\\chardev\\mop\\dbfilesclient\\chrspecialization.dbc", "chrspecialization");
+		p = new DBCParser(databaseConnection, "i:\\Projekte\\chardev\\mop\\dbfilesclient\\gtocthpperstamina.dbc", "gtocthtpperstamina");
 		p.parse();
 	}
 }

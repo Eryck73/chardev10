@@ -739,6 +739,10 @@ h1{ font-weight:normal; padding: 0px 10px; font-size: 20px; line-height: 40px; b
 	font-weight:bold;
 }
 
+.tt_item_gold {
+    color: #ffd100;
+}
+
 .lo_error { color: #DD0000; font-weight: bold; }
 .login_rec_p{ text-align:center; padding-top: 10px;}
 .login_rec_link{ color: #999999; font-size: 11px;}

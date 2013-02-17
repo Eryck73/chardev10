@@ -4,6 +4,7 @@ use chardev\Session;
 use chardev\ChardevHelper;
 use chardev\FormatHelper;
 use chardev\backend\UserDatabase;
+use chardev\backend\DoesNotExistException;
 
 require_once '../app/chardev/Autoloader.php';
 
@@ -119,7 +120,7 @@ try {
 		}
 		//
 		// No spell with ID found
-		catch( chardev\backend\DoesNotExistException $e ) {
+		catch( DoesNotExistException $e ) {
 			$th->setTemplate("Error404");
 		}
 	}
@@ -149,7 +150,7 @@ try {
 		}
 		//
 		// No item with ID found
-		catch( chardev\backend\DoesNotExistException $e ) {
+		catch( DoesNotExistException $e ) {
 			$th->setTemplate("Error404");
 		}
 	}

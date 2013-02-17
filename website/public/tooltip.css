@@ -17,12 +17,6 @@
 	line-height: 150%;
 }
 
-.tooltip_set_bonus_spacing
-{
-	height:10px;
-	width:300px;
-}
-
 .tooltip_set_bonus_inactive 
 {
 	font-size:11px;
@@ -346,5 +340,8 @@
 
 .tt_hit_cap{ color: #808080; text-align:center; padding-top: 3px; padding-bottom: 3px; font-size:11px;}
 
-.tt_stat_with_mods { color: #808080; margin-left: 5px;}
-.tt_rating_percent { color: #808080; margin-left: 5px;}
+.tt_stat_with_mods { font-size: 11px; color: #808080; margin-left: 5px;}
+.tt_rating_percent { font-size: 11px; color: #808080; margin-left: 5px;}
+
+.tt_item_spacing{ height:5px; width:300px;}
+.tt_item_ref_from{ font-size: 11px; }

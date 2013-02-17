@@ -50,12 +50,7 @@ class CharacterClassData extends Data
 				(int)$statRecord['sta'],
 				(int)$statRecord['int'],
 				(int)$statRecord['spi'],
-				(int)$statRecord['hp'],
-				(int)$statRecord['mp'],
-				(float)$statRecord['melee_crit_per_agi'],
-				(float)$statRecord['spell_crit_per_int'],
-				(float)$statRecord['dodge_per_agi'],
-				(float)$statRecord['mana_regen']
+				(float)$statRecord['dodge_per_agi']
 			);
 		}		
 		

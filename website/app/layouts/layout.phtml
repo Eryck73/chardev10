@@ -102,35 +102,35 @@
 							/>
 						</div>
 						<div class="ix_login_input_container">
-							<div class='ix_login_note'>Password:</div>
-							<input tabindex="2" id="login_password" type="password" class="input ix_login_input" />
+							<div class='ix_login_note'><label for="login_password">Password:</label></div>
+                            <input tabindex="2" id="login_password" type="password" class="input ix_login_input" />
 							<input type="hidden" id="login_password_md5" name="login_password"/>
 							<div class='ix_add_options'><a href="<?php echo $basePath ?>RecoverPassword.html">Forgot your password?</a></div>
 						</div>
 						<div class="ix_login_input_container">
-							<div class='ix_login_note'>User Name:</div>
+							<div class='ix_login_note'><label for="login_user_name">User Name::</label></div>
 							<input tabindex="1" <?php if(isset($_POST['login_user_name'])) echo "value='".$_POST['login_user_name']."'" ?> class="input ix_login_input" id="login_user_name" name="login_user_name"/>
 							<div>
-								<span class='ix_add_options'>Stay logged in:</span>
+								<span class='ix_add_options'><label for="login_cookie">Stay logged in:</label></span>
 								<input tabindex="4" type="checkbox" checked="checked" id="login_cookie" name="login_cookie" class="ix_stay_logged_in"/>
-								<input name="redirect_url"type="hidden" value="<?php echo \chardev\FormatHelper::getRedirectUrl(); ?>"/>
+								<input name="redirect_url" type="hidden" value="<?php echo \chardev\FormatHelper::getRedirectUrl(); ?>"/>
 							</div>
 						</div>
 					</form>
 					
 					<form id='ix_logout_form' <?php echo \chardev\Session::loggedIn() ? '' : 'style="display:none;"' ?> onsubmit="<?php echo $isPlanner ? 'Chardev.logout(); return false;' : '' ?>" action="<?php echo $isPlanner ? 'javascript:;' : $basePath ?>" method="post">		
 						<div style='width: 60px; float: left; padding-left: 55px; padding-top: 11px;'>
-						<?php if( ! $hideGoogle ): ?> 
-							<g:plusone size="medium" href="http://chardev.org/"></g:plusone>
-							<script type="text/javascript">
-							  window.___gcfg = {lang: 'en-GB'};
-							
-							  (function() {
-							    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-							    po.src = 'https://apis.google.com/js/plusone.js';
-							    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-							  })();
-							</script>
+						<?php if( ! $hideGoogle ): ?>
+<!--							<g:plusone size="medium" href="http://chardev.org/"></g:plusone>-->
+<!--							<script type="text/javascript">-->
+<!--							  window.___gcfg = {lang: 'en-GB'};-->
+<!--							-->
+<!--							  (function() {-->
+<!--							    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;-->
+<!--							    po.src = 'https://apis.google.com/js/plusone.js';-->
+<!--							    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);-->
+<!--							  })();-->
+<!--							</script>-->
 						<?php endif; ?>
 						</div>
 								
@@ -166,7 +166,7 @@
 			<div class="ix_content_w">
 				<div class="cp_mm_p" id="mtf_p"></div>
 				<?php if( $showAds && ! $hideGoogle ) :?>
-				<div style="position: relative; top: 0px; left: 0px;">
+				<div style="position: relative; top: 0; left: 0;">
 					<div id="ix_ad_v" class="ix_ad_v">
 						<script type="text/javascript"><!--
 						google_ad_client = "ca-pub-7339088166028367";

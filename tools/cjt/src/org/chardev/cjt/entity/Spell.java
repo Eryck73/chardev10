@@ -17,6 +17,7 @@ public class Spell {
 	protected final int id, descriptionVariablesId, scalingId;
 	protected final Map<Integer,SpellEffect> effects;
 	protected final boolean[] effectRetrieved;
+	protected final String spelltooltip;
 
 	protected SpellScaling scaling;
 	
@@ -36,6 +37,7 @@ public class Spell {
 		}
 		
 		this.desc = result.getString("Description");
+		this.spelltooltip = result.getString("BuffDescription");
 		this.id = result.getInt("ID");
 		this.scalingId = result.getInt("SpellScalingID");
 		this.descriptionVariablesId = result.getInt("SpellDescriptionVariablesID");
@@ -98,5 +100,9 @@ public class Spell {
 			effects.put(index, effect);
 		}
 		return effects.get(index);
+	}
+
+	public String getSpellTooltip() {
+		return spelltooltip;
 	}
 }

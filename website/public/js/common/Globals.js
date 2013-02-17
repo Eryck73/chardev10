@@ -109,7 +109,9 @@ var ID_TO_RACE = {
 	9: "Goblin",
 	10: "Blood Elf",
 	11: "Draenei",	
-	22: "Worgen"
+	22: "Worgen",
+    25: "Pandaren",
+    26: "Pandaren"
 };
 
 var ID_TO_CLASS = {
@@ -122,6 +124,7 @@ var ID_TO_CLASS = {
 	7: "Shaman",
 	8: "Mage",
 	9: "Warlock",
+    10: "Monk",
 	11: "Druid"
 };
 

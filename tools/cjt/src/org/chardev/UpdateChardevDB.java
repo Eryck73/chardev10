@@ -8,7 +8,7 @@ import org.chardev.cjt.DBCParser;
 
 public class UpdateChardevDB {
 	
-	private static final int ITEM_SPARSE_SKIP = 0x85500 - 32;
+	private static final int ITEM_SPARSE_SKIP = 0x8C04C - 32;
 	
 	private static final String dbs[] = new String[]{
 		"jdbc:mysql://localhost:3306/chardev_mop?",
@@ -18,7 +18,7 @@ public class UpdateChardevDB {
 		"jdbc:mysql://localhost:3306/chardev_mop_ru?"
 	};
 	private static final String basePaths[] = new String[]{
-		"Y:/chardev/mop/DBFilesClient/",
+		"i:/Projekte/chardev/mop/DBFilesClient/",
 		"Y:/chardev/mop/fr/DBFilesClient/",
 		"Y:/chardev/mop/de/DBFilesClient/",
 		"Y:/chardev/mop/es/DBFilesClient/",
@@ -57,7 +57,7 @@ public class UpdateChardevDB {
 		boolean skipLocale = true;
 		
 		connectToDatabase(dbs[0]);
-		staticUpdate(basePaths[0]);
+//		staticUpdate(basePaths[0]);
 		
 		for( int i=0; i< dbs.length; i++ ) {
 			connectToDatabase(dbs[i]);
@@ -67,47 +67,7 @@ public class UpdateChardevDB {
 			}
 		}
 		if(true) return;
-		//
-		//	CACHE
-		//
-		cacheUpdate();
 	}
-	
-	private static void cacheUpdate() {
-		DBCParser p;
-		String itemSparse[] = new String[]{
-//			"Y:/chardev/mop/adb/Item-sparse.adb"
-		};
-		
-		String item[] = new String[]{
-//			"Y:/chardev/mop/adb/Item.adb"
-		};
-		
-		connectToDatabase("jdbc:mysql://localhost:3306/chardev_mop_static?");
-		for( String fileName : itemSparse ) {
-			System.out.println("Processing: "+fileName);
-			p = new DBCParser(
-					databaseConnection, 
-					fileName, 
-					"item_working"
-			);
-			p.setLocale("EN");
-			p.addVersion();
-			p.parse();
-		}
-
-		connectToDatabase("jdbc:mysql://localhost:3306/chardev_mop?");
-		for( String fileName : item ) {
-			System.out.println("Processing: "+fileName);
-			p = new DBCParser(
-				databaseConnection, 
-				fileName, 
-				"item"
-			);
-			p.parse();	
-		}
-	}
-	
 
 	private static void staticUpdate( String basePath ) {
 		String[] files = new String[]{
@@ -209,20 +169,20 @@ public class UpdateChardevDB {
 	private static void localeUpdate( String basePath, String locale ) {
 		
 		String[] files = new String[]{
-			"chrclasses",
-			"chrraces",
-			"chrspecialization",
-			"faction",
-			"itemsubclass",
-			"itemclass",
-			"itemset",
-			"itemrandomsuffix",
-			"itemrandomproperties",
-			"skillline",
-			"spell",
-			"spelldescriptionvariables",
-			"spellitemenchantment",
-			"spellrange",
+//			"chrclasses",
+//			"chrraces",
+//			"chrspecialization",
+//			"faction",
+//			"itemsubclass",
+//			"itemclass",
+//			"itemset",
+//			"itemrandomsuffix",
+//			"itemrandomproperties",
+//			"skillline",
+//			"spell",
+//			"spelldescriptionvariables",
+//			"spellitemenchantment",
+//			"spellrange",
 			//"talentTab"
 		};
 		//

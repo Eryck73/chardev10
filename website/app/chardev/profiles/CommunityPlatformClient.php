@@ -231,7 +231,7 @@ class CommunityPlatformClient
 	 * Class constants: PROTOCOL_HTTP, PROTOCOL_HTTPS
 	 *
 	 * @param $protocol string       	
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function setProtocol($protocol)
 	{
@@ -273,7 +273,8 @@ class CommunityPlatformClient
 	 *
 	 * @param $region string
 	 *       	 Two letter region identifier
-	 */
+     * @return string
+     */
 	public function getRealmList($region)
 	{
 		$this->validateRegion ( $region );
@@ -413,10 +414,11 @@ class CommunityPlatformClient
 	 * Creates a signature by hashing a string containing the date and requested
 	 * url with the private key.
 	 *
-	 * @param $url Requested URL       	
-	 * @param $method HTTP method to use       	
-	 * @param $dateString Date string       	
-	 */
+	 * @param string $url Requested URL
+	 * @param string $method HTTP method to use
+	 * @param string $dateString Date string
+     * @return string
+     */
 	private function createSignature($url, $method, $dateString)
 	{
 		
@@ -431,6 +433,7 @@ class CommunityPlatformClient
 	 * @param string $host
 	 * @param string $url
 	 * @param string $query
+     * @return string
 	 */
 	private function request($host, $url, $query)
 	{
@@ -452,7 +455,7 @@ class CommunityPlatformClient
 		$opts = array ('http' => array ('method' => "GET", 'header' => "Date: " . $dateString . "\r\n" . "Authorization: BNET " . $this->publicKey . ":" . $signature . " \r\n" ) );
 		
 		$context = stream_context_create ( $opts );
-		
+
 		return @file_get_contents ( $host . $url . $query, false, $context );
 	}
 }

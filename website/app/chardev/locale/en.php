@@ -56,10 +56,10 @@
 	$locale['equip'] ='Equip';
 	$locale['use'] ='Use';
 	$locale['hit'] ='Chance on Hit';
-	$locale['bop']='Bind on pick up';
-	$locale['boe']='Bind on equip';
-	$locale['boa']='Bind to account';
-	$locale['bou']='Bind on use';
+	$locale['bop']='Binds when picked up';
+	$locale['boe']='Binds when equipped';
+	$locale['boa']='Bound to account';
+	$locale['bou']='Binds when used';
 	$locale['reqLevel']='Requires Level $';
 	$locale['RequiredLevelScaling']='Requires Level $ to $ ($)';
 	$locale['increases'] = 'Increases ';
@@ -448,9 +448,9 @@
 		6=>"Spirit",
 		7=>"Stamina",
 		
-		13=>"Dodge Rating",
-		14=>"Parry Rating",
-		15=>"Block Rating",
+		13=>"Dodge",
+		14=>"Parry",
+		15=>"Block",
 		16=>"Melee Hit Rating",
 		17=>"Ranged Hit Rating",
 		18=>"Spell Hit Rating",
@@ -461,22 +461,21 @@
 		28=>"Melee Haste Rating",
 		29=>"Ranged Haste Rating",
 		30=>"Spell Haste Rating",
-		31=>"Hit Rating",
-		32=>"Critical Strike Rating",
+		31=>"Hit",
+		32=>"Critical Strike",
 		
 		35=>"PvP Resilience",
-		36=>"Haste Rating",
-		37=>"Expertise Rating",
+		36=>"Haste",
+		37=>"Expertise",
 		38=>"Attack Power",
 		
 		43=>"Mana Regeneration",
-		44=>"Armor Penetration Rating",
+		44=>"Armor Penetration",
 		45=>"Spell Power",
 		46=>"Health Regeneration",
 		47=>"Spell Penetration",
-		48=>"Block Value",
-		49=>"Mastery Rating",
-		
+		48=>"Block",
+		49=>"Mastery",
 		50=>"Armor",
 		51=>"Fire Resistance",
 		52=>"Frost Resistance",
@@ -698,6 +697,9 @@
 		21=>"Ice Troll",
 		22=>"Worgen"
 	);
+
+    $locale["ReforgedFrom"] = "(Reforged from $)";
+    $locale["Enchanted"] = "Enchanted: $";
 	
 	$locale['Regions'] = array( 'us' => 'North America', 'eu' => 'Europe', 'kr' => 'Korea', 'tw' => 'Taiwan', 'cn' => 'China' );
 	

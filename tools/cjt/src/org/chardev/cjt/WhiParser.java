@@ -14,7 +14,7 @@ import java.util.Arrays;
 /**
  * Parses a WoW hex-represented item (*.whi) extracted from RAM
  * 
- * @author Martin Waßmann
+ * @author Martin Waï¿½mann
  *
  */
 public class WhiParser {
@@ -37,6 +37,7 @@ public class WhiParser {
 			while( total < whi.length && -1 != (read = bis.read(whi,total,whi.length-total))) {
 				total += read;
 			}
+			bis.close();
 			if( total < whi.length ) {
 				throw new RuntimeException("Unable to read " + whi.length + "bytes!");
 			}

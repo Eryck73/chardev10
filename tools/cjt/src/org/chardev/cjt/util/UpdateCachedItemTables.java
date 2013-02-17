@@ -47,6 +47,8 @@ public class UpdateCachedItemTables {
 		//
 		//
 		try {
+			Statement tstmt = connectionLocaleDB.createStatement();
+			tstmt.execute("TRUNCATE TABLE chardev_mop.`item_sparse`"); 
 			//
 			// Prepare some statements for reuse
 			PreparedStatement gemPropertiesStatement = connectionLocaleDB
@@ -55,9 +57,9 @@ public class UpdateCachedItemTables {
 					.prepareStatement("SELECT Name,Description FROM item_working WHERE `Locale`=? AND `ID`=? ORDER BY `Version` DESC");
 			PreparedStatement copyStatement = connectionLocaleDB
 					.prepareStatement("REPLACE INTO chardev_mop.`item_sparse` SELECT * FROM chardev_mop_static.`item_working` WHERE `Locale`=? AND `Version`=? AND `ID`=?");
-//			PreparedStatement prepReplace = connectionStaticDB.prepareStatement(
-//					"REPLACE INTO `chardev_item_stats` values (?,0,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,0,0)"
-//				);
+
+			PreparedStatement insertStatement = connectionStaticDB
+					.prepareStatement("REPLACE INTO `chardev_item_stats` values (?,0,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,0,0)");
 			//
 			// Queries the most up to date items from the db
 			Statement stmt = connectionStaticDB.createStatement();
@@ -192,85 +194,46 @@ public class UpdateCachedItemTables {
 				}
 				//
 				// Write to db
-				PreparedStatement insertStatement = connectionStaticDB
-						.prepareStatement("REPLACE INTO `chardev_item_stats` values ("
-								+ id
-								+ ","
-								+ "0,"
-								+ itemStats[4]
-								+ ","
-								+ itemStats[3]
-								+ ","
-								+ itemStats[7]
-								+ ","
-								+ itemStats[5]
-								+ ","
-								+ itemStats[6]
-								+ ","
-								+ dps
-								+ ","
-								+ minDmg
-								+ ","
-								+ maxDmg
-								+ ","
-								+ armor
-								+ ","
-								+ itemStats[13]
-								+ ","
-								+ itemStats[14]
-								+ ","
-								+ itemStats[15]
-								+ ","
-								+ itemStats[32]
-								+ ","
-								+ itemStats[31]
-								+ ","
-								+ itemStats[35]
-								+ ","
-								+ itemStats[36]
-								+ ","
-								+ itemStats[37]
-								+ ","
-								+ itemStats[38]
-								+ ","
-								+ itemStats[43]
-								+ ","
-								+ itemStats[45]
-								+ ","
-								+ itemStats[47]
-								+ ","
-								+ itemStats[49]
-								+ ","
-								+ itemStats[50]
-								+ ","
-								+ itemStats[51]
-								+ ","
-								+ itemStats[55]
-								+ ","
-								+ itemStats[52]
-								+ ","
-								+ itemStats[54]
-								+ ","
-								+ itemStats[56]
-								+ ","
-								+ "?,?,?,?,?,?,?,?,?,?,"
-								+ 0
-								+ ","
-								+ 0
-								+ ""
-								+ ")");
+				insertStatement.setInt(1, id);
+				insertStatement.setInt(2, itemStats[4]);
+				insertStatement.setInt(3, itemStats[3]);
+				insertStatement.setInt(4, itemStats[7]);
+				insertStatement.setInt(5, itemStats[5]);
+				insertStatement.setInt(6, itemStats[6]);
+				insertStatement.setDouble(7, dps);
+				insertStatement.setDouble(8, minDmg);
+				insertStatement.setDouble(9, maxDmg);
+				insertStatement.setInt(10, armor);
+				insertStatement.setInt(11, itemStats[13]);
+				insertStatement.setInt(12, itemStats[14]);
+				insertStatement.setInt(13, itemStats[15]);
+				insertStatement.setInt(14, itemStats[32]);
+				insertStatement.setInt(15, itemStats[31]);
+				insertStatement.setInt(16, itemStats[35]);
+				insertStatement.setInt(17, itemStats[36]);
+				insertStatement.setInt(18, itemStats[37]);
+				insertStatement.setInt(19, itemStats[38]);
+				insertStatement.setInt(20, itemStats[43]);
+				insertStatement.setInt(21, itemStats[45]);
+				insertStatement.setInt(22, itemStats[47]);
+				insertStatement.setInt(23, itemStats[49]);
+				insertStatement.setInt(24, itemStats[50]);
+				insertStatement.setInt(25, itemStats[51]);
+				insertStatement.setInt(26, itemStats[55]);
+				insertStatement.setInt(27, itemStats[52]);
+				insertStatement.setInt(28, itemStats[54]);
+				insertStatement.setInt(29, itemStats[56]);
 				//
 				// set locale names
 				for (int i = 0; i < 5; i++) {
-					insertStatement.setString(1 + i, name[i]);
+					insertStatement.setString(30 + i, name[i]);
 				}
 				//
 				// and descriptions
 				for (int i = 0; i < 5; i++) {
-					insertStatement.setString(6 + i, desc[i]);
+					insertStatement.setString(35 + i, desc[i]);
 				}
 				insertStatement.execute();
-				insertStatement.close();
 				System.out.println(id);
 			}
 			//
@@ -294,7 +257,8 @@ public class UpdateCachedItemTables {
 							+ "OR Name like '%_PVP%' "
 							+ "OR Name like '%_PVE%' "
 							+ "OR Name like '%Cataclysm C01%' "
-							+ "OR TypeMask & 16 " + "OR ( Level > 404 && ItemID < 70000) " + ")");
+							+ "OR TypeMask & 16 " 
+							+ "OR ( Level > 404 && ItemID < 70000) " + ")");
 			filterStatement.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
