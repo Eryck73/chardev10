@@ -2,6 +2,7 @@
 .project
 .buildpath
 .classpath
+.idea
 META-INF
 website/public/images/icons/*
 BNET_KEYS.inc
