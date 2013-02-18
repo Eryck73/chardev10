@@ -133,7 +133,7 @@ function Character() {
 }
 
 Character.MAX_LEVEL = 90;
-Character.DEFAULT_LEVEL = 85;
+Character.DEFAULT_LEVEL = Character.MAX_LEVEL;
 
 Character.prototype = {
 	/** @type{GenericSubject} **/
