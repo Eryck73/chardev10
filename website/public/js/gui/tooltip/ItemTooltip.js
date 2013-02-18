@@ -119,7 +119,7 @@ var ItemTooltip = {
                 stats[statId] = [];
             }
             stats[statId].push(Tools.addTr1(
-                "<div " + ( statId > 11 && statId < 50 ? " class=\"green\"" : "" ) + ">"
+                "<div " + ( statId > 11 ? " class=\"green\"" : "" ) + ">"
                     + ItemTooltip._getStatStr( statId, itm.stats[i][1])
                     + (extended ? extended : "")
                     + "</div>"));
