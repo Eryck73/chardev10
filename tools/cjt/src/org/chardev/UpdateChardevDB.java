@@ -57,7 +57,7 @@ public class UpdateChardevDB {
 		boolean skipLocale = true;
 		
 		connectToDatabase(dbs[0]);
-//		staticUpdate(basePaths[0]);
+		staticUpdate(basePaths[0]);
 		
 		for( int i=0; i< dbs.length; i++ ) {
 			connectToDatabase(dbs[i]);
@@ -125,7 +125,6 @@ public class UpdateChardevDB {
 			"spellmissilemotion",
 			"spellpower",
 			"spellradius",
-			"spellreagents",
 			"spellrunecost",
 			"spellscaling",
 			"spellshapeshift",
@@ -164,25 +163,34 @@ public class UpdateChardevDB {
 		ip.additionalSkip = 0x10;
 		ip.truncateTargetTable();
 		ip.parse();
+		System.out.println("Processing: SpellReagents.db2");
+		DBCParser srp = new DBCParser(
+				databaseConnection, 
+				basePath+"SpellReagents.db2", 
+				"spellreagents"
+		);
+		srp.additionalSkip = 0x10;
+		srp.truncateTargetTable();
+		srp.parse();
 	}
 	
 	private static void localeUpdate( String basePath, String locale ) {
 		
 		String[] files = new String[]{
-//			"chrclasses",
-//			"chrraces",
-//			"chrspecialization",
-//			"faction",
-//			"itemsubclass",
-//			"itemclass",
-//			"itemset",
-//			"itemrandomsuffix",
-//			"itemrandomproperties",
-//			"skillline",
-//			"spell",
-//			"spelldescriptionvariables",
-//			"spellitemenchantment",
-//			"spellrange",
+			"chrclasses",
+			"chrraces",
+			"chrspecialization",
+			"faction",
+			"itemsubclass",
+			"itemclass",
+			"itemset",
+			"itemrandomsuffix",
+			"itemrandomproperties",
+			"skillline",
+			"spell",
+			"spelldescriptionvariables",
+			"spellitemenchantment",
+			"spellrange",
 			//"talentTab"
 		};
 		//
