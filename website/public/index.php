@@ -46,7 +46,7 @@ try {
 		$th->setTemplate('Talents',array( 'id-name' => isset($matches) && isset($matches[1]) ? $matches[1] : ""));
 	}
 	else if( preg_match('/^\/(?:\?.*|$)/',$uri,$matches)) {
-		$th->setTemplate('Planner');
+		$th->setTemplate('Index');
 	}
 	else if( preg_match('/^\/(\w+)\.html(?:\?.*|$)/',$uri,$matches)) {
 		if( $matches[1] == 'Login' && $loggedInUser ) {
