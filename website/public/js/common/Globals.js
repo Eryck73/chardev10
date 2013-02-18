@@ -340,4 +340,4 @@ var F_SLT_MSK = [
     F_SLT_MASK_DFLT,
     F_SLT_MASK_DFLT
 ];
-var F_SLT_MSK_WPN = 1<<13|1<<15|1<<17|1<<21|1<<22;
+var F_SLT_MSK_WPN = 1<<13|1<<15|1<<17|1<<21|1<<22|1<<26;

@@ -329,6 +329,7 @@ Item.prototype = {
 	//
 	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	//
+    // TODO ascertain how scaling works with MoP, keep ranged changes in mind
 	setStats : function( level ) {
 		if( this.scalingStatDistribution == null ) {
 			return;
@@ -654,8 +655,12 @@ Item.prototype = {
 	isUniqueEquipped: function() {return (this.typeMask & (1<<19)) != 0; },
 	isMeleeWeapon: function(){
 		return this.itemClass == 2 
-			&& ((1<<this.itemSubClass) & ((1<<0) + (1<<4) + (1<<5) + (1<<6) + (1<<7) + (1<<8) + (1<<10) + (1<<13) + (1<<15) ));
+			&& ((1<<this.itemSubClass) & ((1<<0) + (1<<4) + (1<<5) + (1<<6) + (1<<7) + (1<<8) + (1<<10) + (1<<13) + (1<<15) + (1<<20) ));
 	},
+    isRangedWeapon: function(){
+        return this.itemClass == 2
+            && ((1<<this.itemSubClass) & ((1<<2) + (1<<3) + (1<<18) + (1<<19) ));
+    },
 	isStatPresent: function( stat ) {
 		var i, enchant;
 		for( i=0; i<this.stats.length; i++ ) {
@@ -726,5 +731,8 @@ Item.prototype = {
 			}
 		}
 		return 0;
-	}
+	},
+    isTwoHanded: function() {
+        return this.inventorySlot == 15 || this.inventorySlot == 17 || this.inventorySlot == 26 && this.itemSubClass != 19;
+    }
 };

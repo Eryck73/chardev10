@@ -9,6 +9,8 @@
  * Therefore it is necessary to map spell effects, and check whether an concurring effect
  * was already added before adding an new effect
  *
+ * TODO remove ranged
+ *
  * @constructor
  * @param {Character} character
  */

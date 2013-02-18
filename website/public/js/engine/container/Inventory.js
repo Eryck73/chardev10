@@ -31,9 +31,8 @@ Inventory.validInventorySlots = [			1,							//0 head
 											11,							//13 ring #2
 											12,							//14 trinket #1
 											12,							//15 trinket #2
-											[21,17,13],					//16 main hand
-											[23,22,14,13,17], 			//17 off hand
-											[28,26,25,15]				//18 ranged/relic
+											[26,21,17,15,13],		    //16 main hand
+											[23,22,17,14,13] 			//17 off hand
 ];
 
 Inventory.SLOTS = 18;
@@ -77,7 +76,7 @@ Inventory.prototype = {
 	 */
 	__testTwoHanders : function(itm,slot)
 	{
-		if (slot == 16 && !this.character.canDualWieldTwoHandedWeapons() && itm.inventorySlot == 17) 
+		if (slot == 16 && !this.character.canDualWieldTwoHandedWeapons() && itm.isTwoHanded())
 		{
 			if (this.items[17][0] != null) 
 			{
@@ -85,7 +84,7 @@ Inventory.prototype = {
 			}
 		}
 		
-		if (slot == 17 && !this.character.canDualWieldTwoHandedWeapons() && this.items[16][0] && this.items[16][0].inventorySlot == 17) 
+		if (slot == 17 && !this.character.canDualWieldTwoHandedWeapons() && this.items[16][0] && this.items[16][0].isTwoHanded())
 		{
 			this.__shiftLeft(16);
 		}

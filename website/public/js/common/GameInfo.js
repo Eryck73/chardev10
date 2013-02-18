@@ -84,16 +84,6 @@ var GameInfo = {
 	},
 	
 	/**
-	 * @param {number} slot
-	 * @param {number} chrClassId
-	 * @returns {boolean}
-	 */
-	isWeaponSlot : function(slot, chrClassId)
-	{
-		return slot == 16 || slot == 17 && GameInfo.canDualWield(chrClassId) || slot == 18 && ((1<<chrClassId) & (1<<WARRIOR|1<<ROGUE|1<<HUNTER)) != 0;
-	},
-	
-	/**
 	 * @param {number} chrClassId
 	 * @param {number} shapeForm
 	 * @returns {number}

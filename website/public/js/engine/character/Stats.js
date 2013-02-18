@@ -255,7 +255,7 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 
 	var inv = this.character.inventory;
 	var wearsAWeaponInOffhand = inv.get(17) != null && inv.get(17).itemClass == 2;
-	var wearsRangedWeapon = inv.get(18) != null && inv.get(18).itemClass == 2;
+	var wearsRangedWeapon = inv.get(16) != null && inv.get(16).isRangedWeapon();
 
 	var level = this.character.level;
 	var effects = this.character.auras.getEffects(noBuffs);
@@ -615,21 +615,22 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 	//
 	//	Main-hand
 	//
+    tmp = inv.get(16);
 	if (classId == DRUID && shapeform == BEAR ) {
 		this.mhSpeed 	= 2500;
-		if ( (tmp = inv.get(16)) ) {
+		if ( tmp && tmp.isMeleeWeapon() ) {
 			this.mhMinDmg 	= tmp.minDamage * 2500 / tmp.delay;
 			this.mhMaxDmg 	= tmp.maxDamage * 2500 / tmp.delay;
 		}
 	}
 	else if (classId == DRUID && shapeform == CAT ) {
 		this.mhSpeed 	= 1000;
-		if ( (tmp = inv.get(16)) ) {
+        if ( tmp && tmp.isMeleeWeapon() ) {
 			this.mhMinDmg 	= tmp.minDamage * 1000 / tmp.delay;
 			this.mhMaxDmg 	= tmp.maxDamage * 1000 / tmp.delay;
 		}
 	}
-	else if ( (tmp = inv.get(16)) ) {
+	else if ( tmp && tmp.isMeleeWeapon() ) {
 		this.mhSpeed 	= tmp.delay;
 		this.mhMinDmg 	= tmp.minDamage;
 		this.mhMaxDmg 	= tmp.maxDamage;
@@ -703,7 +704,7 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 	//#########################################################################
 	//
 	if ( wearsRangedWeapon ) {
-		tmp = inv.get(18);
+		tmp = inv.get(16);
 
 		this.raSpeed = tmp.delay;
 		this.raMinDmg = tmp.minDamage + this.rangedAttackPower / 14 * this.raSpeed / 1000 + baseEffects[13][0] + raEffects[13][0];

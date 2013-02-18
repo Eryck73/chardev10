@@ -153,7 +153,7 @@ var TextIO = {
 			desc = desc.replace(/\$max\b/gi, 	"Math.max");
 			desc = desc.replace(
 				/\$hnd\b/gi, 	
-				character.getEquippedItem(16, 0) ? (character.getEquippedItem(16, 0).inventorySlot == 17 && null == character.getEquippedItem(17, 0) ? "2" : "1") : "1"
+				character.getEquippedItem(16, 0) ? (character.getEquippedItem(16, 0).isTwoHanded() && null == character.getEquippedItem(17, 0) ? "2" : "1") : "1"
 			);
 			
 			desc = desc.replace(/\$ap\b/gi, 	String(Math.floor(stats.attackPower)));

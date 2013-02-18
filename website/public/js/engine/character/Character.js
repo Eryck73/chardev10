@@ -133,7 +133,7 @@ function Character() {
 }
 
 Character.MAX_LEVEL = 90;
-Character.DEFAULT_LEVEL = Character.MAX_LEVEL;
+Character.DEFAULT_LEVEL = 85;
 
 Character.prototype = {
 	/** @type{GenericSubject} **/
@@ -333,12 +333,21 @@ Character.prototype = {
 		case 16: 
 			if( this.chrClass != null ) {
 				switch( this.chrClass.id ) {
-				case ROGUE	: return 1<<21|1<<13;
-				default: return 1<<21|1<<17|1<<13;
+				case ROGUE:
+                    return 1<<21|1<<13|1<<15|1<<26;
+                case HUNTER:
+                case WARRIOR:
+                    return 1<<21|1<<17|1<<13|1<<15|1<<26;
+                case PRIEST:
+                case MAGE:
+                case WARLOCK:
+                    return 1<<21|1<<17|1<<13|1<<26;
+				default:
+                    return 1<<21|1<<17|1<<13;
 				}
 			}
 			return 1<<21|1<<13;
-		case 17: 
+		case 17:
 			if( this.chrClass != null ) {
 				switch( this.chrClass.id ) {
 				case WARRIOR	: return 1<<23|1<<14| ( this.chrClass.selectedSpec == 1 ? 1<<13|1<<22 : 0 ) | ( this.canDualWieldTwoHandedWeapons() ? 1<<17 : 0 );
