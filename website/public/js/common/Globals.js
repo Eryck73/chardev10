@@ -22,6 +22,8 @@
 /** @const */ var BLOODELF			= 10;
 /** @const */ var DRAENEI			= 11;
 /** @const */ var WORGEN			= 22;
+/** @const */ var PANDAREN_ALLIANCE = 25;
+/** @const */ var PANDAREN_HORDE    = 26;
 
 /** @const */ var WARRIOR 			= 1;
 /** @const */ var PALADIN 			= 2;

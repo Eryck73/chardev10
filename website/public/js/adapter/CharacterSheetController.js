@@ -267,8 +267,16 @@ CharacterSheetController.prototype = {
 		}
 	},
 	__selectClass: function( serializedChrClass ) {
-		this.character.setClass( new CharacterClass( serializedChrClass ));
-		Tooltip.enable();
+        try {
+		    this.character.setClass( new CharacterClass( serializedChrClass ));
+            Tooltip.enable();
+        }
+        catch( e ) {
+            if( e instanceof IllegalRaceClassException ) {
+                Tooltip.showError(e.toString());
+            }
+            throw e;
+        }
 	},
 	//
 	//#########################################################################

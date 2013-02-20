@@ -397,5 +397,23 @@ var TextIO = {
 	verboseUrl: function( id, name )  {
 		name = name.replace(/\'|\,|\?|!/g, '').replace(/(?:\s|\\|\:|\/|\&|-|<|>|\.)+/g, '-');
 		return id + "-" + name;
-	}
+	},
+    /**
+     * @param {number} n
+     */
+    //TODO format numbers: allow multiple numbers, return the best way to show them all
+    formatNumber: function( n ) {
+        if( typeof n !== "number" ) {
+            return n;
+        }
+        if( n >= 10000 ) {
+            return Math.floor(n/1000) + "k";
+        }
+        else if( n >= 1000 ) {
+            return TextIO.formatFloat2(n/1000) + "k";;
+        }
+        else {
+            return TextIO.formatFloat2(n);
+        }
+    }
 };

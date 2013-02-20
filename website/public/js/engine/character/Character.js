@@ -1220,9 +1220,19 @@ function IllegalRaceClassException( chrRace, chrClass ) {
 	this.chrClass = chrClass;
 }
 IllegalRaceClassException.prototype = {
-	chrRace: null, chrClass: null,
+    /**
+     * @type {CharacterRace}
+     */
+	chrRace: null,
+    /**
+     * @type {CharacterClass}
+     */
+    chrClass: null,
+    /**
+     * @returns {string}
+     */
 	toString: function() {
-		return "Illegal combination of race ("+this.chrRace+") and class("+this.chrClass+").";
+		return "Illegal combination of race ("+this.chrRace.id+") and class("+this.chrClass.id+").";
 	}
 };
 /**
