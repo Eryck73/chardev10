@@ -240,9 +240,9 @@ var Chardev = {
 		},
 		_addTooltipTo: function( html, icon, ttParent, iconParent)  {
 			var tt = new TooltipImpl(); 
-			
+
 			Dom.truncate(ttParent);
-			
+
 			tt.setParent(Dom.get(ttParent));
 			tt.show(html);
 			tt.div.style.position = "relative";
@@ -251,6 +251,7 @@ var Chardev = {
 			img.className = 'dbi_icon';
 			img.src = '/images/icons/large/' + icon + '.png';
 			Dom.set(iconParent, img);
+            Dom.createAt(ttParent, "span", {});
 		},
 		changePassword: function() {
 			var password = $('[name=change_new_password]').val();
