@@ -237,7 +237,7 @@ class ItemData extends Data
 		$item [47] = ( float ) $record ['LimitCategory'];
 		$item [48] = ( float ) $record ['LimitCategoryMultiple'];
 		$item [49] = ( float ) $record ['ChrRaceMask'];
-        $item [50] = [];
+        $item [50] = array();
 
         $ruleSetRecord = DatabaseHelper::fetchOne( $db, "SELECT `ItemUpgradeID` FROM `rulesetitemupgrade` WHERE `ItemID` = ?", array($id));
 
