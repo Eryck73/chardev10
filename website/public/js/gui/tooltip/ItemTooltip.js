@@ -162,10 +162,16 @@ var ItemTooltip = {
 			html += Tools.addTr1("<span class='green'>"+locale['Heroic']+"</span>");
 		}
 
-        //TODO add raid finder flag
+        if( itm.nameDescription ) {
+            html += Tools.addTr1( "<span style='color: #" + itm.nameDescription[1] + ";'>" + itm.nameDescription[0] + "</span>");
+        }
 
         if(itm.level && ( itm.itemClass == 2 || itm.itemClass == 4 ) ){
             html += Tools.addTr1( "<span class='tt_item_gold'>" + TextIO.sprintf1(locale['itemLevel'],itm.level) + "</span>");
+        }
+
+        if( itm.upgrades && itm.upgrades.length > 0 ) {
+            html += Tools.addTr1( "<span class='tt_item_gold'>" + TextIO.sprintf(locale['ItemUpgrade']["UpgradeLevel"], [itm.upgradeLevel, itm.upgrades.length]) + "</span>");
         }
 
         //TODO add upgrade level

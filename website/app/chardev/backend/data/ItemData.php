@@ -237,6 +237,32 @@ class ItemData extends Data
 		$item [47] = ( float ) $record ['LimitCategory'];
 		$item [48] = ( float ) $record ['LimitCategoryMultiple'];
 		$item [49] = ( float ) $record ['ChrRaceMask'];
+        $item [50] = [];
+
+        $ruleSetRecord = DatabaseHelper::fetchOne( $db, "SELECT `ItemUpgradeID` FROM `rulesetitemupgrade` WHERE `ItemID` = ?", array($id));
+
+        if( $ruleSetRecord ) {
+            $upgradeRecords = DatabaseHelper::fetchMany( $db,
+                "SELECT u1.* FROM `itemupgrade` u1 INNER JOIN `itemupgrade` u2 USING (`GroupID`) WHERE u2.ID = ? AND u1.ItemLevelIncrease > 0 ORDER BY u1.ItemLevelIncrease",
+                array($ruleSetRecord["ItemUpgradeID"]));
+
+            foreach( $upgradeRecords as $upgradeRecord ) {
+                $item[50][] = (int)$upgradeRecord["ItemLevelIncrease"];
+            }
+        }
+
+        $item[51] = null;
+        $itemNameDescriptionRecord = DatabaseHelper::fetchOne( $db, "SELECT `Description`, `Color` FROM `itemnamedescription` WHERE `ItemID` = ?", array($id));
+        if( $itemNameDescriptionRecord ) {
+            $color = dechex($itemNameDescriptionRecord["Color"]);
+            if( strlen($color) < 6 ) {
+                $color = str_pad($color, 6, "0", STR_PAD_LEFT);
+            }
+            else {
+                $color = substr($color,-6);
+            }
+            $item[51] = array((string)$itemNameDescriptionRecord["Description"], $color);
+        }
 		
 		return $item;
 	}

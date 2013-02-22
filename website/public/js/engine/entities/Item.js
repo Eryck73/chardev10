@@ -81,6 +81,9 @@ function Item( serialized ) {
 	this.limitCategory = serialized[47];
 	this.limitCategoryMultiple = serialized[48];
 	this.chrRaceMask = serialized[49];
+    this.upgradeLevel = 0;
+    this.upgrades = serialized[50];
+    this.nameDescription = serialized[51];
 }
 
 Item.SUB_CLASS_AXE_1H = 1<<0;
@@ -183,6 +186,10 @@ Item.prototype = {
 	requiredSpellId: 0,
 	requiredSkill: null,
 	requiredSpell: null,
+    //
+    upgrades: [],
+    upgradeLevel: 0,
+    nameDescription: null,
 	//
 	//#########################################################################
 	//
@@ -734,5 +741,31 @@ Item.prototype = {
 	},
     isTwoHanded: function() {
         return this.inventorySlot == 15 || this.inventorySlot == 17 || this.inventorySlot == 26 && this.itemSubClass != 19;
+    },
+    //
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    //
+    //	Upgrade level
+    //
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    //
+    setUpgradeLevel: function( upgradeLevel ) {
+        if( this.level < 458 ) {
+            throw new Error(TextIO.sprintf1(locale["ItemUpgrade"]["Error"]["ItemLevelToLow"], this.name));
+        }
+
+        if( this.quality != 2 && this.quality != 3 ) {
+            throw new Error(locale["ItemUpgrade"]["Error"]["OnlyRareEpic"]);
+        }
+
+        if( this.itemClass != 2 && this.itemClass != 4 ) {
+            throw new Error(locale["ItemUpgrade"]["Error"]["OnlyArmorWeapons"]);
+        }
+
+        if( upgradeLevel < 0 || upgradeLevel > 2 || this.quality == 3 && upgradeLevel > 1 ) {
+            throw new Error(TextIO.sprintf1(locale["ItemUpgrade"]["Error"]["InvalidUpgradeLevel"], upgradeLevel));
+        }
+
+        this.upgradeLevel = upgradeLevel;
     }
 };
