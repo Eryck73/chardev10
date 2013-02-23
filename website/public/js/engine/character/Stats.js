@@ -760,7 +760,8 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 	//	Hit
 	this.spellHitRating = this.ratings[7] + this.ratings[20] + baseEffects[189][7] + baseEffects[189][20];
 	this.spellHit = this.spellHitRating / COMBAT_RATINGS[7][level-1] +
-		Math.min(baseEffects[55][1],baseEffects[55][2],baseEffects[55][3],baseEffects[55][4],baseEffects[55][5],baseEffects[55][6]);
+		Math.min(baseEffects[55][1],baseEffects[55][2],baseEffects[55][3],baseEffects[55][4],baseEffects[55][5],baseEffects[55][6]) +
+        this.expertise[0];
 	//	Crit
 	this.spellCritRating = this.ratings[10] + this.ratings[21] + baseEffects[189][10] + baseEffects[189][21];
 	this.spellCrit = this.spellCritFromAttributes[3] +
@@ -892,7 +893,7 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 	this.melee[4] = this.meleeHaste;
 	this.melee[5] = this.meleeHit[1];
 	this.melee[6] = this.meleeCrit[1];
-	this.melee[7] = [ Math.floor(this.expertise[1]), wearsAWeaponInOffhand ? Math.floor(this.expertise[2]) : null ];
+	this.melee[7] = [ this.expertise[1], wearsAWeaponInOffhand ? this.expertise[2] : null ];
 	this.melee[8] = this.mastery;
 
 	if( wearsRangedWeapon ) {

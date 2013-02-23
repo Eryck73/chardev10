@@ -185,29 +185,21 @@ var StatTooltip = {
 				//
 				//#########################################################
 				//
-				var mhExt = EXPERTISE_TO_CHANCE * stats.melee[7][0],
-					ohExt = stats.melee[7][1] == null ? null : EXPERTISE_TO_CHANCE * stats.melee[7][1],
-					ratingPerCent = COMBAT_RATINGS[23][character.level-1] / EXPERTISE_TO_CHANCE;
-				//
+                var exStr = TextIO.formatFloat2(stats.melee[7][0]) + "%"
+                    + ( stats.melee[7][1] != null ? " / " + TextIO.formatFloat2(stats.melee[7][1]) + "%" : "" );
 				html += Tools.addTr1(
 					"<span class='tt_stat_title'>"+
 					locale['CS_Stats'][group][index]+ 
-					" " + 
-					stats.melee[7][0] +
-					( ohExt != null ? " / " + stats.melee[7][1] : "" ) +
-					"</span>");
+					" " + exStr + "</span>");
 				
 				
 				html += Tools.addTr1(TextIO.sprintf1(
 					locale['TT_StatText']['ReduceDodgeParry'],
-					TextIO.formatFloat2(mhExt) + "%" + ( ohExt != null ? "/"+TextIO.formatFloat2(ohExt)+"%" : "" )
+                    exStr
 				));
 				html += Tools.addTr1(TextIO.sprintf(
-					locale['TT_StatText']['ExpertiseRating'], [
-					                                           Math.floor(stats.expertiseRating[1]),
-					                                           Math.floor(stats.expertiseRating[1]/COMBAT_RATINGS[23][character.level-1])
-					                                          ]
-				));
+					locale['TT_StatText']['ExpertiseRating'],
+                    [ Math.floor(stats.expertiseRating[1]),exStr]));
 				//
 				tmp = "<table class='tt_miss_table' cellpadding='0' cellspacing='0'><colgroup><col width='50%' /><col width='50%' /></colgroup>";
 				//
@@ -219,10 +211,10 @@ var StatTooltip = {
 				//
 				tmp += "<tr><td class='tt_miss_title_l'>"+locale['TT_TargetLevel']+"</td><td class='tt_miss_title_r'>"+locale['TT_DodgeChance']+"</td></tr>";
 				//
-				tmp += StatTooltip.__levelChanceRows( character.level, ENEMY_DODGE, mhExt, ohExt );
+				tmp += StatTooltip.__levelChanceRows( character.level, ENEMY_DODGE, stats.melee[7][0], stats.melee[7][1] );
 				//
 				tmp += "<tr><td colspan='2'>"+
-						StatTooltip.__statCapNotice( ENEMY_DODGE[3], mhExt, ratingPerCent )
+						StatTooltip.__statCapNotice( ENEMY_DODGE[3], stats.melee[7][0], stats.melee[7][0] )
 						+"</td></tr>";
 				//
 				//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -233,10 +225,10 @@ var StatTooltip = {
 				//
 				tmp += "<tr><td class='tt_miss_title_l'>"+locale['TT_TargetLevel']+"</td><td class='tt_miss_title_r'>"+locale['TT_ParryChance']+"</td></tr>";
 				//
-				tmp += StatTooltip.__levelChanceRows( character.level, ENEMY_PARRY, mhExt, ohExt );
+				tmp += StatTooltip.__levelChanceRows( character.level, ENEMY_PARRY, stats.melee[7][0], stats.melee[7][1] );
 				//
 				tmp += "<tr><td colspan='2'>"+
-				StatTooltip.__statCapNotice( ENEMY_PARRY[3], mhExt, ratingPerCent )
+				StatTooltip.__statCapNotice( ENEMY_PARRY[3], stats.melee[7][0], stats.melee[7][0] )
 						+"</td></tr>";
 				//
 				//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
