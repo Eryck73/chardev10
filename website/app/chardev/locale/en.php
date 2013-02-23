@@ -469,8 +469,8 @@
 		37=>"Expertise",
 		38=>"Attack Power",
 		
-		43=>"Mana Regeneration",
-		44=>"Armor Penetration",
+		43=>"Mana Regeneration", // Deprecated
+		44=>"Armor Penetration", // Deprecated
 		45=>"Spell Power",
 		46=>"Health Regeneration",
 		47=>"Spell Penetration",
@@ -702,7 +702,16 @@
     $locale["Enchanted"] = "Enchanted: $";
 	
 	$locale['Regions'] = array( 'us' => 'North America', 'eu' => 'Europe', 'kr' => 'Korea', 'tw' => 'Taiwan', 'cn' => 'China' );
-	
+	$locale["ItemUpgrade"] = array(
+        "Error" => array(
+            "ItemLevelToLow" => "Item level of '$' is to low, upgrade requires level 458!",
+            "OnlyArmorWeapons" => "Item upgrade is only available for armor and weapons!",
+            "OnlyRareEpic" => "Item upgrade is only available for rare and epic items!",
+            "InvalidUpgradeLevel" => "Upgrade level '$' is not valid"
+        ),
+        "UpgradeLevel" => "Upgrade Level: $/$"
+    );
+
 	function localize( $key ) {
 		return $key;
 	}
