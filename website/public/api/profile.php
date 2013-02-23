@@ -1,10 +1,9 @@
 <?php
 
-use chardev\backend\UserDatabase;
+require_once __DIR__ . "/../../app/bootstrap.php";
 
 use chardev\Ajax;
-
-require_once '../../app/chardev/Autoloader.php';
+use chardev\backend\UserDatabase;
 
 \chardev\Session::startBackendSession();
 

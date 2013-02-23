@@ -128,8 +128,8 @@
 .disable_div{
 	background-image:url(images/tooltip/bg.png);
 	position:absolute;
-	top:0px;
-	left:0px;
+	top:0;
+	left:0;
 	width:100%;
 	height:100%;
 	display:none;
@@ -171,8 +171,8 @@
 
 .tt_overlay_w {
 	position: relative;
-	top: 0px;
-	left: 0px;
+	top: 0;
+	left: 0;
 }
 
 .tt_overlay {

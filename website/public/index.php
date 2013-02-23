@@ -1,12 +1,13 @@
 <?php
 
-use chardev\Session;
+require_once __DIR__ . "/../app/bootstrap.php";
+
 use chardev\ChardevHelper;
 use chardev\FormatHelper;
-use chardev\backend\UserDatabase;
+use chardev\Session;
+use chardev\TemplateHelper;
 use chardev\backend\DoesNotExistException;
-
-require_once '../app/chardev/Autoloader.php';
+use chardev\backend\UserDatabase;
 
 define('BUILD', (int)file_get_contents("../build/.build"));
 
@@ -244,4 +245,4 @@ catch( \Exception $e ) {
 	$th->setTemplate("Error404", array( "exception" => $e ));
 }
 
-include '../app/layouts/layout.phtml';
+include __DIR__ . '/../app/layouts/layout.phtml';

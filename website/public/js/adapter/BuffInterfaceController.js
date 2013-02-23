@@ -63,9 +63,8 @@ BuffInterfaceController.prototype = {
 					if ( s.isAura() ) {
 						continue;
 					}
-					else {
-						useSpells.push( new SpellFacade( s, cc ));
-					}
+
+                    useSpells.push( new SpellFacade( s, cc ));
 				}
 				//
 				// Engineering enchants

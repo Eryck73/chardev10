@@ -23,7 +23,7 @@
 		} 
 		$active = false;
 		
-		$url = TemplateHelper::getBasePath() . 'baseStats/' . FormatHelper::verboseUrl($i+1, $locale['a_class'][$i]) . '.html';
+		$url = \chardev\TemplateHelper::getBasePath() . 'baseStats/' . FormatHelper::verboseUrl($i+1, $locale['a_class'][$i]) . '.html';
 		
 		if( $i + 1 == $parsed['ID'] ) {
 			$class = $i + 1;

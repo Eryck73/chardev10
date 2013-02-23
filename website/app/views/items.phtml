@@ -1,7 +1,7 @@
 <?php
 use chardev\Session;
 
-$bp = self::getBasePath();
+$bp = \chardev\TemplateHelper::getBasePath();
 
 $serialized = null;
 $item = null;
@@ -54,7 +54,7 @@ $search_form = "
 		<div style='clear: both;'></div>
 	</div>
 	<?php if( $item ): ?>
-	
+
 		<script type="text/javascript">
 		<!--
 		var serialized = <?php echo json_encode($item->getData()) ?>;
@@ -63,7 +63,7 @@ $search_form = "
 		});
 		//-->
 		</script>
-		
+
 		<table class='dbi_p'>
 			<tr>
 				<td valign='top' id='item_icon'></td>

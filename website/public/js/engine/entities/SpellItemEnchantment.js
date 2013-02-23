@@ -104,7 +104,7 @@ SpellItemEnchantment.prototype = {
 				return false;
 			}
 		}
-		if ( _g > 0 && _c == 5 && count[_g] < _v) 
+		if ( _g > 0 && _c == 5 && count[_g] < _v)
 		{
 			return false;
 		}
