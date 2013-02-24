@@ -84,6 +84,11 @@ function Item( serialized ) {
     this.upgradeLevel = 0;
     this.upgrades = serialized[50];
     this.nameDescription = serialized[51];
+    this.source = serialized[52];
+
+    if( this.source && this.source[0] == 3 && this.binds == 1 ) {
+        this.requiredCharacterLevelQuest = this.source[1][2];
+    }
 }
 
 Item.SUB_CLASS_AXE_1H = 1<<0;
@@ -190,6 +195,8 @@ Item.prototype = {
     upgrades: [],
     upgradeLevel: 0,
     nameDescription: null,
+    source: null,
+    requiredCharacterLevelQuest: 0,
 	//
 	//#########################################################################
 	//

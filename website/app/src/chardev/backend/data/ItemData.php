@@ -263,7 +263,29 @@ class ItemData extends Data
             }
             $item[51] = array((string)$itemNameDescriptionRecord["Description"], $color);
         }
-		
+
+        $itemSrc = null;
+        $itemSrcRecord = DatabaseHelper::fetchOne( $db, "SELECT * FROM chardev_mop_static.`chardev_item_source` WHERE `ItemID` = ?", array($id));
+        if( $itemSrcRecord ) {
+            $itemSrc = array();
+            $itemSrc[0] = (int) $itemSrcRecord["Type"];
+
+            switch( $itemSrcRecord["Type"] ) {
+                case 3:
+                    $questRecord = DatabaseHelper::fetchOne( $db, "SELECT * FROM chardev_mop_static.`chardev_quest` WHERE `ID` = ?", array($itemSrcRecord["SourceID"]));
+                    $itemSrc[1] = array(
+                        (int)$questRecord["ID"],
+                        $questRecord["Title"],
+                        (int)$questRecord["RequiredLevel"],
+                        (int)$questRecord["Level"],
+                        $questRecord["Category"],
+                        (int)$questRecord["SuggestedPartyMembers"],
+                    );
+                    break;
+            }
+        }
+        $item[52] = $itemSrc;
+
 		return $item;
 	}
 	

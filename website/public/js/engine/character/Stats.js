@@ -367,7 +367,7 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 		var hasBSSocket = this.character.hasBlacksmithingSocket(i);
 
 		itm = preview ? inv.get(i) : inv.items[i][0];
-		if( itm == null || !this.character.canWear(itm) || !this.character.fitsItemClassRequirements(itm) ) {
+		if( itm == null || !this.character.canWear(itm) || !this.character.fitsItemClassRequirements(itm) || ! this.character.fitsLevelRequirements(itm) ) {
 			continue;
 		}
 		itm.setStats(level);

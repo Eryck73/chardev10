@@ -555,13 +555,28 @@ var ItemTooltip = {
             }
 
             if(itm.description){
-                html += Tools.addTr1("<span style='color:#DDDD00'>\""+itm.description+"\"</span>");
+                html += Tools.addTr1("<span style='color:#DDDD00'>"+itm.description+"</span>");
             }
 			
 			if( itm.sellPrice > 0 ) 
 			{
 				html += Tools.addTr1(TextIO.sprintf1( locale['SellPrice'], TextIO.htmlPrice(itm.sellPrice)));
 			}
+
+            if( itm.source ) {
+                html += Tools.addTr1("<div class='tt_item_spacing'></div>")
+                switch(itm.source[0]) {
+                    case 3:
+                        html += Tools.addTr1("<span class=\"tt_item_gold\">Quest: </span>" + itm.source[1][1]);
+                        if ( chrLevel < itm.source[1][2] ) {
+                            html += Tools.addTr1("<span class=\"red\">Required level: " + itm.source[1][2] + "</span>");
+                        }
+                        else {
+                            html += Tools.addTr1("<span class=\"tt_item_gold\">Required level: </span>" + itm.source[1][2]);
+                        }
+                        html += Tools.addTr1("<span class=\"tt_item_gold\">Category: </span>" + itm.source[1][4]);
+                }
+            }
 			
 			if( g_settings.isPlanner == true && itm.randomEnchants != null ) {
 				html += Tools.addTr1("<span style='white-space: normal; color:#808080; font-size:11px'>See Enchants to change the random enchantment</span>");

@@ -297,7 +297,7 @@ Character.prototype = {
 				return true;
 			}
 		}
-		else if( itm.itemClass == 2 ) {
+		if( itm.itemClass == 2 ) {
 			return true;
 		}
 		return false;
@@ -307,6 +307,9 @@ Character.prototype = {
 			(itm.chrClassMask&(2047)) == 2047
 			|| this.chrClass != null && ( itm.chrClassMask&(1<<(this.chrClass.id-1))) != 0; 
 	},
+    fitsLevelRequirements: function( itm ) {
+        return itm.requiredCharacterLevel <= this.level && itm.requiredCharacterLevelQuest <= this.level;
+    },
 	/**
 	 * @public
 	 * @param {number} slot

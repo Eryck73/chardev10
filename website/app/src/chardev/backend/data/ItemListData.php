@@ -38,6 +38,7 @@ class ItemListData extends ListData
 		$items = array();
 		$values = array();
 		$join_gem_properties = false;
+        $join_quest = false;
 		
 		$suffix = Language::getInstance()->toSuffixString();
 		$langColumnSuffix = $suffix ? strtoupper($suffix) : 'EN';
@@ -223,6 +224,8 @@ class ItemListData extends ListData
 					}
 					else {
 						$where .= ( $where ? " AND " : "" ) . "( s.`RequiredCharacterLevel` <= ".(int)$match[3]." )";
+//                        $where .= ( $where ? " AND " : "" ) . "( s.`Binds` != 1 OR q.`ID` IS NULL OR q.`RequiredLevel` <= ".(int)$match[3]." )";
+//                        $join_quest = true;
 					}
 					break;
 				case "reqrepu":
@@ -272,10 +275,13 @@ class ItemListData extends ListData
 				"INNER JOIN `item` i on i.`ID` = s.`ID` ".
 				"LEFT JOIN chardev_mop_static.`chardev_item_stats` cis ON cis.`ItemID`=i.`ID` ".
 				( $join_gem_properties ? "LEFT JOIN `gemproperties` gp ON s.`GemPropertiesID` = gp.`ID` " : "" ) .
+                ( $join_quest ?
+                    "LEFT JOIN chardev_mop_static.`chardev_item_source` src ON src.`ItemID`=i.`ID` and src.`Type`=3 " .
+                    "LEFT JOIN chardev_mop_static.`chardev_quest` q ON q.`ID` IS NOT NULL AND q.`ID` = src.`SourceID`" : "" ) .
 				" WHERE ".$where.
 				($orderClause ? " ORDER BY ".$orderClause : "").
 				" LIMIT ".Constants::ITEMS_PER_PAGE *($page-1).",".(Constants::ITEMS_PER_PAGE + 1);
-	
+
 		$records = DatabaseHelper::fetchMany(Database::getConnection(),$query,$values);
 
 		$items[0] = array( count($records), Constants::ITEMS_PER_PAGE);

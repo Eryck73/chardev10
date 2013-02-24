@@ -60,8 +60,8 @@ EquippedItem.prototype = {
 	},
 	isInvalid: function() {
 		return !this.__character.canWear(this.__itm) || 
-			!this.__character.fitsItemClassRequirements(this.__itm) || 
-			this.__itm.requiredCharacterLevel > this.__character.level;
+			!this.__character.fitsItemClassRequirements(this.__itm) ||
+            !this.__character.fitsLevelRequirements(this.__itm);
 	},
 	hasExtraSocket: function() {
 		return this.__character.hasBlacksmithingSocket(this.slot);

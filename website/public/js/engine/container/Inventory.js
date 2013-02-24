@@ -165,7 +165,7 @@ Inventory.prototype = {
 		this.enchantPreview = false;
 		this.enchantPreviewRef = null;
 	},
-	
+
 	/**
 	 * @param {number} slot
 	 * @param {Item} itm
@@ -197,6 +197,10 @@ Inventory.prototype = {
 		if( !this.character.fitsItemClassRequirements(itm) ) {
 			throw new InvalidItemException( itm, InvalidItemException.CAUSE_WRONG_CHARACTER_CLASS );
 		}
+
+        if( !this.character.fitsLevelRequirements(itm) ) {
+            throw new InvalidItemException( itm, InvalidItemException.CAUSE_CHARACTER_LEVEL );
+        }
 		
 		
 		if ( this.__testUnique(itm, slot) ) {
