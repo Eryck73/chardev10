@@ -309,7 +309,7 @@
 		array("Health","Mana","Rage","Energy","Focus","Runic Power","Item Level"),
 		array("Strength","Agility","Stamina","Intellect","Spirit"),
 		array("Damage","DPS","Attack Power","Speed","Haste","Hit Chance","Crit Chance","Expertise","Mastery"),
-		array("Damage","DPS","Attack Power","Speed","Haste","Hit Chance","Crit Chance","Mastery"),
+		array("Damage","DPS","Attack Power","Speed","Haste","Hit Chance","Crit Chance","Expertise","Mastery"),
 		array("Spell Power","Haste","Hit Chance","Penetration","Mana Regen","Combat Regen","Crit Chance","Mastery"),
 		array("Armor","Dodge","Parry","Block","PvP Resilience","PvP Power","Avoidance", "CTC"),
 		array("Arcane","Fire","Nature","Frost","Shadow")

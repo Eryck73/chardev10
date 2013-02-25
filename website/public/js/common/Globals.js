@@ -279,8 +279,8 @@ var g_spells = null;
 /** @const */ var DW_MISS_BASE = [24,24.5,25,27];
 /** @const */ var SPELL_MISS_BASE = [4,5,6,17];
 /** @const */ var RANGED_MISS_BASE = [5,5.5,6,8];
-/** @const */ var ENEMY_PARRY = [5,5.5,6,14];
-/** @const */ var ENEMY_DODGE = [5,5.5,6,6.5];
+/** @const */ var ENEMY_PARRY = [3,4.5,6,7.5];
+/** @const */ var ENEMY_DODGE = [3,4.5,6,7.5];
 
 //var BASE_AP		= [0,-20,-20,-20,-20,-10,-20,-20,-10,-10,0,-20];
 /** @const */ var AP_PER_LEVEL= [0,3,3,2,2,0,3,2,0,0,0,3];

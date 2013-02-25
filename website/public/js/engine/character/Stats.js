@@ -115,7 +115,7 @@ Stats.prototype.reset = function() {
 		this.ratings[i] = 0;
 	}
 	this.melee = [0,0,0,0,0,0,0,0,0,0];
-	this.ranged = [[0,0],0,0,0,0,0,0,0];
+	this.ranged = [[0,0],0,0,0,0,0,0,0,0];
 	this.spell = [0,0,0,0,0,0,0,0];
 	this.defense = [0,0,0,0,0,0,0,0];
 	this.resistance = [0,0,0,0,0];
@@ -911,7 +911,8 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 	this.ranged[4] = this.rangedHaste;
 	this.ranged[5] = this.rangedHit;
 	this.ranged[6] = this.rangedCrit;
-	this.ranged[7] = this.mastery;
+	this.ranged[7] = this.expertise[3];
+    this.ranged[8] = this.mastery;
 
 	this.spell[0] = this.spellPower;
 	this.spell[1] = this.spellHaste;
