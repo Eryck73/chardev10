@@ -211,7 +211,7 @@ var StatTooltip = {
 				//
 				tmp += "<tr><td class='tt_miss_title_l'>"+locale['TT_TargetLevel']+"</td><td class='tt_miss_title_r'>"+locale['TT_DodgeChance']+"</td></tr>";
 				//
-				tmp += StatTooltip.__levelChanceRows( character.level, ENEMY_DODGE, stats.melee[7][0], stats.melee[7][1] );
+				tmp += StatTooltip.__levelChanceRows( character.level, ENEMY_DODGE, stats.melee[7][0], stats.melee[7][1], null );
 				//
 				//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 				//
@@ -221,7 +221,7 @@ var StatTooltip = {
 				//
 				tmp += "<tr><td class='tt_miss_title_l'>"+locale['TT_TargetLevel']+"</td><td class='tt_miss_title_r'>"+locale['TT_ParryChance']+"</td></tr>";
 				//
-				tmp += StatTooltip.__levelChanceRows( character.level, ENEMY_PARRY, Math.max(0,stats.melee[7][0] - ENEMY_DODGE[3]), stats.melee[7][1] === null ? null : Math.max(0,stats.melee[7][1] - ENEMY_DODGE[3]) );
+				tmp += StatTooltip.__levelChanceRows( character.level, ENEMY_PARRY, stats.melee[7][0], stats.melee[7][1], ENEMY_DODGE );
 				//
 				tmp += "<tr><td colspan='2'>"+
 				StatTooltip.__statCapNotice( ENEMY_DODGE[3] + ENEMY_PARRY[3], Math.max(0,stats.melee[7][0]), COMBAT_RATINGS[23][character.level-1] )
@@ -344,7 +344,7 @@ var StatTooltip = {
                 //
                 tmp += "<tr><td class='tt_miss_title_l'>"+locale['TT_TargetLevel']+"</td><td class='tt_miss_title_r'>"+locale['TT_DodgeChance']+"</td></tr>";
                 //
-                tmp += StatTooltip.__levelChanceRows( character.level, ENEMY_DODGE, stats.ranged[7], null );
+                tmp += StatTooltip.__levelChanceRows( character.level, ENEMY_DODGE, stats.ranged[7], null, null );
                 //
                 tmp += "<tr><td colspan='2'>"+
                     StatTooltip.__statCapNotice( ENEMY_DODGE[3], Math.max(0,stats.melee[7][0]), COMBAT_RATINGS[23][character.level-1] )
@@ -534,14 +534,25 @@ var StatTooltip = {
 		}
 		return "";
 	},
-	__levelChanceRows: function( lvl, arr, statMH, statOH ) {
+	__levelChanceRows: function( lvl, arr, statMH, statOH, preReq ) {
 		var i, tmp = "";
 		for( i=0; i<4; i++ ) {
+            var oh = statOH;
+            var mh = statMH;
+
+            if( preReq != null ) {
+                oh = oh === null ? null : oh - preReq[i];
+                mh = mh - preReq[i];
+            }
+
+            oh = oh === null ? null : Math.max(0, oh);
+            mh = Math.max(0, mh);
+
 			tmp += "<tr><td class='tt_miss_level'>"+
 					( lvl + i ) +
 					"</td><td class='tt_miss'>"+
-					TextIO.formatFloat2(Math.max(0, arr[i] - statMH)) +
-					( statOH != null ? "/" + TextIO.formatFloat2(Math.max(0, arr[i] - statMH)) : "" ) +
+					TextIO.formatFloat2(Math.max(0, arr[i] - mh)) +
+					( oh != null ? "/" + TextIO.formatFloat2(Math.max(0, arr[i] - oh)) : "" ) +
 					"%</td></tr>";
 		}
 		return tmp;
