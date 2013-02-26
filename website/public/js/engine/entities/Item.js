@@ -361,31 +361,31 @@ Item.prototype = {
 		if( this.itemClass == 4 ) {
 			switch( this.inventorySlot ) {
 			case 1:
-				this.armor = SCALING_STAT_VALUE[level][19+this.itemSubClass];
-				statValue = SCALING_STAT_VALUE[level][7];
+				this.armor = SCALING_STAT_VALUE[level][20+this.itemSubClass];
+				statValue = SCALING_STAT_VALUE[level][8];
 				break;
 			case 3:
-				this.armor = SCALING_STAT_VALUE[level][11+this.itemSubClass];
-				statValue = SCALING_STAT_VALUE[level][8];
+				this.armor = SCALING_STAT_VALUE[level][12+this.itemSubClass];
+				statValue = SCALING_STAT_VALUE[level][9];
 				break;
 			case 5:
 			case 20:
-				this.armor = SCALING_STAT_VALUE[level][15+this.itemSubClass];
-				statValue = SCALING_STAT_VALUE[level][7];
-				break;
-			case 7:
-				this.armor = SCALING_STAT_VALUE[level][23+this.itemSubClass];
-				statValue = SCALING_STAT_VALUE[level][7];
-				break;
-			case 11:
-				statValue = SCALING_STAT_VALUE[level][9];
-				break;
-			case 12:
+				this.armor = SCALING_STAT_VALUE[level][16+this.itemSubClass];
 				statValue = SCALING_STAT_VALUE[level][8];
 				break;
-			case 16:
-				this.armor = SCALING_STAT_VALUE[level][44];
+			case 7:
+				this.armor = SCALING_STAT_VALUE[level][24+this.itemSubClass];
+				statValue = SCALING_STAT_VALUE[level][8];
+				break;
+			case 11:
+				statValue = SCALING_STAT_VALUE[level][10];
+				break;
+			case 12:
 				statValue = SCALING_STAT_VALUE[level][9];
+				break;
+			case 16:
+				this.armor = SCALING_STAT_VALUE[level][45];
+				statValue = SCALING_STAT_VALUE[level][10];
 				break;
 			}
 			switch( this.unmodifiedSubClass ) {
@@ -413,18 +413,19 @@ Item.prototype = {
 			var iscMask = 1<<this.itemSubClass;
 			// ranged
 			if( iscMask&(1<<2|1<<3|1<<18) ) {
-				statValue = SCALING_STAT_VALUE[level][10];
-				dps = SCALING_STAT_VALUE[level][4];
+				statValue = SCALING_STAT_VALUE[level][11];
+				dps = SCALING_STAT_VALUE[level][2];
 			}
 			// one-hand / caster 0 4 7 11 13 15 
 			else if( iscMask&(1<<0|1<<4|1<<7|1<<11|1<<13|1<<15) ) {
-				statValue = SCALING_STAT_VALUE[level][11];
-				dps = SCALING_STAT_VALUE[level][ this.typeMask2&512 ? 2 : 0 ];
+				statValue = SCALING_STAT_VALUE[level][12];
+				dps = SCALING_STAT_VALUE[level][1];
+                console.log(dps);
 			}
 			// two-hand / caster 1 5 6 8 10 12 17 20
 			else if( iscMask&(1<<1|1<<5|1<<6|1<<8|1<<10|1<<12|1<<17|1<<20) ) {
-				statValue = SCALING_STAT_VALUE[level][7];
-				dps = SCALING_STAT_VALUE[level][ this.typeMask2&512 ? 3 : 1 ];
+				statValue = SCALING_STAT_VALUE[level][8];
+				dps = SCALING_STAT_VALUE[level][2];
 			}
 		}
 		
@@ -438,8 +439,8 @@ Item.prototype = {
 				}
 			}
 			// Caster weapons spell power
-			if((this.typeMask2&512) && ( this.itemClass == 2 ) && (SCALING_STAT_VALUE[level][6]>0)) {
-				this.stats[n++] = [45, SCALING_STAT_VALUE[level][6]];
+			if((this.typeMask2&512) && ( this.itemClass == 2 ) && (SCALING_STAT_VALUE[level][7]>0)) {
+				this.stats[n++] = [45, SCALING_STAT_VALUE[level][7]];
 			}
 		}
 		
