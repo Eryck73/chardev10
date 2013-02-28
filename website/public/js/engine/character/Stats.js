@@ -935,7 +935,7 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 
 	this.defense[3] = this.block;
 	this.defense[4] = this.resilienceDamageReduction; //resilience
-	this.defense[5] = this.pvpPowerRating / 79.1;
+	this.defense[5] = this.pvpPowerRating / COMBAT_RATINGS[26][level-1];
 	this.defense[6] = this.meleeMiss + this.dodge + this.parry;
 	this.defense[7] = this.meleeMiss + this.dodge + this.block + this.parry;
 
