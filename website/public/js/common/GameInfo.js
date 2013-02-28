@@ -23,7 +23,7 @@ var GameInfo = {
 	 */
 	canParry : function(chrClassId)
 	{
-	    return ((1<<chrClassId & (1<<WARRIOR|1<<PALADIN|1<<ROGUE|1<<HUNTER|1<<DEATHKNIGHT)) != 0);
+	    return ((1<<chrClassId & (1<<WARRIOR|1<<PALADIN|1<<ROGUE|1<<DEATHKNIGHT)) != 0);
 	},
 	
 	/**

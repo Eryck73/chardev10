@@ -318,6 +318,7 @@ FILTER_CLASS_OPTIONS[32] = locale['a_class'][5];
 FILTER_CLASS_OPTIONS[64] = locale['a_class'][6];
 FILTER_CLASS_OPTIONS[128] = locale['a_class'][7];
 FILTER_CLASS_OPTIONS[256] = locale['a_class'][8];
+FILTER_CLASS_OPTIONS[512] = locale['a_class'][9];
 FILTER_CLASS_OPTIONS[1024] = locale['a_class'][10];
 
 var FILTER_YES_NO_OPTIONS = {};

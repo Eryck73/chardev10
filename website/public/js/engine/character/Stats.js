@@ -861,7 +861,7 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 		this.ratings[15] + baseEffects[189][15],
 		this.ratings[16] + baseEffects[189][16]
 	);
-	this.resilienceDamageReduction = (1 - Math.pow( 0.99 , ( this.resilienceRating / COMBAT_RATINGS[15][level-1] ))) * 100;
+	this.resilienceDamageReduction = 40 + (1 - Math.pow( 0.99 , ( this.resilienceRating / COMBAT_RATINGS[15][level-1] ))) * 100;
 	//
 	//	Miss
 	this.meleeMiss = 5 - effects[0][184] - effects[1][184] - effects[2][184] - effects[3][184];
