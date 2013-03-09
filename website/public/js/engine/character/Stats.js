@@ -280,7 +280,7 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 		shapeform = chrClass.shapeform;
 		selectedTree = chrClass.selectedSpec;
 		baseStats = chrClass.baseStats;
-		//TODO level 90 base stats
+
 		if( baseStats[level] ) {
 			baseStatsLevel =  baseStats[level];
 		}

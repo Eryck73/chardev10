@@ -249,7 +249,7 @@ class CommunityPlatformClient
 	/**
 	 * Returns the item identified by given ID as JSON encoded ITEM.
 	 *
-	 * @param $itemId int       	
+	 * @param $itemId int
 	 * @throws \InvalidArgumentException If the ID is lower than or equal to
 	 *         zero
 	 * @return string JSON encoded ITEM
@@ -259,11 +259,27 @@ class CommunityPlatformClient
 		
 		if (( int ) $itemId < 1)
 		{
-			throw new \InvalidArgumentException ( 'Invalid ItemID: ' . $itemId );
+			throw new \InvalidArgumentException ( 'Invalid item ID: ' . $itemId );
 		}
 		
 		return $this->request ( $this->protocol . '://eu.battle.net', '/api/wow/item/' . ( int ) $itemId, '' );
 	}
+
+    /**
+     * Retrieves the quest given by its ID as JSON
+     *
+     * @param $questId int
+     * @return string JSON encoded quest
+     * @throws \InvalidArgumentException if the quest id is lower or equal to 0
+     */
+    public function getQuest($questId) {
+        if (( int ) $questId < 1)
+        {
+            throw new \InvalidArgumentException ( 'Invalid quest ID: ' . $questId );
+        }
+
+        return $this->request ( $this->protocol . '://eu.battle.net', '/api/wow/quest/' . ( int ) $questId, '' );
+    }
 	
 	/**
 	 * Returns a list of all available realms for a given region
@@ -285,7 +301,7 @@ class CommunityPlatformClient
 	/**
 	 * Validates given region
 	 *
-	 * @param $region string       	
+	 * @param $region string
 	 * @throws \Exception If given region is invalid
 	 */
 	private function validateRegion($region)
