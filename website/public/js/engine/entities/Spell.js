@@ -60,7 +60,7 @@ function Spell( serialized ) {
 	
 	this.type = [];
 	for( i=0; i<serialized[16].length; i++ ) {
-		this.type[i] = Tools.toUnsigned(serialized[16][i]);
+		this.type[i] = serialized[16][i];
 	}
 	
 	this.auraOptions = serialized[18] ? new SpellAuraOptions(serialized[18]) : null;
