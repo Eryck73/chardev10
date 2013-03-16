@@ -101,6 +101,11 @@ $loggedInUser = Session::getLoggedInUser();
                 <div class="ix_mm_entry"><a
                         class="ix_mm_link<?php echo $view == 'Donate' ? " ix_mm_link_active" : ""; ?>"
                         href="<?php echo $basePath ?>Donate.html"><span class="ix_mm_ll">donate</span></a></div>
+<?php if( ! Session::loggedIn()): ?>
+                <div class="ix_mm_entry"><a
+                        class="ix_mm_link<?php echo $view == 'Register' ? " ix_mm_link_active" : ""; ?>"
+                        href="<?php echo $basePath ?>Register.html"><span class="ix_mm_ll">register</span></a></div>
+<?php endif; ?>
                 <div class="ix_mm_entry"><a class="ix_mm_link"
                                             href="https://github.com/chardev/chardev9/tree/chardev10"><span
                             class="ix_mm_ll">source</span></a></div>
