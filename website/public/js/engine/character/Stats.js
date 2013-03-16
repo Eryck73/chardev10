@@ -30,6 +30,8 @@ Stats.prototype.health = 0;
 Stats.prototype.mana = 0;
 Stats.prototype.baseHealth = 0;
 Stats.prototype.baseMana = 0;
+Stats.prototype.healthFromGear = 0;
+Stats.prototype.manaFromGear = 0;
 
 Stats.prototype.spellPower = 0;
 Stats.prototype.spellHasteRating = 0;
@@ -124,6 +126,8 @@ Stats.prototype.reset = function() {
 	this.mana = 0;
 	this.baseMana = 0;
 	this.baseHealth = 0;
+    this.healthFromGear = 0;
+    this.manaFromGear = 0;
 
 	this.spellPower = 0;
 	this.spellHasteRating = 0;
@@ -491,10 +495,10 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 	//#########################################################################
 	//
 	this.healthFromSta = ( level < 80 ? 10 : level < 85 ? 10 + (level - 80) * 0.8 : 14 )  * Math.max( 0, this.attributes[2] - 20 ) + ( this.attributes[2] >= 20 ? 20 : this.attributes[2] );
-	this.health = this.healthFromSta + this.baseHealth * ( 1 + baseEffects[282] / 100 ) + baseEffects[34] + baseEffects[230] ;
+	this.health = this.healthFromSta + this.baseHealth * ( 1 + baseEffects[282] / 100 ) + baseEffects[34] + baseEffects[230] + this.healthFromGear;
 	this.health*= 1 + baseEffects[133]/100;
 	//
-	this.mana = this.baseMana;
+	this.mana = this.baseMana + this.manaFromGear;
 	this.mana*= 1 + baseEffects[132]/100;
 	//
 	//#########################################################################
@@ -1008,10 +1012,17 @@ Stats.prototype.getEnchantStats = function( enchant ) {
 	{
 		if( enchant.types[i] == 5 )
 		{
-			if( enchant.spellIds[i] >= 11 )
-			{
-				this.ratings[enchant.spellIds[i]-11] += enchant.values[i];
-			}
+            if( enchant.spellIds[i] == 0 ) {
+                this.manaFromGear += enchant.values[i];
+            }
+            else if( enchant.spellIds[i] == 1 )
+            {
+                this.healthFromGear += enchant.values[i];
+            }
+            else if( enchant.spellIds[i] >= 11 )
+            {
+                this.ratings[enchant.spellIds[i]-11] += enchant.values[i];
+            }
 			else
 			{
 				this.attributes[STAT_IDS_TO_ATTRIBUTES[enchant.spellIds[i]]] += enchant.values[i];
