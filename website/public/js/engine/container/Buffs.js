@@ -66,7 +66,11 @@ Buffs.getAvailableBuffs = function( handler, characterScope ) {
 			for( var k in obj ) {
 				r[k] = [];
 				for( var j=0; j<obj[k].length; j++ ) {
-					
+
+                    if( obj[k][j] === null ) {
+                        continue;
+                    }
+
 					if( k === "Food" ) {
 						var i = new Item(obj[k][j]);
 						ItemCache.set(i);
