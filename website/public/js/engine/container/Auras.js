@@ -311,7 +311,7 @@ Auras.prototype = {
 	 */
 	__addEffects : function( sp, effect, stacks, isBuff, selfBuff )
 	{
-		var j, eff, effs = sp.effects ;
+		var j = 0, eff, effs = sp.effects ;
 		var seId = 0, value;
 		//  var spco = sp.classOptions;
 		var indirect = false;
@@ -325,7 +325,7 @@ Auras.prototype = {
 		//	effects are applied.
 		//
 		if( isBuff && !selfBuff ) {
-			for( j=0;j<3;j++) {
+            for( j in effs ) {
 				if( effs[j] != null && effs[j].aura == 65 ) {
 					indirect = true;
 					break;
@@ -333,7 +333,7 @@ Auras.prototype = {
 			}
 		}
 		
-		for( j=0;j<3;j++)
+		for( j in effs )
 		{
 			eff = effs[j];
 			if( eff == null )
