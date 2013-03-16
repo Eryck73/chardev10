@@ -185,7 +185,7 @@ class ItemListData extends ListData
 								$q .= " AND ( i.`ItemClass`!=4 OR i.`ItemSubClass` NOT IN (2,3,4))";
 								break;
 						}
-						$where .= ( $where ? " AND " : "" ) . "((" . $cl_c ."&". (int)$match[3].")!=0 OR ". $cl_c . "<='0' )".$q;
+						$where .= ( $where ? " AND " : "" ) . "((" . $cl_c ."&". (int)$match[3].")!=0 OR ". $cl_c . "='0' )".$q;
 					}
 					break;
 				case "issocketablegem":

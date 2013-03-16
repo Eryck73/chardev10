@@ -503,7 +503,7 @@ var ItemTooltip = {
                 html += Tools.addTr1(locale['Durability']+": "+itm.durability+"/"+itm.durability);
             }
 
-            if ( itm.chrClassMask != 0 && (itm.chrClassMask&2047)!=2047 && itm.chrClassMask > 0) {
+            if ( itm.chrClassMask != 0 && (itm.chrClassMask&2047)!=2047) {
                 var sz_classes = "", sz_coloredClasses = "";
                 for ( i = 0; i < 11; i++) {
                     if ( (itm.chrClassMask & (1<<i)) != 0) {
