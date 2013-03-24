@@ -16,13 +16,13 @@ class SkillLineData extends Data
 	public static function getInstance() 
 	{
 		if( self::$instance == null ) {
-			self::$instance = new SkillLineData( /*args*/);
+			self::$instance = new SkillLineData();
 		}
 		return self::$instance;
 	}
 	
-	protected function __construct( /*args*/) {
-		//TODO: Auto generated stub
+	protected function __construct() {
+		//T
 	}
 	
 	protected function getData( $id ) {

@@ -334,7 +334,7 @@ Character.prototype = {
 		case 14: return 1<<12;
 		case 15: return 1<<12;
 		case 16: 
-			if( this.chrClass != null ) {
+			if( this.chrClass !== null ) {
 				switch( this.chrClass.id ) {
 				case ROGUE:
                     return 1<<21|1<<13|1<<15|1<<26;
@@ -351,14 +351,15 @@ Character.prototype = {
 			}
 			return 1<<21|1<<13;
 		case 17:
-			if( this.chrClass != null ) {
+			if( this.chrClass !== null ) {
 				switch( this.chrClass.id ) {
-				case WARRIOR	: return 1<<23|1<<14| ( this.chrClass.selectedSpec == 1 ? 1<<13|1<<22 : 0 ) | ( this.canDualWieldTwoHandedWeapons() ? 1<<17 : 0 );
+				case WARRIOR	: return 1<<23|1<<14| ( this.chrClass.selectedSpec === 1 ? 1<<13|1<<22 : 0 ) | ( this.canDualWieldTwoHandedWeapons() ? 1<<17 : 0 );
 				case PALADIN	: return 1<<23|1<<14;
 				case HUNTER 	: return 1<<23|1<<22|1<<13;
 				case ROGUE		: return 1<<23|1<<22|1<<13;
 				case DEATHKNIGHT: return 1<<23|1<<22|1<<13;
-				case SHAMAN		: return 1<<23|1<<14| ( this.chrClass.selectedSpec == 1 ? 1<<13|1<<22 : 0 );
+				case SHAMAN		: return 1<<23|1<<14| ( this.chrClass.selectedSpec === 1 ? 1<<13|1<<22 : 0 );
+                case MONK       : return 1<<23|( this.chrClass.selectedSpec === 2 ? 1<<13|1<<22 : 0 );
 				default			: return 1<<23;
 				}
 			}
@@ -368,7 +369,7 @@ Character.prototype = {
 	},
 	getDefaultArmorMask: function() {
 		var defaultMask = 1<<0|1<<1|1<<2|1<<3|1<<4;
-		if( this.chrClass != null ) {
+		if( this.chrClass !== null ) {
 			switch( this.chrClass.id ) {
 			case 1: defaultMask = this.level >= 40 ? 1<<4 : 1<<3; break;
 			case 2: defaultMask = this.level >= 40 ? 1<<4 : 1<<3; break;

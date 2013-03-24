@@ -17,13 +17,13 @@ class ItemSetListData extends ListData {
 	 */
 	public static function getInstance() {
 		if( self::$instance == null ) {
-			self::$instance = new ItemSetListData(/*args*/);
+			self::$instance = new ItemSetListData();
 		}
 		return self::$instance;
 	}
 	
-	protected function __construct(/*args*/) {
-		// TODO: Auto-generated stub
+	protected function __construct() {
+		//
 	}
 	
 	public function getSets( $arguments, $flags, $order, $page = 1 ) {

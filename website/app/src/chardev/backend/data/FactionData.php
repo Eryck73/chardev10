@@ -14,13 +14,13 @@ class FactionData extends Data
 	public static function getInstance() 
 	{
 		if( self::$instance == null ) {
-			self::$instance = new FactionData( /*args*/);
+			self::$instance = new FactionData();
 		}
 		return self::$instance;
 	}
 	
-	protected function __construct( /*args*/) {
-		//TODO: Auto generated stub
+	protected function __construct() {
+		//
 	}
 	
 	protected function getData( $id ) {

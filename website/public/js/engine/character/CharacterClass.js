@@ -52,6 +52,11 @@ function CharacterClass( serialized ) {
 	
 	this.specs = [];
 	for( i=0; i<serialized[9].length; i++ ) {
+        
+        if( serialized[9][i] === null ) {
+            continue;
+        }
+        
 		this.specs.push(new CharacterSpecialisation(serialized[9][i]));
 	}
 }

@@ -14,12 +14,14 @@ class TalentsData extends Data
 	public static function getInstance() 
 	{
 		if( self::$instance == null ) {
-			self::$instance = new TalentsData( /*args*/);
+			self::$instance = new TalentsData();
 		}
 		return self::$instance;
 	}
 	
-	protected function __construct( /*args*/) {}
+	protected function __construct() {
+        //
+    }
 	
 	protected function getData($id) {
 		
@@ -34,10 +36,7 @@ class TalentsData extends Data
 		
 		foreach( $records as $record ) {
 			$spell = $sd->fromId($record["SpellID"]);
-			if($spell == null) {
-				//TODO Remove when live
-				$spell = $sd->fromId(109132);
-			}
+			
 			$talents[(int)$record["Row"]][(int)$record["Column"]] = array(
 					(int)$record["ID"], 
 					$spell

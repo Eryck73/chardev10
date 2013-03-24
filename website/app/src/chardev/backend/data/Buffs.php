@@ -16,13 +16,13 @@ class Buffs
 	 */
 	public static function getInstance() {
 		if( self::$instance == null ) {
-			self::$instance = new Buffs(/*args*/);
+			self::$instance = new Buffs();
 		}
 		return self::$instance;
 	}
 	
-	protected function __construct(/*args*/) {
-		// TODO: Auto-generated stub
+	protected function __construct() {
+		//
 	}
 	
 	public function get() {

@@ -15,12 +15,13 @@ class CharacterClassData extends Data
 	public static function getInstance() 
 	{
 		if( self::$instance == null ) {
-			self::$instance = new CharacterClassData( /*args*/);
+			self::$instance = new CharacterClassData();
 		}
 		return self::$instance;
 	}
 	
-	protected function __construct( /*args*/) {
+	protected function __construct() {
+        //
 	}
 
     protected function getData($id)
@@ -141,7 +142,7 @@ class CharacterClassData extends Data
 		$talents = TalentsData::getInstance()->fromId($id);
 		
 		$specRecords = DatabaseHelper::fetchMany($db, "SELECT * FROM `chrspecialization` WHERE `ChrClassID` = ? ORDER BY `ID` ASC", array($id));
-		$spec = array();
+		$spec = array(null, null, null);
 		
 		foreach( $specRecords as $specRecord ) {
 			$specSpellRecords = DatabaseHelper::fetchMany($db, "SELECT * FROM `specializationspells` WHERE `ChrSpecializationID` = ?", array((int)$specRecord['ID']));
@@ -156,7 +157,7 @@ class CharacterClassData extends Data
 				}
 			}
 			
-			$spec[$specRecord['Position']] = array(
+			$spec[(int)$specRecord['Position']] = array(
 					(int)$specRecord['ID'],
 					$specRecord['Icon'],
 					SpellData::getInstance()->fromId((int)$specRecord['SpellID']),

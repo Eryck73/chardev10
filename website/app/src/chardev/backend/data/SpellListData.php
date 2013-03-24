@@ -17,14 +17,14 @@ class SpellListData extends ListData {
 	public static function getInstance()
 	{
 		if( self::$instance == null ) {
-			self::$instance = new SpellListData( /*args*/);
+			self::$instance = new SpellListData();
 		}
 		return self::$instance;
 	}
 	
-	protected function __construct( /*args*/) {
-		//TODO: Auto generated stub
-	}
+	protected function __construct( ) {
+        //
+    }
 	
 	public function getSpells( $arguments, $flags, $order, $page ) {
 		$page = $page < 1 ? 1 : $page;

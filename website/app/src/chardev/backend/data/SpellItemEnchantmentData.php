@@ -13,13 +13,13 @@ class SpellItemEnchantmentData extends Data
 	public static function getInstance() 
 	{
 		if( self::$instance == null ) {
-			self::$instance = new SpellItemEnchantmentData( /*args*/);
+			self::$instance = new SpellItemEnchantmentData();
 		}
 		return self::$instance;
 	}
 	
-	protected function __construct( /*args*/) {
-		//TODO: Auto generated stub
+	protected function __construct() {
+		//
 	}
 	
 	protected function getData( $id ) {

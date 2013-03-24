@@ -19,13 +19,13 @@ class ItemSetData extends Data
 	public static function getInstance ()
 	{
 		if (self::$instance == null) {
-			self::$instance = new ItemSetData( /*args*/);
+			self::$instance = new ItemSetData();
 		}
 		return self::$instance;
 	}
 
-	protected function __construct( /*args*/) {
-		// TODO: Auto generated stub
+	protected function __construct() {
+		//
 	}
 
 	protected function getData ($id)

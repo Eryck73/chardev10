@@ -30,13 +30,13 @@ SpecialisationInterface.prototype = {
 			this.select( -1 );
 		},
 		select: function( index ) {
-			if( this.selected != -1 ) {
+			if( this.selected !== -1 ) {
 				var spec = this.specNodes[this.selected];
 				Dom.removeClass(spec.node, "spi_item_active");
 				spec.icon.src = "/images/icons/g/half/" + spec.src +  ".png";
 				ChardevHtml.dynamicBoxBorderChangeStyle(spec.sg, "spi_item");
 			}
-			if( index != -1 ) {
+			if( index !== -1 ) {
 				var spec = this.specNodes[index];
 				Dom.addClass(spec.node, "spi_item_active");
 				spec.icon.src = "/images/icons/half/" + spec.src +  ".png";
@@ -49,6 +49,7 @@ SpecialisationInterface.prototype = {
 		},
 		/**
 		 * @param {SpecialisationFacade} spec
+         * @param {int} index
 		 */
 		_addSpecItem: function( spec, index ) {
 			var node = Dom.create( "a", {"class": "spi_item", "href": "javascript:;"});

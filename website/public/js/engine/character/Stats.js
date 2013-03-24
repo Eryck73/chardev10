@@ -223,20 +223,34 @@ Stats.prototype.getReductionFromArmor = function(level){
 };
 
 /**
- * @param {number} _v
+ * @param {number} value
  * @param {number} chrClassId
  * @returns {number}
  */
-Stats.prototype.deminishingReturnDodge = function(_v, chrClassId){
-	return 1 / (DIMINISHING_K[chrClassId-1] / _v + (DIMINISHING_CD[chrClassId-1] ? 1 / DIMINISHING_CD[chrClassId-1] : 0));
+Stats.prototype.deminishingReturnDodge = function(value, chrClassId){
+    if( value === 0 ) {
+        return 0;
+    }
+    var q = (DIMINISHING_K[chrClassId-1] / value + (DIMINISHING_CD[chrClassId-1] ? 1 / DIMINISHING_CD[chrClassId-1] : 0));
+    if( q === 0 ) {
+        return 0;
+    }
+	return 1 / q;
 };
 /**
- * @param {number} _v
+ * @param {number} value
  * @param {number} chrClassId
  * @returns {number}
  */
-Stats.prototype.deminishingReturnParry = function(_v, chrClassId){
-	return 1 / (DIMINISHING_K[chrClassId-1] / _v + (DIMINISHING_CP[chrClassId-1] ? 1 / DIMINISHING_CP[chrClassId-1] : 0));
+Stats.prototype.deminishingReturnParry = function(value, chrClassId){
+    if( value === 0 ) {
+        return 0;
+    }
+	var q = (DIMINISHING_K[chrClassId-1] / value + (DIMINISHING_CP[chrClassId-1] ? 1 / DIMINISHING_CP[chrClassId-1] : 0));
+    if( q === 0 ) {
+        return 0;
+    }
+	return 1 / q;
 };
 /**
  * @param {boolean} preview
@@ -764,7 +778,7 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 	//	Hit
 	this.spellHitRating = this.ratings[7] + this.ratings[20] + baseEffects[189][7] + baseEffects[189][20];
 	this.spellHit = this.spellHitRating / COMBAT_RATINGS[7][level-1] +
-		Math.min(baseEffects[55][1],baseEffects[55][2],baseEffects[55][3],baseEffects[55][4],baseEffects[55][5],baseEffects[55][6]) +
+        Math.min(baseEffects[55][1],baseEffects[55][2],baseEffects[55][3],baseEffects[55][4],baseEffects[55][5],baseEffects[55][6]) +
         this.expertise[0];
 	//	Crit
 	this.spellCritRating = this.ratings[10] + this.ratings[21] + baseEffects[189][10] + baseEffects[189][21];

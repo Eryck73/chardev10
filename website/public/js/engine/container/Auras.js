@@ -44,7 +44,7 @@ Auras.prototype = {
 	 */
 	__createArray : function()
 	{
-		var arr = new Array(321);
+		var arr = new Array(429);
 		//dmg
 		arr[13] = new Array(7);
 		//resistance

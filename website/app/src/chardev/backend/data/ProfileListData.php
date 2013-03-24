@@ -17,13 +17,13 @@ class ProfileListData extends \chardev\backend\data\ListData {
 	 */
 	public static function getInstance() {
 		if( self::$instance == null ) {
-			self::$instance = new ProfileListData(/*args*/);
+			self::$instance = new ProfileListData();
 		}
 		return self::$instance;
 	}
 	
-	protected function __construct(/*args*/) {
-		// TODO: Auto-generated stub
+	protected function __construct() {
+		//
 	}
 	
 	public function getProfiles ( $arguments, $flags, $order, $page ) {

@@ -23,14 +23,17 @@ class ItemListData extends ListData
 	public static function getInstance() 
 	{
 		if( self::$instance == null ) {
-			self::$instance = new ItemListData( /*args*/);
+			self::$instance = new ItemListData();
 		}
 		return self::$instance;
 	}
-	
-	public function getItems( $arguments, $flags, $order, $page = 1, $weights = null ) {
-		
-		$start = microtime(true);
+    
+    protected function __construct() {
+        //
+    }
+
+
+    public function getItems( $arguments, $flags, $order, $page = 1, $weights = null ) {
 		
 		$page = $page < 1 ? 1 : $page;
 		$where = " cis.`DoNotShow` != 1 ";
