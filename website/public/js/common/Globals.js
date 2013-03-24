@@ -275,10 +275,10 @@ var g_spells = null;
 /** @const */ var AP_PER_STAT_BEAR = [2,2,0,0,0];
 /** @const */ var AP_PER_STAT_MOONKIN = [2,0,0,0,0];
 
-/** @const */ var MELEE_MISS_BASE = [5,5.5,6,8];
-/** @const */ var DW_MISS_BASE = [24,24.5,25,27];
-/** @const */ var SPELL_MISS_BASE = [4,5,6,17];
-/** @const */ var RANGED_MISS_BASE = [5,5.5,6,8];
+/** @const */ var MELEE_MISS_BASE = [3,4.5,6,7.5];
+/** @const */ var DW_MISS_BASE = [22,23.5,25,26.5];
+/** @const */ var SPELL_MISS_BASE = [6,9,12,15];
+/** @const */ var RANGED_MISS_BASE = [3,4.5,6,7.5];
 /** @const */ var ENEMY_PARRY = [3,4.5,6,7.5];
 /** @const */ var ENEMY_DODGE = [3,4.5,6,7.5];
 
