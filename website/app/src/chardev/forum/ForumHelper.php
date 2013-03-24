@@ -138,11 +138,11 @@ class ForumHelper
         $str = preg_replace("/\[center\](.*?)\[\/center\]/i", "<center>$1</center>", $str);
         // [item]
         $str = preg_replace_callback("/\[item\](\d+)\[\/item\]/i", 'self::replaceItemLink', $str);
-        $str = preg_replace_callback("/http\:\/\/www\.wowhead\.com\/\?item\=([\d]+)/i", 'self::replaceExternItemLink', $str);
-        $str = preg_replace_callback("/http\:\/\/(?:www\.)?wowhead\.com\/item\=([\d]+)/i", 'self::replaceExternItemLink', $str);
-        $str = preg_replace_callback("/http\:\/\/(?:www\.)?thottbot\.com\/i(?:tem\=)?([\d]+)/i", 'self::replaceExternItemLink', $str);
-        $str = preg_replace_callback("/http\:\/\/\w+\.battle\.net\/wow\/\w+\/item\/([\d]+)/i", 'self::replaceExternItemLink', $str);
-        $str = preg_replace_callback("/http\:\/\/www\.wowarmory\.com\/item\-info\.xml\?i\=([\d]+)/i", 'self::replaceExternItemLink', $str);
+        $str = preg_replace_callback("/http\:\/\/(?:\w+\.)?wowhead\.com\/\?item\=([\d]+)/i", 'self::replaceExternItemLink', $str);
+        $str = preg_replace_callback("/http\:\/\/(?:\w+\.)?wowhead\.com\/item\=([\d]+)/i", 'self::replaceExternItemLink', $str);
+        $str = preg_replace_callback("/http\:\/\/(?:\w+\.)?thottbot\.com\/i(?:tem\=)?([\d]+)/i", 'self::replaceExternItemLink', $str);
+        $str = preg_replace_callback("/http\:\/\/(?:\w+\.)?battle\.net\/wow\/\w+\/item\/([\d]+)/i", 'self::replaceExternItemLink', $str);
+        $str = preg_replace_callback("/http\:\/\/(?:\w+\.)?wowarmory\.com\/item\-info\.xml\?i\=([\d]+)/i", 'self::replaceExternItemLink', $str);
         return nl2br($str);
     }
 
