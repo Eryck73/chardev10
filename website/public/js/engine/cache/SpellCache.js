@@ -6,7 +6,7 @@ var SpellCache = {};
 	 * @param {Handler} handler
 	 */
 	function asyncGetHandler( data, handler ) {
-		if ( data != null ) 
+		if ( data !== null ) 
 		{
 			var spell = new Spell(data);
 			SpellCache.set(spell);
@@ -15,9 +15,10 @@ var SpellCache = {};
 	}
 	/**
 	 * @param {number} id 
+     * @return {Spell}
 	 */
 	SpellCache.get = function( id ) {
-		return elements[id];
+		return typeof elements[id] === "undefined" ? null : elements[id];
 	};
 	/**
 	 * @param {Spell} spell
@@ -27,9 +28,10 @@ var SpellCache = {};
 	};
 	/**
 	 * @param {number} id 
+     * @return {boolean}
 	 */
 	SpellCache.contains = function(id) { 
-		return elements[id] || false; 
+		return typeof elements[id] === "undefined" ? false : true; 
 	};
 	/**
 	 * @param {number} id

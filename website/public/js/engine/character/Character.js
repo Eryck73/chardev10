@@ -529,6 +529,25 @@ Character.prototype = {
 	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	//
 	__testAndApplyIndirectAura: function( spellId ) {
+        //
+        // TODO The asynchronous retrieval is quite dangerous, as we may 
+        // experience race conditions, the spells should instead be fetched
+        // when the character class is loaded
+        if( ! SpellCache.contains(spellId) ) {
+            SpellCache.asyncGet(spellId, new Handler( function() {
+                this.__testAndApplyIndirectAura(spellId);
+            }, this));
+        }
+        var spell = SpellCache.get(spellId)
+        if( ! spell ) {
+            return;
+        }
+        //
+        // If the required level of the spell is to high, remove it
+        if( spell.spellLevels !== null && spell.spellLevels.spellLevel > this.level ) {
+			this.buffs.removeInternal(spellId, false );
+            return;
+        }
 		//
 		// If the spell applying the aura is available and not already applied, 
 		// add the spell as new buff.

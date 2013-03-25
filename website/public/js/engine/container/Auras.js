@@ -263,6 +263,13 @@ Auras.prototype = {
 		
 		this.appliedMap[sp.id] = true;
 		
+        //
+        // Check the spell level and skip it, if character level is too low
+        //
+        if( sp.spellLevels !== null && sp.spellLevels.spellLevel > this.character.level ) {
+            return;
+        }
+        
 		//
 		//	Class checks are done per Effect
 		//

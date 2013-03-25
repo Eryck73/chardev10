@@ -272,19 +272,19 @@ class SpellData extends Data
 			
 		$spell[20] = (int)$chardev_spellinfo['ElixirMask'];
 			
-		$spell[21] = null;
-			
+		$spellLevels = null;
 		if( $record['SpellLevelsID'] ) {
 			$joinRecord = DatabaseHelper::fetchOne($db, "SELECT * FROM `spelllevels` WHERE `ID` = ?", array($record['SpellLevelsID']));
 			if( $joinRecord ) {
-				$classoptions = array(
-					(int)$joinRecord['ID'],
+				$spellLevels = array(
 					(int)$joinRecord['BaseLevel'],
 					(int)$joinRecord['MaximumLevel'],
 					(int)$joinRecord['SpellLevel']
 				);
 			}
 		}
+        $spell[21] = $spellLevels;
+        
 		return $spell;
 	} 
 	
