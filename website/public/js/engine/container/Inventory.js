@@ -299,6 +299,26 @@ Inventory.prototype = {
 		{
 			return this.previewItem;	
 		}
+        
+        if( slot === 17 
+                && this.previewSlot === 16 
+                && this.previewSocket === -1 
+                && this.previewItem !== null 
+                && this.previewItem.isTwoHanded() && ! this.character.canDualWieldTwoHandedWeapons()
+        ) {
+            return null;
+        }
+        
+        if( slot === 16
+                && this.previewSlot === 17
+                && this.previewSocket === -1 
+                && this.previewItem !== null 
+                && this.items[16][0] !== null
+                && this.items[16][0].isTwoHanded() && ! this.character.canDualWieldTwoHandedWeapons()
+        ) {
+            return null;
+        }
+        
 		if( slot >= 0 && slot < this.items.length )
 		{
 			return this.items[slot][0];
