@@ -928,18 +928,59 @@ Character.prototype = {
 					}
 				}
 			}
+            
+            var calcTalent = "";
+            var talentsObj = [];
+            for( var row = 0; row < Talents.TIERS; row ++ ) {
+                var index = -1;
+                for( var col = 0; col < Talents.COLUMNS; col ++ ) {
+                    if(talents.talents[row][col].selected) {
+                        index = col;
+                    }
+                }
+				if( index !== -1 ) {
+                    talentsObj.push({
+                       column: index,
+                       spell: {
+                           id: talents.talents[row][index].spell.id,
+                           name: talents.talents[row][index].spell.name
+                       },
+                       tier: row
+                    });
+                }
+			}
+            
+            var calcSpec = "";
+            switch(this.chrClass.selectedSpec) {
+                case 0: calcSpec = "a"; break;
+                case 1: calcSpec = "Z"; break;
+                case 2: calcSpec = "b"; break;
+            }
+            
+            var spec = this.chrClass.getSpecialisation();
+            var specObj;
+            if( spec !== null ) {
+                specObj = {
+                    backgroundImage: spec.bg,
+                    description: spec.description,
+                    icon: spec.icon,
+                    name: spec.name
+                    // order:
+                    // role:
+                };
+            }
+            
 			//TODO add missing values to talent obj
 			talentObj = [{
-				'selected': true,
-				'name':this.chrClass.selectedSpec != -1 ? talents.treeNames[this.chrClass.selectedSpec] : "None",
-				'icon': "",
-				'build':talents.getDistribution(true).join(""),
-				'trees': [],
-				'glyphs': {
-//					'prime':glyphs[2],
-					'major':glyphs[0],
-					'minor':glyphs[1]
-				}
+                calcTalent: calcTalent,
+                calcSpec: calcSpec,
+				glyphs: {
+					major: glyphs[0],
+					minor: glyphs[1]
+				},
+				selected: true,
+                spec: specObj,
+                talents: talentsObj
 			}];
 		}
 		else {

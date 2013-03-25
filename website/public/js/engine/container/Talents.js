@@ -43,7 +43,7 @@ Talents.prototype = {
 			var oldTiers = this.tiers;
 			this.tiers = tiers;
 			
-			if( oldTiers != tiers ) {
+			if( oldTiers !== tiers ) {
 				this.eventMgr.fire("tiers_change", {"tiers": tiers});
 			}
 		},

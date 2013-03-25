@@ -295,7 +295,7 @@ Inventory.prototype = {
 	 */
 	get : function(slot)
 	{
-		if( this.previewSlot == slot && this.previewSocket == -1 && this.previewItem != null )
+		if( this.previewSlot === slot && this.previewSocket === -1 && this.previewItem !== null )
 		{
 			return this.previewItem;	
 		}

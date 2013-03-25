@@ -351,5 +351,17 @@ CharacterClass.prototype = {
 		else {
 			throw new Error("Unable to set specialisation: no specialisation for index "+index+" found!");
 		}
-	}
+	},
+    /**
+     * Returns the currently selected specialisation.
+     * 
+     * @returns {CharacterSpecialisation}
+     */
+    getSpecialisation: function() {
+        if( this.selectedSpec === -1 ) {
+            return null;
+        }
+        
+        return this.specs[this.selectedSpec];
+    }
 };
