@@ -108,6 +108,10 @@ Spell.prototype = {
 		getDescription : function( character ){
 			
 			var desc = this.bustedDesc ? DescriptionInterpreter.interpret(this.bustedDesc, character) : this.desc;
+            
+            if( desc === null ) {
+                return "";
+            }
 			
 			var opening = 0, closing = 0;
 			var repl = desc;
