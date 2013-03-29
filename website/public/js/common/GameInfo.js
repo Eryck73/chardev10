@@ -128,6 +128,9 @@ var GameInfo = {
 		else if( socketColor == 8 ) {
 			return 1<<1|1<<3|1<<4|1<<8;
 		}
+		else if( socketColor == 16 ) {
+			return 1<<9;
+		}
 		else if( socketColor == 32 ) {
 			return 1<<10;
 		}

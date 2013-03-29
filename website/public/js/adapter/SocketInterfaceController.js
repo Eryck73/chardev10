@@ -41,7 +41,7 @@ SocketInterfaceController.prototype = {
 				
 				this.socket = e.get('socket');
 				
-				if( itm == null ) {
+				if( itm === null ) {
 					return;
 				}
 				
@@ -55,7 +55,7 @@ SocketInterfaceController.prototype = {
 				this.gemList.filterMgr.hideFilter('class', true);
 				
 				this.gemList.set( 
-					(cc.chrClass != null ? 'usablebyclass.eq.'+(1<<(cc.chrClass.id-1))+';' : '') +
+					(cc.chrClass !== null ? 'usablebyclass.eq.'+(1<<(cc.chrClass.id-1))+';' : '') +
 					"issocketablegem.eq.1;class.eq.3;subclass.ba."+iscm+";" + 
 					"gemreqitemlvl.le."+itm.level+";",
 					null,
@@ -102,7 +102,7 @@ SocketInterfaceController.prototype = {
 				this.adapter.character.removeGemPreview();
 			}
 			else if( e.is('click') ) {
-				if( cc && this.adapter.slot != -1 && cc.getEquippedItem(this.adapter.slot, 0) != null ) {
+				if( cc && this.adapter.slot !== -1 && cc.getEquippedItem(this.adapter.slot, 0) !== null ) {
 					try {
 						cc.addGem( this.adapter.slot, this.socket, e.get('entity').clone() );
 					}
@@ -129,12 +129,12 @@ SocketInterfaceController.prototype = {
 			var cc = this.adapter.character;
 			var itm = this.adapter.slot === -1 ? null : cc.getEquippedItem(this.adapter.slot, 0);
 			
-			if( this.adapter.slot != this.socketInterface.slot ) {
+			if( this.adapter.slot !== this.socketInterface.slot ) {
 				this.socketInterface.selectSocket(-1);
 			}
 			
 			this.socketInterface.update( 
-				itm == null ? null : new EquippedItem( cc, itm, this.adapter.slot),
+				itm === null ? null : new EquippedItem( cc, itm, this.adapter.slot),
 				this._getUsedGems()
 			);
 		},
@@ -145,7 +145,7 @@ SocketInterfaceController.prototype = {
 			
 			for( var i=0; i<Inventory.SLOTS; i++ ) {
 				itm = cc.getEquippedItem(i, 0);
-				if( itm == null ) {
+				if( itm === null ) {
 					continue;
 				}
 				for( var j=0; j<3; j++ ) {

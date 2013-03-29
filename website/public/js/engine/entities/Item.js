@@ -651,10 +651,10 @@ Item.prototype = {
 			this.enchants[i].getActiveSpells(auras);
 		}
 			
-		if (this.socketBonus != null && this.isSocketBonusActive()) 
+		if (this.socketBonus !== null && this.isSocketBonusActive()) 
 			this.socketBonus.getActiveSpells(auras);
 		
-		if (this.gemProperties != null && this.gemProperties.enchant.isActive(this.characterScope)) 
+		if (this.gemProperties !== null && this.gemProperties.enchant.isActive(this.characterScope)) 
 			this.gemProperties.enchant.getActiveSpells(auras);
 	},
 	//

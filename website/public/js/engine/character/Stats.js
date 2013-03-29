@@ -385,11 +385,11 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 		var hasBSSocket = this.character.hasBlacksmithingSocket(i);
 
 		itm = preview ? inv.get(i) : inv.items[i][0];
-		if( itm == null || !this.character.canWear(itm) || !this.character.fitsItemClassRequirements(itm) || ! this.character.fitsLevelRequirements(itm) ) {
+		if( itm === null || !this.character.canWear(itm) || !this.character.fitsItemClassRequirements(itm) || ! this.character.fitsLevelRequirements(itm) ) {
 			continue;
 		}
 		itm.setStats(level);
-		if( i!=5 && i!=6 ) {
+		if( i !== 5 && i !== 6 ) {
 			itemCount++;
 			this.itemLevel += itm.level;
 		}
@@ -414,7 +414,7 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 		}
 		for( j=0; j<itm.enchants.length; j++ ) {
 			enchant = itm.enchants[j];
-			if( enchant != null ) {
+			if( enchant !== null ) {
 				this.getEnchantStats( enchant );
 			}
 		}
@@ -422,7 +422,7 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 			var es = itm.selectedRandomEnchantment.enchants;
 			for(j=0; j<5; j++ ) {
 				enchant = es[j];
-				if( enchant != null ) {
+				if( enchant !== null ) {
 					this.getEnchantStats( enchant );
 				}
 			}
@@ -1024,27 +1024,32 @@ Stats.prototype.getEnchantStats = function( enchant ) {
 	}
 	for ( i = 0; i < enchant.types.length; i++ )
 	{
-		if( enchant.types[i] == 5 )
+        var spellId = enchant.spellIds[i];
+        var value = enchant.values[i];
+        var type = enchant.types[i];
+                
+		if( type === 5 )
 		{
-            if( enchant.spellIds[i] == 0 ) {
-                this.manaFromGear += enchant.values[i];
+            
+            if( spellId === 0 ) {
+                this.manaFromGear += value;
             }
-            else if( enchant.spellIds[i] == 1 )
+            else if( spellId === 1 )
             {
-                this.healthFromGear += enchant.values[i];
+                this.healthFromGear += value;
             }
-            else if( enchant.spellIds[i] >= 11 )
+            else if( spellId >= 11 )
             {
-                this.ratings[enchant.spellIds[i]-11] += enchant.values[i];
+                this.ratings[spellId - 11] += value;
             }
 			else
 			{
-				this.attributes[STAT_IDS_TO_ATTRIBUTES[enchant.spellIds[i]]] += enchant.values[i];
+				this.attributes[STAT_IDS_TO_ATTRIBUTES[spellId]] += value;
 			}
 		}
-		else if ( enchant.types[i] == 4 )
+		else if ( type === 4 )
 		{
-			this.resisSchool[enchant.spellIds[i]] += enchant.values[i];
+			this.resisSchool[spellId] += value;
 		}
 
 	}

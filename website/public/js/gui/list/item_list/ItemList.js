@@ -107,6 +107,11 @@ ItemList.prototype.setItemConstraints = function( slotMask, itemClass, itemSubCl
 			this.filterMgr.hideFilter( 'subclass', true);
 			itemSubClassFilterData = this._getSubClassFilter([6]);
 		}
+		// Crystal of Fear
+		else if( this.itemSubClassMask & (1<<9) ) {
+			this.filterMgr.hideFilter( 'subclass', true);
+			itemSubClassFilterData = this._getSubClassFilter([9]);
+		}
 		// Cogwheel
 		else if( this.itemSubClassMask & (1<<10) ) {
 			this.filterMgr.hideFilter( 'subclass', true);
