@@ -1,10 +1,10 @@
 <?php
 namespace chardev\backend\data;
 
+use chardev\Language;
+
 use chardev\backend\DoesNotExistException;
-
 use chardev\backend\Database;
-
 use chardev\backend\DatabaseHelper;
 
 class SpellItemEnchantmentData extends Data
@@ -85,7 +85,16 @@ class SpellItemEnchantmentData extends Data
 		$enchant[8] = (int)$record['RequiredSkillLineLevel'];
 		$enchant[9] = (int)$record['RequiredCharacterLevel'];
 		$enchant[10] = (int)$record['EnchantSlot'];
-		
+		//
+        //  Parsed description
+        //
+        $descRecord = DatabaseHelper::fetchOne($db, "SELECT * FROM chardev_mop_static.`chardev_spellitemenchantmentinfo` WHERE `SpellItemEnchantmentID` = ? ", array($id));
+        $json = $descRecord['Description'.Language::getInstance()->toColumnSuffix()];
+		$obj = null;
+		if( $json ) {
+			$obj = json_decode($json);
+		}
+        $enchant[11] = $obj;
 		return $enchant;
 	}
 }

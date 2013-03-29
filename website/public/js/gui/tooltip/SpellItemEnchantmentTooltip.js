@@ -1,19 +1,6 @@
 var SpellItemEnchantmentTooltip = {
 	/**
 	 * @param {SpellItemEnchantment} enchant
-	 */
-	 getDescription: function( enchant ) {
-			var str = enchant.description;
-			
-			if( ! str ) {
-				return "";
-			}
-			
-			str = str.replace(/\$k(\d)/g,function(str,p1){ return enchant.values[p1-1]; });
-			return str.replace(/\$i\b/g, enchant.spellIds[0]);
-	},
-	/**
-	 * @param {SpellItemEnchantment} enchant
 	 * @param {Character} characterScope
 	 * @returns {string}
 	 */
@@ -47,7 +34,7 @@ var SpellItemEnchantmentTooltip = {
             desc = locale["use"]+": " + enchant.spells[0].getDescription(characterScope).join("<br />");
         }
         else {
-            desc = SpellItemEnchantmentTooltip.getDescription(enchant);
+            desc = enchant.getDescription();
         }
 
 

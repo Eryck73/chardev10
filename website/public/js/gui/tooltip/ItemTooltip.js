@@ -326,11 +326,11 @@ var ItemTooltip = {
 		//
 
 		if (itm.socketBonus != null) {
-			html += Tools.addTr1("<span class='" + (itm.isSocketBonusActive() ? "green" : "grey") + "'>" + locale['socketBonus'] + ": " + SpellItemEnchantmentTooltip.getDescription(itm.socketBonus) + "</span>");
+			html += Tools.addTr1("<span class='" + (itm.isSocketBonusActive() ? "green" : "grey") + "'>" + locale['socketBonus'] + ": " + itm.socketBonus.getDescription() + "</span>");
 		}
 		
 		if (itm.gemProperties) {
-			html += Tools.addTr1(SpellItemEnchantmentTooltip.getDescription(itm.gemProperties.enchant));
+			html += Tools.addTr1(itm.gemProperties.enchant.getDescription());
 		}
 		
 		for ( i = 0; i < 5; i++) {

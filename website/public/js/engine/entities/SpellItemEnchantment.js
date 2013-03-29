@@ -30,6 +30,7 @@ function SpellItemEnchantment(serialized) {
 	this.requiredSkillLineLevel = serialized[8];
 	this.requiredCharacterLevel = serialized[9];
 	this.slotMask = serialized[10];
+    this.descriptionAst = serialized[11];
 }
 
 SpellItemEnchantment.prototype = {
@@ -46,7 +47,7 @@ SpellItemEnchantment.prototype = {
 	requiredCharacterLevel : 0,
 	spells : [],
 	slotMask : 0,
-
+    descriptionAst: 0,
 	/**
 	 * @param {Character} character
 	 * @returns {boolean}
@@ -203,5 +204,32 @@ SpellItemEnchantment.prototype = {
 			}
 		}
 		return s;
-	}
+	},
+    getDescription : function( character ){
+			
+        var desc = this.descriptionAst ? DescriptionInterpreter.interpret(this.descriptionAst, character) : this.description;
+
+        if( desc === null ) {
+            return "";
+        }
+
+        var opening = 0, closing = 0;
+        var repl = desc;
+
+        repl = repl.replace(/\|c([0-9a-z]{8})/gi, function(str, p1) {
+            opening ++;
+            return "<span style=\"color:#" + p1.substr(2,6) + "\">";
+        });
+
+        repl = repl.replace(/\|r/gi, function(str, p1) {
+            closing ++;
+            return "</span>";
+        });
+
+        for( ; closing < opening; closing ++ ) {
+            repl += "</span>";
+        }
+
+        return repl.split(/\r\n/);
+    }
 };
