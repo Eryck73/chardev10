@@ -16,7 +16,7 @@
 //    require __DIR__ . '/../bootstrap.php';
 //    require __DIR__ . '/../resources/BNET_KEYS.inc';
 //
-//    $dr = new \chardev\tools\DataRetriever();
+//    $dr = new \chardev\util\DataRetriever();
 //    $dr->retrieveItems( $argv[1], $argv[2] );
 //}
 //else {
@@ -29,6 +29,6 @@
 require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/../resources/BNET_KEYS.inc';
 
-$dr = new \chardev\tools\DataRetriever();
+$dr = new \chardev\util\DataRetriever();
 $dr->setCpc(new \chardev\profiles\CommunityPlatformClient(BNET_PRIVATE_KEY, BNET_PUBLIC_KEY));
-$dr->retrieveItemsWithRandomProperties();
+$dr->retrieveItems();

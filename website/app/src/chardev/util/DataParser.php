@@ -7,7 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-namespace chardev\tools;
+namespace chardev\util;
 
 
 use chardev\backend\Database;
@@ -206,5 +206,60 @@ class DataParser
                 $dodgePerAgi
             )
         );
+    }
+
+    public function parseItemSource() {
+        $db = Database::getConnection();
+        $stmt = DatabaseHelper::query($db, "SELECT * FROM chardev_mop_static.`wowapi_items`");
+
+
+        while( false !== ($record = $stmt->fetch())) {
+            $item = json_decode($record["Json"]);
+
+            if( isset($item->itemSource)) {
+                $type = 0;
+                switch( $item->itemSource->sourceType ) {
+                    case "CREATURE_DROP": $type = 1; break;
+                    case "PROVIDED_FOR_QUEST": $type = 2; break;
+                    case "REWARD_FOR_QUEST": $type = 3; break;
+                    case "GAME_OBJECT_DROP": $type = 4; break;
+                    case "ACHIEVEMENT_REWARD": $type = 5; break;
+                    case "CREATED_BY_SPELL": $type = 6; break;
+                    case "VENDOR": $type = 7; break;
+                    case "WORLD_DROP": $type = 8; break;
+                    case "FACTION_REWARD": $type = 9; break;
+                    case "PROMOTION": $type = 10; break;
+                    case "EVENT": $type = 11; break;
+                    case "PROFESSION": $type = 12; break;
+                    case "CONTAINED_IN_ITEM": $type = 13; break;
+                    case "NONE": break;
+                    default:
+                        throw new \Exception("Unhandled item source {$item->itemSource->sourceType}");
+                }
+
+                if( $type ) {
+                    DatabaseHelper::execute($db,
+                        "REPLACE INTO chardev_mop_static.`chardev_item_source` VALUES (?,?,?)",
+                        array( $item->id, $type, isset($item->itemSource->sourceId) ? $item->itemSource->sourceId : 0 ));
+                }
+            }
+        }
+    }
+
+    public function parseQuests() {
+        $db = Database::getConnection();
+        $stmt = DatabaseHelper::query($db, "SELECT * FROM chardev_mop_static.`wowapi_quests`");
+
+        while( false !== ($record = $stmt->fetch())) {
+            $quest = json_decode($record["Json"]);
+
+            if( ! isset($quest->category)) {
+                $quest->category = "";
+            }
+
+            DatabaseHelper::execute($db,
+                "REPLACE INTO chardev_mop_static.`chardev_quest` VALUES (?,?,?,?,?,?)",
+                array( $quest->id, $quest->title, $quest->reqLevel, $quest->level, $quest->category, $quest->suggestedPartyMembers));
+        }
     }
 }

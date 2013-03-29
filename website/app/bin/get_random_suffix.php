@@ -42,7 +42,7 @@ $stmt = \chardev\backend\DatabaseHelper::query( $db, "SELECT * FROM chardev_mop.
 			"INNER JOIN chardev_mop_static.chardev_item_stats cis ON i.id = cis.itemid" .
 			"WHERE donotshow = 0 AND RandomSuffixID ORDER BY id ASC LIMIT 0,10000000000");
 
-$r = new \chardev\tools\DataRetriever();
+$r = new \chardev\util\DataRetriever();
 
 while (true) {
     $record = $stmt->fetch();

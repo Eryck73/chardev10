@@ -85,21 +85,20 @@ echo "var BASE_REGEN = " . json_encode($arr) . ";\n";
 //
 //
 //
-// 	$stmt = mysql_query(
-// 		"SELECT * FROM chardev_mop.`scalingstatvalues`"
-// 	);
+ 	$stmt = mysql_query(
+ 		"SELECT * FROM chardev_mop.`scalingstatvalues`"
+ 	);
 
-// 	$arr = array();
-// 	while( $record = mysql_fetch_assoc($stmt)) {
-// 		$arr[(int)$record['level']] = array();
-// 		for($i=0;$i<45;$i++){
-// 			$arr[(int)$record['level']][] = (int)$record['dist'.$i];
-// 		} 
-// 	}
+ 	$arr = array();
+ 	while( $record = mysql_fetch_assoc($stmt)) {
+ 		$arr[(int)$record['level']] = array();
+ 		for($i=0;$i<45;$i++){
+ 			$arr[(int)$record['level']][] = (int)$record['dist'.$i];
+ 		}
+ 	}
 
-// 	echo "var SCALING_STAT_VALUE = ".json_encode($arr).";\n";
+ 	echo "var SCALING_STAT_VALUE = ".json_encode($arr).";\n";
 // 	echo "var SPELL_SCALING=".json_encode(get_gt_spell_scaling()).";\n";
-// 	echo "var ITEM_CLASSES = ".json_encode(get_item_classes()).";\n";
 // 	echo "var SERIALIZED_PROFESSIONS = ".json_encode(get_professions()).";<br />";
 
 
@@ -133,3 +132,19 @@ foreach ($records as $record) {
 }
 
 echo "var SERIALIZED_PROFESSIONS=" . json_encode($professions) . ";\n";
+
+$itemClassRecords = DatabaseHelper::fetchMany(Database::getConnection(), "SELECT isc.`ItemClass`, isc.`ItemSubClass`, ic.`Name` as ItemClassName, isc.`Name` as ItemSubClassName FROM chardev_mop.`itemsubclass` isc INNER JOIN chardev_mop.`itemclass` ic ON isc.`ItemClass` = ic.`ID` ORDER BY `ItemClass`, `ItemSubClass`");
+
+$itemClassNames = array();
+foreach( $itemClassRecords as $itemClassRecord ) {
+    $itemClass = (int) $itemClassRecord["ItemClass"];
+    $itemSubClass = (int) $itemClassRecord["ItemSubClass"];
+    $itemClassName = $itemClassRecord["ItemClassName"];
+    $itemSubClassName = $itemClassRecord["ItemSubClassName"];
+    
+    if( ! isset($itemClassNames[$itemClass]) ) {
+        $itemClassNames[$itemClass] = array( $itemClassName, array());
+    }
+    $itemClassNames[$itemClass][1][$itemSubClass] = $itemSubClassName;
+}
+echo "var ITEM_CLASSES = ".json_encode($itemClassNames).";\n";

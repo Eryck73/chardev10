@@ -1,6 +1,6 @@
 <?php
 
-namespace chardev\tools;
+namespace chardev\util;
 
 use chardev\backend\Database;
 use chardev\backend\DatabaseHelper;
@@ -8,7 +8,9 @@ use chardev\profiles\CommunityPlatformClient;
 
 class DataRetriever
 {
-
+    /**
+     * @var CommunityPlatformClient
+     */
     protected $cpc;
 
     private static $race_name_to_id = array(
@@ -54,7 +56,7 @@ class DataRetriever
             array($min, $max));
 
         $insertStmt = Database::getConnection()->prepare(
-            "REPLACE INTO chardev_mop_static.chardev_data_bnet_item VALUES (?,?)");
+            "REPLACE INTO chardev_mop_static.wowapi_items VALUES (?,?,?)");
 
         while (true) {
             $record = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -70,36 +72,7 @@ class DataRetriever
             } while (!$itm && ++$retry < 3);
             $insertStmt->bindValue(1, $id);
             $insertStmt->bindValue(2, $itm);
-            $insertStmt->execute();
-
-            echo $id . "\n";
-        }
-    }
-
-    public function retrieveItemsWithRandomProperties()
-    {
-        //
-        // get item ids
-        $stmt = DatabaseHelper::query(Database::getConnection(),
-            "select ID from item_sparse where RandomPropertiesID");
-
-        $insertStmt = Database::getConnection()->prepare(
-            "REPLACE INTO chardev_mop_static.chardev_data_bnet_item VALUES (?,?)");
-
-        while (true) {
-            $record = $stmt->fetch(\PDO::FETCH_ASSOC);
-            if ($record === false) {
-                break;
-            }
-
-            $id = (int)$record["ID"];
-
-            $retry = 0;
-            do {
-                $itm = $this->cpc->getItem($id);
-            } while (!$itm && ++$retry < 3);
-            $insertStmt->bindValue(1, $id);
-            $insertStmt->bindValue(2, $itm);
+            $insertStmt->bindValue(3, time());
             $insertStmt->execute();
 
             echo $id . "\n";
@@ -348,5 +321,26 @@ class DataRetriever
         }
 
         $randomPropertiesStmt->closeCursor();
+    }
+
+    public function retrieveQuests( $min = 0, $max = 32052 ) {
+        for( $i=$min; $i<$max; $i++ ) {
+            $this->retrieveQuest($i);
+        }
+    }
+
+    public function retrieveQuest( $questId ) {
+        $quest = $this->cpc->getQuest($questId);
+
+        if( ! $quest ) {
+            return;
+        }
+
+        echo $questId . "\n";
+
+        DatabaseHelper::execute(
+            Database::getConnection(),
+            "REPLACE INTO chardev_mop_static.`wowapi_quests` VALUES (?,?)",
+            array( $questId, $quest ));
     }
 }

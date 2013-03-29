@@ -3,7 +3,7 @@
 require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/../resources/bootstrap.php';
 
-$dr = new \chardev\tools\DataRetriever();
+$dr = new \chardev\util\DataRetriever();
 
 $names = require __DIR__ . "/res/names.inc";
 
