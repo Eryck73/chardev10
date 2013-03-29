@@ -14,7 +14,7 @@ import java.util.Arrays;
 /**
  * Parses a WoW hex-represented item (*.whi) extracted from RAM
  * 
- * @author Martin Wa�mann
+ * @author Martin Waßmann <lemartin@chardev.org>
  *
  */
 public class WhiParser {

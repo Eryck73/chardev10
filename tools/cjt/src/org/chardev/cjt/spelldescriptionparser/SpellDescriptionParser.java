@@ -8,21 +8,24 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 import org.chardev.cjt.entity.Spell;
+import org.chardev.cjt.entity.factory.SpellFactory;
 import org.chardev.cjt.spelldescriptionparser.ParserStream.ParserException;
 import org.chardev.cjt.spelldescriptionparser.ast.Expression;
-import org.chardev.cjt.util.Database;
+import org.chardev.cjt.util.ConnectionFactory;
 
 public class SpellDescriptionParser {
 	
-	protected Connection db;
+	protected Connection connection;
+	protected SpellFactory factory;
 	protected PreparedStatement stmt;
 	
-	public SpellDescriptionParser( Connection db ) {
+	public SpellDescriptionParser( Connection connection ) {
 		Locale.setDefault(Locale.ENGLISH);
-		this.db = db;
+		this.connection = connection;
+		this.factory = new SpellFactory(connection);
 		
 		try {
-			this.stmt = db.prepareStatement("REPLACE INTO chardev_mop_static.`chardev_spellinfo` ( SpellID, DescriptionEN, Scalable, ElixirMask ) VALUES (?,?,?,?) ");
+			this.stmt = connection.prepareStatement("REPLACE INTO chardev_mop_static.`chardev_spellinfo` ( SpellID, DescriptionEN, Scalable, ElixirMask ) VALUES (?,?,?,?) ");
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -31,14 +34,14 @@ public class SpellDescriptionParser {
 	public void parseSpell( int spellId ) throws SQLException, ParserException {
 		try {
 			
-			Spell s = new Spell(db, spellId);
+			Spell s = this.factory.createSpell(spellId);
 			String descStr = s.getDescription();
 			String bustedDesc = "";
 			boolean scalable = false;
 			int elixirMask = 0;
 			
 			if( descStr != null ) {
-				Expression desc = new DescriptionParser(s.getDescription()).parse().evaluate(new Environment(db,s));
+				Expression desc = new DescriptionParser(s.getDescription()).parse().evaluate(new SpellEnvironment(this.factory,s));
 				
 				bustedDesc = new JsonPrinter().print(desc);
 				
@@ -67,7 +70,7 @@ public class SpellDescriptionParser {
 	
 	public void parseDatabase() throws Throwable {
 		
-		ResultSet result = db.createStatement().executeQuery("SELECT `ID` FROM `Spell` LIMIT 0,1000000");
+		ResultSet result = connection.createStatement().executeQuery("SELECT `ID` FROM `spell` LIMIT 0,1000000");
 		
 		int n = 0;
 		while( result.next()) {
@@ -78,6 +81,6 @@ public class SpellDescriptionParser {
 	}
 	
 	public static void main(String[] args) throws Throwable {
-		new SpellDescriptionParser(Database.connectToDatabase(Database.CHARDEV_MOP)).parseDatabase();
+		new SpellDescriptionParser(ConnectionFactory.getLocale()).parseDatabase();
 	}
 }

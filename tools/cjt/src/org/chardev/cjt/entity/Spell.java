@@ -1,108 +1,88 @@
 package org.chardev.cjt.entity;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.chardev.cjt.entity.factory.LazyField;
+import org.chardev.cjt.entity.factory.SpellFactory;
 
 
 public class Spell {
 	
-	private final Connection con;
-	private boolean retrievedScaling = false;
-	
-	protected final String desc;
+	protected final String description, name, tooltip;
 	protected final int id, descriptionVariablesId, scalingId;
 	protected final Map<Integer,SpellEffect> effects;
-	protected final boolean[] effectRetrieved;
-	protected final String spelltooltip;
 
-	protected SpellScaling scaling;
+	protected LazyField<SpellScaling> scaling;
 	
-	public Spell( Connection con, int id ) throws SQLException {
-		this.con = con;
-		
-		PreparedStatement spellStmt = con.prepareStatement(
-				"SELECT *, s.`ID` FROM `Spell` s LEFT JOIN `SpellMisc` m ON s.`SpellMiscID` = m.`ID` WHERE s.`ID` = ?"
-		);
-		
-		spellStmt.setInt(1, id);
-		ResultSet result = spellStmt.executeQuery();
-		
-		if( ! result.next()) {
-			spellStmt.close();
-			throw new IllegalArgumentException("No spell with id: " + id);
-		}
-		
-		this.desc = result.getString("Description");
-		this.spelltooltip = result.getString("BuffDescription");
-		this.id = result.getInt("ID");
-		this.scalingId = result.getInt("SpellScalingID");
-		this.descriptionVariablesId = result.getInt("SpellDescriptionVariablesID");
+	protected SpellFactory factory;
+	
+	public Spell(
+			final SpellFactory factory,
+			final int id,
+			final int descriptionVariableId,
+			final int scalingId,
+			final String description,
+			final String name,
+			final String tooltip
+	) {
+		this.factory = factory;
+
+		this.id = id;
+		this.scalingId = scalingId;
+		this.description = description;
+		this.tooltip = tooltip;
+		this.descriptionVariablesId = descriptionVariableId;
+		this.name = name;
 		
 		this.effects = new HashMap<Integer, SpellEffect>();
-		this.effectRetrieved = new boolean[]{false,false,false};
-		
-		spellStmt.close();
 	}
 	
 	public int getDescriptionVariablesId() {
-		return descriptionVariablesId;
+		return this.descriptionVariablesId;
 	}
 	
 	public String getDescription() {
-		return desc;
+		return this.description;
 	}
 	
 	public int getId() {
-		return id;
+		return this.id;
+	}
+	
+	public String getName() {
+		return name;
 	}
 
 	public SpellScaling getScaling() {
-		if( ! retrievedScaling ) {
-			
-			try {
-				PreparedStatement stmt = con.prepareStatement("SELECT * FROM `SpellScaling` WHERE `ID`=?");
-				stmt.setInt(1, scalingId);
-				
-				ResultSet result = stmt.executeQuery();
-				if( result.next() ) {
-					scaling = new SpellScaling(
-							result.getInt("CastTimeStart"),
-							result.getInt("CastTimeEnd"),
-							result.getInt("Intervals"),
-							result.getInt("Distribution")
-					);
-				}
-				
-				stmt.close();
-			} catch (SQLException e) {
-				throw new RuntimeException(e);
-			}
-			retrievedScaling = true;
+		if( this.scaling == null ) {
+			this.scaling = new LazyField<SpellScaling>(this.factory.createSpellScaling(this.scalingId));
 		}
-		return scaling;
+		return this.scaling.value;
 	}
 
-	public SpellEffect getSpellEffect(Integer index) {
-		if( index == null ) {
-			System.err.println("Index was null, falling back to 1 (one based)");
-			index = 1;
+	public int getScalingId() {
+		return scalingId;
+	}
+
+	public SpellEffect getEffect( int index) {
+		
+		if( index < 0 ) {
+			throw new IllegalArgumentException("Effect index '"+index+"' out of bounds: index must be greater than or equal to zero!");
 		}
 		
-		index -= 1; // so that everywhere one based indices are used
-		
-		if( ! effects.containsKey(index) ) {
-			SpellEffect effect = new SpellEffect( con, id, index );
-			
-			effects.put(index, effect);
+		if( ! this.effects.containsKey(index)) {
+			this.effects.put(index, this.factory.createSpellEffect( this.id, index));
 		}
 		return effects.get(index);
 	}
 
-	public String getSpellTooltip() {
-		return spelltooltip;
+	public String getTooltip() {
+		return this.tooltip;
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.id;
 	}
 }

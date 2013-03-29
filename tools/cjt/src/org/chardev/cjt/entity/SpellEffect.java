@@ -1,71 +1,86 @@
 package org.chardev.cjt.entity;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import org.chardev.cjt.entity.factory.LazyField;
+import org.chardev.cjt.entity.factory.SpellFactory;
 
 public class SpellEffect {
+	protected SpellFactory factory;
 	
-	private final Connection con;
-	private boolean retrievedScaling = false;
-	
-	protected SpellEffectScaling scaling;
 	protected final int id;
-	protected final double value;
+	protected final double procValue;
+	protected final int period;
+	protected final int value;
+	protected final double coefficient;
 	protected final double f8;
+	protected final int targets;
+	protected final int secondaryEffect;
+	protected final double procChance;
+	protected final int index;
 	
-	public SpellEffect( Connection con, int spellId, int index ) {
+	protected LazyField<SpellEffectScaling> scaling;
+	
+	public SpellEffect( SpellFactory factory, int id, double procValue, int period, int value,
+			double coefficient, double f8, int targets, int secondaryEffect,
+			double procChance, int index) {
+		this.factory = factory;
 		
-		this.con = con;
-		
-		try {
-			PreparedStatement stmt = con.prepareStatement("SELECT * FROM `SpellEffect` WHERE `SpellID` = ? AND `Index` = ?");
-			stmt.setInt(1, spellId);
-			stmt.setInt(2, index);
-			ResultSet result = stmt.executeQuery();
-			
-			if( ! result.next()) {
-				throw new IllegalArgumentException("No spell effect with spell id: "+spellId+" and index: " + index);
-			}
-			
-			this.id = result.getInt("ID");
-			this.value = result.getDouble("Value");
-			this.f8 = result.getDouble("f8");
-			
-			stmt.close();
-		}
-		catch(SQLException e) {
-			throw new RuntimeException(e);
-		}
+		this.id = id;
+		this.procValue = procValue;
+		this.period = period;
+		this.value = value;
+		this.coefficient = coefficient;
+		this.f8 = f8;
+		this.targets = targets;
+		this.secondaryEffect = secondaryEffect;
+		this.procChance = procChance;
+		this.index = index;
 	}
-	
-	public SpellEffectScaling getScaling() {
-		if( ! retrievedScaling ) {
-			try {
-				PreparedStatement stmt = con.prepareStatement("SELECT * FROM `SpellEffectScaling` WHERE `SpellEffectID` = ? ");
-				stmt.setInt(1, id);
 
-				ResultSet result = stmt.executeQuery();
-				if( result.next() ) {
-					scaling = new SpellEffectScaling(result.getDouble("Coefficient"), result.getDouble("Dice"));
-				}
-				
-				stmt.close();
-			}
-			catch (SQLException e) {
-				throw new RuntimeException(e);
-			}
-			retrievedScaling = true;
-		}
-		return scaling;
+	public int getId() {
+		return id;
+	}
+
+	public double getProcValue() {
+		return procValue;
+	}
+
+	public double getPeriod() {
+		return period;
 	}
 
 	public double getValue() {
-		return this.value;
+		return value;
 	}
-	
+
+	public double getCoefficient() {
+		return coefficient;
+	}
+
 	public double getF8() {
 		return f8;
+	}
+
+	public int getTargets() {
+		return targets;
+	}
+
+	public int getSecondaryEffect() {
+		return secondaryEffect;
+	}
+
+	public double getProcChance() {
+		return procChance;
+	}
+
+	public int getIndex() {
+		return index;
+	}
+	
+	public SpellEffectScaling getScaling() {
+		if( null == this.scaling ) {
+			this.scaling = new LazyField<SpellEffectScaling>(this.factory.createSpellEffectScaling(this.id));
+		}
+		
+		return this.scaling.value;
 	}
 }

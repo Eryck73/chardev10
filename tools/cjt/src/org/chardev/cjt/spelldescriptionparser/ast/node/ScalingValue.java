@@ -27,10 +27,10 @@ public class ScalingValue implements Scalable {
 	@Override
 	public String toString() {
 		return "$scalingValue{" +  
-			this.spellScaling.castTimeStart + "," + 
-			this.spellScaling.castTimeEnd + "," + 
-			this.spellScaling.intervals + "," + 
-			this.spellScaling.distribution + "," + 
+			this.spellScaling.getCastTimeStart() + "," + 
+			this.spellScaling.getCastTimeEnd() + "," + 
+			this.spellScaling.getIntervals() + "," + 
+			this.spellScaling.getDistribution() + "," + 
 			new DecimalFormat("#.####").format(effectScaling.coefficient) + ","+
 			new DecimalFormat("#.####").format(effectScaling.dice) + ","+
 			name + 

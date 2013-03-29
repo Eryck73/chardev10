@@ -34,9 +34,24 @@ public class DevelChardevDB {
 	};
 
 	public static void main(String[] args) {
-		connectToDatabase(dbs[0]);
+		connectToDatabase(dbs[0]);	
 		DBCParser p;
-		p = new DBCParser(databaseConnection, "i:\\Projekte\\chardev\\mop\\dbfilesclient\\gtocthpperstamina.dbc", "gtocthtpperstamina");
+		// gtOCTClassCombatRatingScalar DBC
+		// itemupgrade DB2
+		// RulesetItemUpgrade DB2
+		// gtresiliencedr
+		// itemspec
+		// itemspecoverride, modifiertree, questpoipoint, questv2
+		p = new DBCParser(databaseConnection, "i:\\Projekte\\chardev\\mop\\dbfilesclient\\spellmisc.dbc", "spellmisc");	
+		p.truncateTargetTable();
+//		p.additionalSkip = 0x10;
 		p.parse();
+//		DBCParser srp = new DBCParser(
+//				databaseConnection, 
+//				"i:\\Projekte\\chardev\\mop\\dbfilesclient\\itemupgrade.db2", "itemupgrade"
+//		);
+//		srp.additionalSkip = 0x10;
+//		srp.truncateTargetTable();
+//		srp.parse();
 	}
 }

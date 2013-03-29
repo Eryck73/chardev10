@@ -66,7 +66,11 @@ public class DescriptionParser extends ParserStream {
 				case '{':
 					Expression e;
 					take('{'); 
-					e = parseComplexExp(0); 
+					e = parseComplexExp(0);
+					// skip closing parenthesis
+					while(compare(')')) {
+						inc();
+					}
 					take('}');
 					if(!eof()&&!eof(1)&&compare('.')&&isDigit(1)) {
 						take('.');

@@ -122,19 +122,19 @@ public class JsonPrinter {
 		else if( exp instanceof ScalingValue ) { 
 			ScalingValue v = (ScalingValue) exp;
 			buf.append("{\"type\": \"scalingvalue\", \"variable\": \"").append(v.name)
-					.append("\", \"start\": ").append(v.spellScaling.castTimeStart)
-					.append(", \"end\": ").append(v.spellScaling.castTimeStart)
-					.append(", \"intervals\": ").append(v.spellScaling.intervals)
-					.append(", \"distribution\": ").append(v.spellScaling.distribution)
+					.append("\", \"start\": ").append(v.spellScaling.getCastTimeStart())
+					.append(", \"end\": ").append(v.spellScaling.getCastTimeEnd())
+					.append(", \"intervals\": ").append(v.spellScaling.getIntervals())
+					.append(", \"distribution\": ").append(v.spellScaling.getDistribution())
 					.append(", \"coefficient\": ").append(decFormat.format(v.effectScaling.coefficient))
 					.append(", \"dice\": ").append(decFormat.format(v.effectScaling.dice))
 					.append("}");
 		}
 		else if( exp instanceof ScalingTime ) { 
 			ScalingTime t = (ScalingTime) exp;
-			buf.append("{\"type\": \"scalingvalue\", \"start\": ").append(t.spellScaling.castTimeStart)
-					.append(", \"end\": ").append(t.spellScaling.castTimeStart)
-					.append(", \"intervals\": ").append(t.spellScaling.intervals)
+			buf.append("{\"type\": \"scalingvalue\", \"start\": ").append(t.spellScaling.getCastTimeStart())
+					.append(", \"end\": ").append(t.spellScaling.getCastTimeEnd())
+					.append(", \"intervals\": ").append(t.spellScaling.getIntervals())
 					.append("}");
 		}
 		else if( exp instanceof FunVar ) {
@@ -154,8 +154,6 @@ public class JsonPrinter {
 		}
 		else {
 			System.err.println("Unsupported \"type\": " + exp.getClass().getCanonicalName());
-			System.err.println("Shutting down!");
-			System.exit(0);
 		}
 	}
 	
@@ -201,12 +199,10 @@ public class JsonPrinter {
 		}
 		else {
 			System.err.println("Unsupported \"type\": " + cond.getClass().getCanonicalName() );
-			System.err.println("Shutting down!");
-			System.exit(0);
 		}
 	}
 
 	private String escape( String s ) {
-		return s.replaceAll("\"", "\\\"").replaceAll("\\r\\n", "\\\\r\\\\n");
+		return s.replaceAll("\"", "\\\\\"").replaceAll("\\r\\n", "\\\\r\\\\n");
 	}
 }

@@ -1,107 +1,127 @@
 package org.chardev;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import org.chardev.cjt.DBCParser;
+import org.chardev.cjt.util.ConnectionFactory;
 
 public class UpdateChardevDB {
 	
-	private static final int ITEM_SPARSE_SKIP = 0x8C04C - 32;
+	private static final int ITEM_SPARSE_SKIP = 0x8E788 - 32;
 	
-	private static final String dbs[] = new String[]{
-		"jdbc:mysql://localhost:3306/chardev_mop?",
-		"jdbc:mysql://localhost:3306/chardev_mop_fr?",
-		"jdbc:mysql://localhost:3306/chardev_mop_de?",
-		"jdbc:mysql://localhost:3306/chardev_mop_es?",
-		"jdbc:mysql://localhost:3306/chardev_mop_ru?"
-	};
-	private static final String basePaths[] = new String[]{
-		"i:/Projekte/chardev/mop/DBFilesClient/",
-		"Y:/chardev/mop/fr/DBFilesClient/",
-		"Y:/chardev/mop/de/DBFilesClient/",
-		"Y:/chardev/mop/es/DBFilesClient/",
-		"Y:/chardev/mop/ru/DBFilesClient/"
-	};
-	private static final String locales[] = new String[]{
-		"EN",
-		"FR",
-		"DE",
-		"ES",
-		"RU"
-	};
-	
-	private static Connection databaseConnection;
-	private static boolean connectToDatabase( String url ) {
-		try {
-			String driverClass = "org.gjt.mm.mysql.Driver";
-			Class.forName(driverClass).newInstance();
-			databaseConnection = DriverManager.getConnection(url, "root", "");
-			return true;
-		} catch (SQLException sqle) {
-			System.out.println(sqle);
-		} catch (InstantiationException ie) {
-			System.out.println(ie);
-		} catch (IllegalAccessException iae) {
-			System.out.println(iae);
-		} catch (ClassNotFoundException cnfe) {
-			System.out.println(cnfe);
-		}
-		return false;
-	}
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {	
-		boolean skipLocale = true;
+//		boolean skipLocale = true;
 		
-		connectToDatabase(dbs[0]);
-		staticUpdate(basePaths[0]);
+		final String path = "i:/Projekte/chardev/mop/DBFilesClient/";
 		
-		for( int i=0; i< dbs.length; i++ ) {
-			connectToDatabase(dbs[i]);
-			localeUpdate(basePaths[i],locales[i]);
-			if( skipLocale ) {
-				break;
-			}
+//		staticUpdate(path);
+		
+//		localeUpdate(path,"EN");
+		
+//		for( int i=0; i< dbs.length; i++ ) {
+//			connectToDatabase(dbs[i]);
+//			localeUpdate(basePaths[i],locales[i]);
+//			if( skipLocale ) {
+//				break;
+//			}
+//		}
+		
+		cacheUpdate();
+	}
+	
+	private static void cacheUpdate() {
+		DBCParser p;
+		String itemSparse[] = new String[]{
+//			"I:/Projekte/chardev/mop/cache/Item-sparse.adb",
+//			"I:/Projekte/chardev/mop/cache/Item-sparse (2).adb",
+//			"I:/Projekte/chardev/mop/cache/Item-sparse (3).adb",
+//			"I:/Projekte/chardev/mop/cache/Item-sparse (4).adb"
+//			"I:/Projekte/chardev/mop/cache/Item-sparse (5).adb"
+			"I:/Projekte/chardev/mop/cache/Item-sparse (6).adb"
+		};
+		
+		String item[] = new String[]{
+//			"I:/Projekte/chardev/mop/cache/Item.adb",
+//			"I:/Projekte/chardev/mop/cache/Item (2).adb",
+//			"I:/Projekte/chardev/mop/cache/Item (3).adb",
+//			"I:/Projekte/chardev/mop/cache/Item (4).adb"
+//			"I:/Projekte/chardev/mop/cache/Item (5).adb"
+			"I:/Projekte/chardev/mop/cache/Item (6).adb"
+		};
+		
+		for( String fileName : itemSparse ) {
+			System.out.println("Processing: "+fileName);
+			p = new DBCParser(
+					ConnectionFactory.getStatic(), 
+					fileName, 
+					"item_working"
+			);
+			p.setLocale("EN");
+			p.addVersion();
+			p.parse();
 		}
-		if(true) return;
+
+		for( String fileName : item ) {
+			System.out.println("Processing: "+fileName);
+			p = new DBCParser(
+					ConnectionFactory.getLocale(), 
+					fileName, 
+					"item"
+			);
+			p.parse();	
+		}
 	}
 
 	private static void staticUpdate( String basePath ) {
 		String[] files = new String[]{
+			"gemproperties",
+			"glyphproperties",
 			"gtchancetomeleecrit",
 			"gtchancetomeleecritbase",
 			"gtchancetospellcrit",
 			"gtchancetospellcritbase",
 			//"gtOCTRegenMP",
 			//"gtOCTRegenHP",
-			"gtRegenMPPerSpt",
+			//"gtRegenMPPerSpt",
 			//"gtRegenHPPerSpt",
 			"gtCombatRatings",
+			"gtresiliencedr",
 			"gtspellscaling",
 			"gtOCTBaseHPByClass",
 			"gtOCTBaseMPByClass",
+			"gtOCTClassCombatRatingScalar",
 			"itemarmorquality",
 			"itemarmorshield",
 			"itemarmortotal",
+			"itemcurrencycost",
 			"itemdamageonehand",
 			"itemdamageonehandcaster",
+			"itemdamagethrown",
 			"itemdamagetwohand",
 			"itemdamagetwohandcaster",
 			"itemdamageranged",
 			"itemdamagewand",
-			"itemdamagethrown",
 			"itemdisplayinfo",
-			"gemproperties",
-			"glyphproperties",
+			"itempricebase",
 			"itemreforge",
+			"itemspec",
+			"itemspecoverride",
+			"itemupgrade",
+			"modifiertree",
 			"randproppoints",
+			"rulesetitemupgrade",
 			"scalingstatdistribution",
 			"scalingstatvalues",
 			"skilllineability",
 			"skillraceclassinfo",
+			"specializationspells",
 			"spellauraoptions",
 			"spellaurarestrictions",
 			"spellcastingrequirements",
@@ -113,6 +133,7 @@ public class UpdateChardevDB {
 			//"spelldifficulty",
 			"spellduration",
 			"spelleffect",
+			"spelleffectscaling",
 			"spellequippeditems",
 			"spellflyout",
 			"spellflyoutitem",
@@ -121,10 +142,12 @@ public class UpdateChardevDB {
 			"spellinterrupts",
 			"spelllevels",
 			"spellmechanic",
+			"spellmisc",
 			"spellmissile",
 			"spellmissilemotion",
 			"spellpower",
 			"spellradius",
+			"spellreagents",
 			"spellrunecost",
 			"spellscaling",
 			"spellshapeshift",
@@ -134,6 +157,7 @@ public class UpdateChardevDB {
 			"talent",
 			//"talenttreeprimaryspells"
 		};
+
 		//
 		//	DBC FILES
 		//
@@ -144,7 +168,7 @@ public class UpdateChardevDB {
 		//	SPELL ITEM ENCHANTMENT CONDITION
 		//
 		DBCParser siecParser = new DBCParser(
-				databaseConnection, 
+				ConnectionFactory.getLocale(), 
 				basePath+"spellitemenchantmentcondition.dbc", 
 				"spellitemenchantmentcondition"
 		);
@@ -156,7 +180,7 @@ public class UpdateChardevDB {
 		//
 		System.out.println("Processing: Item.db2");
 		DBCParser ip = new DBCParser(
-				databaseConnection, 
+				ConnectionFactory.getLocale(), 
 				basePath+"Item.db2", 
 				"item"
 		);
@@ -165,7 +189,7 @@ public class UpdateChardevDB {
 		ip.parse();
 		System.out.println("Processing: SpellReagents.db2");
 		DBCParser srp = new DBCParser(
-				databaseConnection, 
+				ConnectionFactory.getLocale(), 
 				basePath+"SpellReagents.db2", 
 				"spellreagents"
 		);
@@ -180,12 +204,15 @@ public class UpdateChardevDB {
 			"chrclasses",
 			"chrraces",
 			"chrspecialization",
+			"currencycategory",
+			"currencytypes",
 			"faction",
-			"itemsubclass",
 			"itemclass",
-			"itemset",
+			"itemnamedescription",
 			"itemrandomsuffix",
 			"itemrandomproperties",
+			"itemset",
+			"itemsubclass",
 			"skillline",
 			"spell",
 			"spelldescriptionvariables",
@@ -203,9 +230,8 @@ public class UpdateChardevDB {
 		//	ITEM SPARSE
 		//
 		System.out.println("Processing: Item-Sparse.db2");
-		connectToDatabase("jdbc:mysql://localhost:3306/chardev_mop_static?");
 		DBCParser p = new DBCParser(
-				databaseConnection, 
+				ConnectionFactory.getStatic(), 
 				basePath+"Item-Sparse.db2", 
 				"item_working"
 		);
@@ -217,12 +243,33 @@ public class UpdateChardevDB {
 	
 	private static void updateTable( String name, String basePath ) {
 		System.out.println("Processing: "+name);
+		
+		String path = basePath+name;
+		int skip = 0;
+		File f = new File(path + ".db2");
+		if( ! f.exists()) {
+			f = new File(path + ".dbc");
+			if( ! f.exists() ) {
+				throw new RuntimeException("File " + path + " does not exists!" );
+			}
+			else {
+				path += ".dbc";
+			}
+		}
+		else {
+			path += ".db2";
+			skip = 0x10;
+		}
+		
 		DBCParser p = new DBCParser(
-				databaseConnection, 
-				basePath+name+".dbc", 
+				ConnectionFactory.getLocale(), 
+				path, 
 				name
 		);
 		p.truncateTargetTable();
+		if( skip > 0 ) {
+			p.additionalSkip = skip;
+		}
 		p.parse();
 	}
 }

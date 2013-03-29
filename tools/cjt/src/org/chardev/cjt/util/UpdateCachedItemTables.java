@@ -19,11 +19,9 @@ import java.sql.Statement;
 public class UpdateCachedItemTables {
 
 	public static void main(String[] args) {
-		Connection connectionLocaleDB = Database
-				.connectToDatabase(Database.CHARDEV_MOP);
-		Connection connectionStaticDB = Database
-				.connectToDatabase(Database.CHARDEV_MOP_STATIC);
-		new UpdateCachedItemTables(connectionStaticDB, connectionLocaleDB);
+		new UpdateCachedItemTables(
+				ConnectionFactory.getStatic(), 
+				ConnectionFactory.getLocale());
 	}
 
 	protected final Connection connectionStaticDB, connectionLocaleDB;
@@ -47,6 +45,8 @@ public class UpdateCachedItemTables {
 		//
 		//
 		try {
+			int n = 0;
+			
 			Statement tstmt = connectionLocaleDB.createStatement();
 			tstmt.execute("TRUNCATE TABLE chardev_mop.`item_sparse`"); 
 			//
@@ -234,11 +234,10 @@ public class UpdateCachedItemTables {
 					insertStatement.setString(35 + i, desc[i]);
 				}
 				insertStatement.execute();
-				System.out.println(id);
+				if( n++ % 1000 == 0 ) System.out.println(id);
 			}
 			//
-			// some clean up
-			stmt.close();
+			// some clean up			stmt.close();
 			gemPropertiesStatement.close();
 			//
 			// Filter junk items

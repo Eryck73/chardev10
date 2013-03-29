@@ -20,6 +20,6 @@ public class ScalingTime implements Scalable {
 	
 	@Override
 	public String toString() {
-		return "$scalingTime{" +  this.spellScaling.castTimeStart + "," + this.spellScaling.castTimeEnd + "," + this.spellScaling.intervals + "}"; 
+		return "$scalingTime{" +  this.spellScaling.getCastTimeStart() + "," + this.spellScaling.getCastTimeEnd() + "," + this.spellScaling.getIntervals() + "}"; 
 	}
 }

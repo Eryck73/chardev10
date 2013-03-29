@@ -18,11 +18,9 @@ import java.sql.Statement;
 public class UpdateCachedItemSetTables {
 
 	public static void main(String[] args) {
-		Connection connectionLocaleDB = Database
-				.connectToDatabase(Database.CHARDEV_MOP);
-		Connection connectionStaticDB = Database
-				.connectToDatabase(Database.CHARDEV_MOP_STATIC);
-		new UpdateCachedItemSetTables(connectionStaticDB, connectionLocaleDB);
+		new UpdateCachedItemSetTables(
+				ConnectionFactory.getStatic(), 
+				ConnectionFactory.getLocale());
 	}
 
 	protected final Connection connectionStaticDB, connectionLocaleDB;
