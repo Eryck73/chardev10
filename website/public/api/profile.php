@@ -33,7 +33,7 @@ try {
 }
 catch( chardev\backend\DuplicateProfileException $dpe ) {
 	header("chardev-duplicate-profile: yes");
-	echo json_encode($dpe->getId());
+	echo json_encode("profile/{$dpe->getId()}.html");
 }
 catch( \Exception $e ) {
 	Ajax::dieOnException($e);
