@@ -18,7 +18,7 @@ var ItemTooltip = {
      */
     _getExtendedValue: function( characterScope, lvl, statId, statValue ) {
         if( statId <= 11 || statId >= 50 ) {
-            if( characterScope && typeof characterScope.stats.statPerCentModifier[statId] !== "undefined" ) {
+            if( characterScope && typeof characterScope.stats.statPerCentModifier[statId] !== "undefined" && characterScope.stats.statPerCentModifier[statId] !== 0 ) {
                 return "<span class='tt_stat_with_mods'>(" + Math.floor( statValue * ( 1 + characterScope.stats.statPerCentModifier[statId] / 100) ) + ")</span>";
             }
         }
