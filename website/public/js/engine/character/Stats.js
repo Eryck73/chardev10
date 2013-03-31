@@ -835,37 +835,18 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 	// class check necessary for diminishing returns;
 	if( hasClass ) {
 
-		if( classId == PALADIN || classId == WARRIOR || classId == DEATHKNIGHT ) {
-			this.dodge =
-				baseEffects[49] +
-				5 +
-				this.deminishingReturnDodge(
-					this.dodgeRating / COMBAT_RATINGS[2][level-1] + baseStatsLevel[5] ,
-					classId
-			);
-		}
-		else {
-			this.dodge =
-				baseEffects[49] +
-				BASE_DODGE[classId] +
-			 	this.baseAttributes[1] * baseStatsLevel[5] +
-				this.deminishingReturnDodge(
-					this.dodgeRating / COMBAT_RATINGS[2][level-1] + baseStatsLevel[5] * ( this.attributes[1] - this.baseAttributes[1]) ,
-					classId
-			);
-		}
+        this.dodge = baseEffects[49] + BASE_DODGE[classId] + baseStatsLevel[5] * baseAttributesUnmodified[1] +
+            this.deminishingReturnDodge(
+                this.dodgeRating / COMBAT_RATINGS[2][level-1] + baseStatsLevel[5] * ( this.attributes[1] - baseAttributesUnmodified[1]) ,
+                classId
+        );
 
-		if( GameInfo.canParry(classId) ) {
-			this.parryRating = this.ratings[3] + baseEffects[189][3];
-			switch(classId) {
-			case WARRIOR:
-			case PALADIN:
-			case DEATHKNIGHT:
-				this.parryRating += (this.attributes[0] - baseAttributesUnmodified[0]) * 0.27;
-				break;
-			}
-			this.parry = 5 + baseEffects[47] + this.deminishingReturnParry(
-				this.parryRating / COMBAT_RATINGS[3][level-1],
+		if( classId === WARRIOR || classId === PALADIN || classId === ROGUE || classId === DEATHKNIGHT || classId === SHAMAN && selectedTree === 1 ) {
+			
+            this.parryRating = this.ratings[3] + baseEffects[189][3];
+            
+			this.parry = 3 + baseEffects[47] + baseStatsLevel[6] * baseAttributesUnmodified[0] + this.deminishingReturnParry(
+				this.parryRating / COMBAT_RATINGS[3][level-1] + baseStatsLevel[6] * ( this.attributes[0] - baseAttributesUnmodified[0]),
 				classId
 			);
 		}

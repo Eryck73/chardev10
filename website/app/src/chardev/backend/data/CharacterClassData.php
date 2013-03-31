@@ -48,7 +48,8 @@ class CharacterClassData extends Data
 				(int)$statRecord['sta'],
 				(int)$statRecord['int'],
 				(int)$statRecord['spi'],
-				(float)$statRecord['dodge_per_agi']
+				(float)$statRecord['dodgePerAgi'],
+				(float)$statRecord['parryPerStr']
 			);
 		}		
 		
