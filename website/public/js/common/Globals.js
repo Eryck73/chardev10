@@ -261,7 +261,7 @@ var g_spells = null;
 
 /** @const */ var BASE_MELEE_CRIT = [0.05, 0.05, -0.0153, -0.003, 0.0318, 0.05, 0.0292, 0.0345, 0.0262, 0.0748, 0.0748];
 /** @const */ var BASE_SPELL_CRIT = [0, 0.0334, 0, 0, 0.0124, 0, 0.022, 0.0091, 0.017, 0.0185, 0.0185];
-/** @const */ var BASE_DODGE		= [0,3.75955, 3.65168-3.0, -5.43889, -0.588581, 3.18783, 3.66584, 1.67504, 3.47569, 2.04144, 0, 4.97143];
+/** @const */ var BASE_DODGE		= [0,3,3,3,3,3,3,3,3,3,3,3];
 /** @const */ var MP5_PER_SPIRIT = [0, 0.225754, 0, 0, 0.225754, 0, 0.225754, 0.0564384, 0, 0.225754, 0.225754];
 
 // Paladin base dodge is reduced by 3 to counteract the effect of spell:67915 
@@ -289,9 +289,65 @@ var g_spells = null;
 /** @const */ var MANA_PER_INT = 15;
 /** @const */ var HP_PER_STAMINA = 10;
 
-/** @const */ var DIMINISHING_K = [0.9560,      0.9560,	    0.9880,     0.9880,     0.9530,     0.9560,     0.9880,     0.9530,     0.9530,     0,      0.9720];
-/** @const */ var DIMINISHING_CP= [65.631440,	65.631440,	145.560408,	145.560408,	0,			65.631440,	145.560408,	0,			0,			0,		0];
-/** @const */ var DIMINISHING_CD= [65.631440,	65.631440,	145.560408,	145.560408,	150.375940,	65.631440,	145.560408,	150.375940,	150.375940,	0,		116.890707];
+/*
+SELECT * 
+FROM ( 
+    SELECT COUNT(*) AS count, t2.* 
+    FROM ( 
+        SELECT class, TRUNCATE(k,4) AS k 
+        FROM ( 
+            SELECT url, level, class, dodge, baseAgility, totalAgility, dodgeFromRating, dodgeCap, k
+            FROM chardev_mop_static.chardev_data_stats 
+            WHERE level = 90 AND dodgeCap != -1 and k != -1 
+        ) t 
+        ORDER BY class
+    ) t2 
+    GROUP BY class, k
+) t3 
+WHERE count > 1
+*/
+/** @const */ var DIMINISHING_K = [
+    0.9560, //  1 - warrior
+    0.8860,	//  2 - paladin
+    0.9880, //  3 - hunter
+    0.9880, //  4 - rogue
+    0.9560, //  5 - priest, values indicate something between 0.9673 and 0.9676, but who cares, right?
+    0.9560, //  6 - dk
+    0.9880, //  7 - shaman
+    0.9830, //  8 - mage, values btw 0.9669 and 0.9676
+    0.9830, //  9 - warlock, all values 0.9829
+    1.4220, // 10 - monk
+    1.2220  // 11 - druid
+];
+
+/** @const */ var DIMINISHING_CD= [
+    90.6425,
+    66.5674,
+    145.560408, // something in the ballpark, no conclusive data
+    145.560408, // something in the ballpark, no conclusive data
+    66.5674,    // no conclusive data
+    90.6425,    // same as warrior
+    145.560408, //
+    150.375940, // no conclusive data
+    150.375940, // no conclusive data
+    501.25,     //
+    150.375940  //
+];
+
+/** @const */ var DIMINISHING_CP= [
+    237.186,	
+    237.186,	
+    0,	
+    10000,	
+    0,			
+    237.186,	
+    145.560408,	
+    0,			
+    0,			
+    0,          
+    0
+];
+
 
 //
 //	GENERATED
