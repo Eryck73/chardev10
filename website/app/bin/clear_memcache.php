@@ -1,6 +1,6 @@
 <?php
 
-	require_once __DIR__ . '/../backend/cache/Cache.php';
+	require_once __DIR__ . '/../chardev/backend/cache/Cache.php';
 
 	if( chardev\backend\cache\Cache::getInstance()->flush()) {
 		echo "Flushed all data!";
