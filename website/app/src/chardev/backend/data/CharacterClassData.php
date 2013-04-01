@@ -48,8 +48,12 @@ class CharacterClassData extends Data
 				(int)$statRecord['sta'],
 				(int)$statRecord['int'],
 				(int)$statRecord['spi'],
-				(float)$statRecord['dodgePerAgi'],
-				(float)$statRecord['parryPerStr']
+                //
+                // override dodgePerAgi all classes but hunter, rogue, shaman, monk and druids
+				$id == 3 || $id == 4 || $id == 7 || $id == 10 || $id == 11 ? (float)$statRecord['dodgePerAgi'] : 0.0001,
+                //
+                // override parryPerStr for shamans, rogues
+				$id == 4 || $id == 7 ? 0.0001 : (float)$statRecord['parryPerStr']
 			);
 		}		
 		
