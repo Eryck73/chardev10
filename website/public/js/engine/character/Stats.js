@@ -227,7 +227,7 @@ Stats.prototype.getReductionFromArmor = function(level){
  * @param {number} chrClassId
  * @returns {number}
  */
-Stats.prototype.deminishingReturnDodge = function(value, chrClassId){
+Stats.prototype.diminishingReturnDodge = function(value, chrClassId){
     if( value === 0 ) {
         return 0;
     }
@@ -242,7 +242,7 @@ Stats.prototype.deminishingReturnDodge = function(value, chrClassId){
  * @param {number} chrClassId
  * @returns {number}
  */
-Stats.prototype.deminishingReturnParry = function(value, chrClassId){
+Stats.prototype.diminishingReturnParry = function(value, chrClassId){
     if( value === 0 ) {
         return 0;
     }
@@ -251,6 +251,17 @@ Stats.prototype.deminishingReturnParry = function(value, chrClassId){
         return 0;
     }
 	return 1 / q;
+};
+/**
+ * @param {number} value
+ * @param {number} chrClassId
+ * @returns {number}
+ */
+Stats.prototype.diminishingReturnBlock = function(value, chrClassId){
+    if( value === 0 || DIMINISHING_CB[chrClassId-1] === 0 || DIMINISHING_K[chrClassId-1] === 0 ) {
+        return 0;
+    }
+	return 1 / ( 1 / DIMINISHING_CB[chrClassId-1] + DIMINISHING_K[chrClassId-1] / value);
 };
 /**
  * @param {boolean} preview
@@ -821,12 +832,11 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 
 	// Block
 	if( GameInfo.canBlock(classId) ) {
-		this.block =
-			5 +
-			baseEffects[51] +
-			( classId == PALADIN && selectedTree == 1 ? 2.25 * this.mastery : 0) +
-			( classId == WARRIOR && selectedTree == 2 ? 1.5  * this.mastery : 0) +
-			( this.ratings[4] + baseEffects[189][4] ) /COMBAT_RATINGS[4][level-1];
+		this.block = 3 + baseEffects[51] + this.diminishingReturnBlock(
+                ( classId === PALADIN && selectedTree === 1 ? (this.mastery > 8 ? 8 + 2.25 * (this.mastery-8) : 8) : 0) +
+                ( classId === WARRIOR && selectedTree === 2 ? 0.5 * this.mastery : 0) +
+                ( this.ratings[4] + baseEffects[189][4] ) /COMBAT_RATINGS[4][level-1],
+                classId); console.log(3 + baseEffects[51]);
 	}
 	//
 	//	DODGE and PARRY
@@ -836,7 +846,7 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 	if( hasClass ) {
 
         this.dodge = baseEffects[49] + BASE_DODGE[classId] + baseStatsLevel[5] * baseAttributesUnmodified[1] +
-            this.deminishingReturnDodge(
+            this.diminishingReturnDodge(
                 this.dodgeRating / COMBAT_RATINGS[2][level-1] + baseStatsLevel[5] * ( this.attributes[1] - baseAttributesUnmodified[1]) ,
                 classId
         );
@@ -845,7 +855,7 @@ Stats.prototype.calculate = function( preview, noBuffs  ) {
 			
             this.parryRating = this.ratings[3] + baseEffects[189][3];
             
-			this.parry = 3 + baseEffects[47] + baseStatsLevel[6] * baseAttributesUnmodified[0] + this.deminishingReturnParry(
+			this.parry = 3 + baseEffects[47] + baseStatsLevel[6] * baseAttributesUnmodified[0] + this.diminishingReturnParry(
 				this.parryRating / COMBAT_RATINGS[3][level-1] + baseStatsLevel[6] * ( this.attributes[0] - baseAttributesUnmodified[0]),
 				classId
 			);
