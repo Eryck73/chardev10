@@ -75,6 +75,9 @@ $loggedInUser = Session::getLoggedInUser();
     <script type='text/javascript'>
         /* <![CDATA[ */
         g_settings = <?php echo json_encode($jsSettings) ?>;
+        if(g_settings.user) {
+            g_settings.user = new User(g_settings.user);
+        }
         g_realmList = <?php echo json_encode(UserDatabase::getInstance()->getRealmList()); ?>;
         /* ]]> */
     </script>
